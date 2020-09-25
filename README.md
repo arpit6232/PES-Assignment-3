@@ -379,7 +379,10 @@ Disassembly of section .text.conditional_Delay: <br />
   60:	0000ea5f 	.word	0x0000ea5f <br />
 
 
-## Execution 
- - To run the Program (Linux) :
-1) make
-2) ./main
+Installation/Execution Notes
+Developed using MCUExpresso on Linux.
+Two configurations:
+    -D (Build Flags)
+    DEBUG Target - Prints DEBUG Messages to UART terminal.
+    RUN Target - RUN Mode, no debug messages are printed on UART Terminal
+
