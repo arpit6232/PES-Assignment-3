@@ -1,0 +1,967 @@
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 6
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"fsl_common.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.DisableGlobalIRQ,"ax",%progbits
+  16              		.align	1
+  17              		.arch armv6s-m
+  18              		.syntax unified
+  19              		.code	16
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	DisableGlobalIRQ:
+  24              	.LFB54:
+  25              		.file 1 "../drivers/fsl_common.h"
+   1:../drivers/fsl_common.h **** /*
+   2:../drivers/fsl_common.h ****  * Copyright (c) 2015-2016, Freescale Semiconductor, Inc.
+   3:../drivers/fsl_common.h ****  * Copyright 2016-2017 NXP
+   4:../drivers/fsl_common.h ****  *
+   5:../drivers/fsl_common.h ****  * Redistribution and use in source and binary forms, with or without modification,
+   6:../drivers/fsl_common.h ****  * are permitted provided that the following conditions are met:
+   7:../drivers/fsl_common.h ****  *
+   8:../drivers/fsl_common.h ****  * o Redistributions of source code must retain the above copyright notice, this list
+   9:../drivers/fsl_common.h ****  *   of conditions and the following disclaimer.
+  10:../drivers/fsl_common.h ****  *
+  11:../drivers/fsl_common.h ****  * o Redistributions in binary form must reproduce the above copyright notice, this
+  12:../drivers/fsl_common.h ****  *   list of conditions and the following disclaimer in the documentation and/or
+  13:../drivers/fsl_common.h ****  *   other materials provided with the distribution.
+  14:../drivers/fsl_common.h ****  *
+  15:../drivers/fsl_common.h ****  * o Neither the name of the copyright holder nor the names of its
+  16:../drivers/fsl_common.h ****  *   contributors may be used to endorse or promote products derived from this
+  17:../drivers/fsl_common.h ****  *   software without specific prior written permission.
+  18:../drivers/fsl_common.h ****  *
+  19:../drivers/fsl_common.h ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  20:../drivers/fsl_common.h ****  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  21:../drivers/fsl_common.h ****  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  22:../drivers/fsl_common.h ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+  23:../drivers/fsl_common.h ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  24:../drivers/fsl_common.h ****  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  25:../drivers/fsl_common.h ****  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  26:../drivers/fsl_common.h ****  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  27:../drivers/fsl_common.h ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  28:../drivers/fsl_common.h ****  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  29:../drivers/fsl_common.h ****  */
+  30:../drivers/fsl_common.h **** 
+  31:../drivers/fsl_common.h **** #ifndef _FSL_COMMON_H_
+  32:../drivers/fsl_common.h **** #define _FSL_COMMON_H_
+  33:../drivers/fsl_common.h **** 
+  34:../drivers/fsl_common.h **** #include <assert.h>
+  35:../drivers/fsl_common.h **** #include <stdbool.h>
+  36:../drivers/fsl_common.h **** #include <stdint.h>
+  37:../drivers/fsl_common.h **** #include <string.h>
+  38:../drivers/fsl_common.h **** 
+  39:../drivers/fsl_common.h **** #if defined(__ICCARM__)
+  40:../drivers/fsl_common.h **** #include <stddef.h>
+  41:../drivers/fsl_common.h **** #endif
+  42:../drivers/fsl_common.h **** 
+  43:../drivers/fsl_common.h **** #include "fsl_device_registers.h"
+  44:../drivers/fsl_common.h **** 
+  45:../drivers/fsl_common.h **** /*!
+  46:../drivers/fsl_common.h ****  * @addtogroup ksdk_common
+  47:../drivers/fsl_common.h ****  * @{
+  48:../drivers/fsl_common.h ****  */
+  49:../drivers/fsl_common.h **** 
+  50:../drivers/fsl_common.h **** /*******************************************************************************
+  51:../drivers/fsl_common.h ****  * Definitions
+  52:../drivers/fsl_common.h ****  ******************************************************************************/
+  53:../drivers/fsl_common.h **** 
+  54:../drivers/fsl_common.h **** /*! @brief Construct a status code value from a group and code number. */
+  55:../drivers/fsl_common.h **** #define MAKE_STATUS(group, code) ((((group)*100) + (code)))
+  56:../drivers/fsl_common.h **** 
+  57:../drivers/fsl_common.h **** /*! @brief Construct the version number for drivers. */
+  58:../drivers/fsl_common.h **** #define MAKE_VERSION(major, minor, bugfix) (((major) << 16) | ((minor) << 8) | (bugfix))
+  59:../drivers/fsl_common.h **** 
+  60:../drivers/fsl_common.h **** /* Debug console type definition. */
+  61:../drivers/fsl_common.h **** #define DEBUG_CONSOLE_DEVICE_TYPE_NONE 0U     /*!< No debug console.             */
+  62:../drivers/fsl_common.h **** #define DEBUG_CONSOLE_DEVICE_TYPE_UART 1U     /*!< Debug console base on UART.   */
+  63:../drivers/fsl_common.h **** #define DEBUG_CONSOLE_DEVICE_TYPE_LPUART 2U   /*!< Debug console base on LPUART. */
+  64:../drivers/fsl_common.h **** #define DEBUG_CONSOLE_DEVICE_TYPE_LPSCI 3U    /*!< Debug console base on LPSCI.  */
+  65:../drivers/fsl_common.h **** #define DEBUG_CONSOLE_DEVICE_TYPE_USBCDC 4U   /*!< Debug console base on USBCDC. */
+  66:../drivers/fsl_common.h **** #define DEBUG_CONSOLE_DEVICE_TYPE_FLEXCOMM 5U /*!< Debug console base on USBCDC. */
+  67:../drivers/fsl_common.h **** #define DEBUG_CONSOLE_DEVICE_TYPE_IUART 6U    /*!< Debug console base on i.MX UART. */
+  68:../drivers/fsl_common.h **** 
+  69:../drivers/fsl_common.h **** /*! @brief Status group numbers. */
+  70:../drivers/fsl_common.h **** enum _status_groups
+  71:../drivers/fsl_common.h **** {
+  72:../drivers/fsl_common.h ****     kStatusGroup_Generic = 0,                 /*!< Group number for generic status codes. */
+  73:../drivers/fsl_common.h ****     kStatusGroup_FLASH = 1,                   /*!< Group number for FLASH status codes. */
+  74:../drivers/fsl_common.h ****     kStatusGroup_LPSPI = 4,                   /*!< Group number for LPSPI status codes. */
+  75:../drivers/fsl_common.h ****     kStatusGroup_FLEXIO_SPI = 5,              /*!< Group number for FLEXIO SPI status codes. */
+  76:../drivers/fsl_common.h ****     kStatusGroup_DSPI = 6,                    /*!< Group number for DSPI status codes. */
+  77:../drivers/fsl_common.h ****     kStatusGroup_FLEXIO_UART = 7,             /*!< Group number for FLEXIO UART status codes. */
+  78:../drivers/fsl_common.h ****     kStatusGroup_FLEXIO_I2C = 8,              /*!< Group number for FLEXIO I2C status codes. */
+  79:../drivers/fsl_common.h ****     kStatusGroup_LPI2C = 9,                   /*!< Group number for LPI2C status codes. */
+  80:../drivers/fsl_common.h ****     kStatusGroup_UART = 10,                   /*!< Group number for UART status codes. */
+  81:../drivers/fsl_common.h ****     kStatusGroup_I2C = 11,                    /*!< Group number for UART status codes. */
+  82:../drivers/fsl_common.h ****     kStatusGroup_LPSCI = 12,                  /*!< Group number for LPSCI status codes. */
+  83:../drivers/fsl_common.h ****     kStatusGroup_LPUART = 13,                 /*!< Group number for LPUART status codes. */
+  84:../drivers/fsl_common.h ****     kStatusGroup_SPI = 14,                    /*!< Group number for SPI status code.*/
+  85:../drivers/fsl_common.h ****     kStatusGroup_XRDC = 15,                   /*!< Group number for XRDC status code.*/
+  86:../drivers/fsl_common.h ****     kStatusGroup_SEMA42 = 16,                 /*!< Group number for SEMA42 status code.*/
+  87:../drivers/fsl_common.h ****     kStatusGroup_SDHC = 17,                   /*!< Group number for SDHC status code */
+  88:../drivers/fsl_common.h ****     kStatusGroup_SDMMC = 18,                  /*!< Group number for SDMMC status code */
+  89:../drivers/fsl_common.h ****     kStatusGroup_SAI = 19,                    /*!< Group number for SAI status code */
+  90:../drivers/fsl_common.h ****     kStatusGroup_MCG = 20,                    /*!< Group number for MCG status codes. */
+  91:../drivers/fsl_common.h ****     kStatusGroup_SCG = 21,                    /*!< Group number for SCG status codes. */
+  92:../drivers/fsl_common.h ****     kStatusGroup_SDSPI = 22,                  /*!< Group number for SDSPI status codes. */
+  93:../drivers/fsl_common.h ****     kStatusGroup_FLEXIO_I2S = 23,             /*!< Group number for FLEXIO I2S status codes */
+  94:../drivers/fsl_common.h ****     kStatusGroup_FLEXIO_MCULCD = 24,          /*!< Group number for FLEXIO LCD status codes */
+  95:../drivers/fsl_common.h ****     kStatusGroup_FLASHIAP = 25,               /*!< Group number for FLASHIAP status codes */
+  96:../drivers/fsl_common.h ****     kStatusGroup_FLEXCOMM_I2C = 26,           /*!< Group number for FLEXCOMM I2C status codes */
+  97:../drivers/fsl_common.h ****     kStatusGroup_I2S = 27,                    /*!< Group number for I2S status codes */
+  98:../drivers/fsl_common.h ****     kStatusGroup_IUART = 28,                  /*!< Group number for IUART status codes */
+  99:../drivers/fsl_common.h ****     kStatusGroup_SDRAMC = 35,                 /*!< Group number for SDRAMC status codes. */
+ 100:../drivers/fsl_common.h ****     kStatusGroup_POWER = 39,                  /*!< Group number for POWER status codes. */
+ 101:../drivers/fsl_common.h ****     kStatusGroup_ENET = 40,                   /*!< Group number for ENET status codes. */
+ 102:../drivers/fsl_common.h ****     kStatusGroup_PHY = 41,                    /*!< Group number for PHY status codes. */
+ 103:../drivers/fsl_common.h ****     kStatusGroup_TRGMUX = 42,                 /*!< Group number for TRGMUX status codes. */
+ 104:../drivers/fsl_common.h ****     kStatusGroup_SMARTCARD = 43,              /*!< Group number for SMARTCARD status codes. */
+ 105:../drivers/fsl_common.h ****     kStatusGroup_LMEM = 44,                   /*!< Group number for LMEM status codes. */
+ 106:../drivers/fsl_common.h ****     kStatusGroup_QSPI = 45,                   /*!< Group number for QSPI status codes. */
+ 107:../drivers/fsl_common.h ****     kStatusGroup_DMA = 50,                    /*!< Group number for DMA status codes. */
+ 108:../drivers/fsl_common.h ****     kStatusGroup_EDMA = 51,                   /*!< Group number for EDMA status codes. */
+ 109:../drivers/fsl_common.h ****     kStatusGroup_DMAMGR = 52,                 /*!< Group number for DMAMGR status codes. */
+ 110:../drivers/fsl_common.h ****     kStatusGroup_FLEXCAN = 53,                /*!< Group number for FlexCAN status codes. */
+ 111:../drivers/fsl_common.h ****     kStatusGroup_LTC = 54,                    /*!< Group number for LTC status codes. */
+ 112:../drivers/fsl_common.h ****     kStatusGroup_FLEXIO_CAMERA = 55,          /*!< Group number for FLEXIO CAMERA status codes. */
+ 113:../drivers/fsl_common.h ****     kStatusGroup_LPC_SPI = 56,                /*!< Group number for LPC_SPI status codes. */
+ 114:../drivers/fsl_common.h ****     kStatusGroup_LPC_USART = 57,              /*!< Group number for LPC_USART status codes. */
+ 115:../drivers/fsl_common.h ****     kStatusGroup_DMIC = 58,                   /*!< Group number for DMIC status codes. */
+ 116:../drivers/fsl_common.h ****     kStatusGroup_SDIF = 59,                   /*!< Group number for SDIF status codes.*/
+ 117:../drivers/fsl_common.h ****     kStatusGroup_SPIFI = 60,                  /*!< Group number for SPIFI status codes. */
+ 118:../drivers/fsl_common.h ****     kStatusGroup_OTP = 61,                    /*!< Group number for OTP status codes. */
+ 119:../drivers/fsl_common.h ****     kStatusGroup_MCAN = 62,                   /*!< Group number for MCAN status codes. */
+ 120:../drivers/fsl_common.h ****     kStatusGroup_CAAM = 63,                   /*!< Group number for CAAM status codes. */
+ 121:../drivers/fsl_common.h ****     kStatusGroup_ECSPI = 64,                  /*!< Group number for ECSPI status codes. */
+ 122:../drivers/fsl_common.h ****     kStatusGroup_USDHC = 65,                  /*!< Group number for USDHC status codes.*/
+ 123:../drivers/fsl_common.h ****     kStatusGroup_ESAI = 69,                   /*!< Group number for ESAI status codes. */
+ 124:../drivers/fsl_common.h ****     kStatusGroup_FLEXSPI = 70,                /*!< Group number for FLEXSPI status codes. */
+ 125:../drivers/fsl_common.h ****     kStatusGroup_NOTIFIER = 98,               /*!< Group number for NOTIFIER status codes. */
+ 126:../drivers/fsl_common.h ****     kStatusGroup_DebugConsole = 99,           /*!< Group number for debug console status codes. */
+ 127:../drivers/fsl_common.h ****     kStatusGroup_ApplicationRangeStart = 100, /*!< Starting number for application groups. */
+ 128:../drivers/fsl_common.h **** };
+ 129:../drivers/fsl_common.h **** 
+ 130:../drivers/fsl_common.h **** /*! @brief Generic status return codes. */
+ 131:../drivers/fsl_common.h **** enum _generic_status
+ 132:../drivers/fsl_common.h **** {
+ 133:../drivers/fsl_common.h ****     kStatus_Success = MAKE_STATUS(kStatusGroup_Generic, 0),
+ 134:../drivers/fsl_common.h ****     kStatus_Fail = MAKE_STATUS(kStatusGroup_Generic, 1),
+ 135:../drivers/fsl_common.h ****     kStatus_ReadOnly = MAKE_STATUS(kStatusGroup_Generic, 2),
+ 136:../drivers/fsl_common.h ****     kStatus_OutOfRange = MAKE_STATUS(kStatusGroup_Generic, 3),
+ 137:../drivers/fsl_common.h ****     kStatus_InvalidArgument = MAKE_STATUS(kStatusGroup_Generic, 4),
+ 138:../drivers/fsl_common.h ****     kStatus_Timeout = MAKE_STATUS(kStatusGroup_Generic, 5),
+ 139:../drivers/fsl_common.h ****     kStatus_NoTransferInProgress = MAKE_STATUS(kStatusGroup_Generic, 6),
+ 140:../drivers/fsl_common.h **** };
+ 141:../drivers/fsl_common.h **** 
+ 142:../drivers/fsl_common.h **** /*! @brief Type used for all status and error return values. */
+ 143:../drivers/fsl_common.h **** typedef int32_t status_t;
+ 144:../drivers/fsl_common.h **** 
+ 145:../drivers/fsl_common.h **** /*
+ 146:../drivers/fsl_common.h ****  * The fsl_clock.h is included here because it needs MAKE_VERSION/MAKE_STATUS/status_t
+ 147:../drivers/fsl_common.h ****  * defined in previous of this file.
+ 148:../drivers/fsl_common.h ****  */
+ 149:../drivers/fsl_common.h **** #include "fsl_clock.h"
+ 150:../drivers/fsl_common.h **** 
+ 151:../drivers/fsl_common.h **** /*
+ 152:../drivers/fsl_common.h ****  * Chip level peripheral reset API, for MCUs that implement peripheral reset control external to a 
+ 153:../drivers/fsl_common.h ****  */
+ 154:../drivers/fsl_common.h **** #if ((defined(FSL_FEATURE_SOC_SYSCON_COUNT) && (FSL_FEATURE_SOC_SYSCON_COUNT > 0)) || \
+ 155:../drivers/fsl_common.h ****      (defined(FSL_FEATURE_SOC_ASYNC_SYSCON_COUNT) && (FSL_FEATURE_SOC_ASYNC_SYSCON_COUNT > 0)))
+ 156:../drivers/fsl_common.h **** #include "fsl_reset.h"
+ 157:../drivers/fsl_common.h **** #endif
+ 158:../drivers/fsl_common.h **** 
+ 159:../drivers/fsl_common.h **** /*! @name Min/max macros */
+ 160:../drivers/fsl_common.h **** /* @{ */
+ 161:../drivers/fsl_common.h **** #if !defined(MIN)
+ 162:../drivers/fsl_common.h **** #define MIN(a, b) ((a) < (b) ? (a) : (b))
+ 163:../drivers/fsl_common.h **** #endif
+ 164:../drivers/fsl_common.h **** 
+ 165:../drivers/fsl_common.h **** #if !defined(MAX)
+ 166:../drivers/fsl_common.h **** #define MAX(a, b) ((a) > (b) ? (a) : (b))
+ 167:../drivers/fsl_common.h **** #endif
+ 168:../drivers/fsl_common.h **** /* @} */
+ 169:../drivers/fsl_common.h **** 
+ 170:../drivers/fsl_common.h **** /*! @brief Computes the number of elements in an array. */
+ 171:../drivers/fsl_common.h **** #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+ 172:../drivers/fsl_common.h **** 
+ 173:../drivers/fsl_common.h **** /*! @name UINT16_MAX/UINT32_MAX value */
+ 174:../drivers/fsl_common.h **** /* @{ */
+ 175:../drivers/fsl_common.h **** #if !defined(UINT16_MAX)
+ 176:../drivers/fsl_common.h **** #define UINT16_MAX ((uint16_t)-1)
+ 177:../drivers/fsl_common.h **** #endif
+ 178:../drivers/fsl_common.h **** 
+ 179:../drivers/fsl_common.h **** #if !defined(UINT32_MAX)
+ 180:../drivers/fsl_common.h **** #define UINT32_MAX ((uint32_t)-1)
+ 181:../drivers/fsl_common.h **** #endif
+ 182:../drivers/fsl_common.h **** /* @} */
+ 183:../drivers/fsl_common.h **** 
+ 184:../drivers/fsl_common.h **** /*! @name Timer utilities */
+ 185:../drivers/fsl_common.h **** /* @{ */
+ 186:../drivers/fsl_common.h **** /*! Macro to convert a microsecond period to raw count value */
+ 187:../drivers/fsl_common.h **** #define USEC_TO_COUNT(us, clockFreqInHz) (uint64_t)((uint64_t)us * clockFreqInHz / 1000000U)
+ 188:../drivers/fsl_common.h **** /*! Macro to convert a raw count value to microsecond */
+ 189:../drivers/fsl_common.h **** #define COUNT_TO_USEC(count, clockFreqInHz) (uint64_t)((uint64_t)count * 1000000U / clockFreqInHz)
+ 190:../drivers/fsl_common.h **** 
+ 191:../drivers/fsl_common.h **** /*! Macro to convert a millisecond period to raw count value */
+ 192:../drivers/fsl_common.h **** #define MSEC_TO_COUNT(ms, clockFreqInHz) (uint64_t)((uint64_t)ms * clockFreqInHz / 1000U)
+ 193:../drivers/fsl_common.h **** /*! Macro to convert a raw count value to millisecond */
+ 194:../drivers/fsl_common.h **** #define COUNT_TO_MSEC(count, clockFreqInHz) (uint64_t)((uint64_t)count * 1000U / clockFreqInHz)
+ 195:../drivers/fsl_common.h **** /* @} */
+ 196:../drivers/fsl_common.h **** 
+ 197:../drivers/fsl_common.h **** /*******************************************************************************
+ 198:../drivers/fsl_common.h ****  * API
+ 199:../drivers/fsl_common.h ****  ******************************************************************************/
+ 200:../drivers/fsl_common.h **** 
+ 201:../drivers/fsl_common.h **** #if defined(__cplusplus)
+ 202:../drivers/fsl_common.h **** extern "C" {
+ 203:../drivers/fsl_common.h **** #endif
+ 204:../drivers/fsl_common.h **** 
+ 205:../drivers/fsl_common.h **** /*!
+ 206:../drivers/fsl_common.h ****  * @brief Enable specific interrupt.
+ 207:../drivers/fsl_common.h ****  *
+ 208:../drivers/fsl_common.h ****  * Enable the interrupt not routed from intmux.
+ 209:../drivers/fsl_common.h ****  *
+ 210:../drivers/fsl_common.h ****  * @param interrupt The IRQ number.
+ 211:../drivers/fsl_common.h ****  */
+ 212:../drivers/fsl_common.h **** static inline void EnableIRQ(IRQn_Type interrupt)
+ 213:../drivers/fsl_common.h **** {
+ 214:../drivers/fsl_common.h ****     if (NotAvail_IRQn == interrupt)
+ 215:../drivers/fsl_common.h ****     {
+ 216:../drivers/fsl_common.h ****         return;
+ 217:../drivers/fsl_common.h ****     }
+ 218:../drivers/fsl_common.h **** 
+ 219:../drivers/fsl_common.h **** #if defined(FSL_FEATURE_SOC_INTMUX_COUNT) && (FSL_FEATURE_SOC_INTMUX_COUNT > 0)
+ 220:../drivers/fsl_common.h ****     if (interrupt < FSL_FEATURE_INTMUX_IRQ_START_INDEX)
+ 221:../drivers/fsl_common.h **** #endif
+ 222:../drivers/fsl_common.h ****     {
+ 223:../drivers/fsl_common.h **** #if defined(__GIC_PRIO_BITS)
+ 224:../drivers/fsl_common.h ****         GIC_EnableIRQ(interrupt);
+ 225:../drivers/fsl_common.h **** #else
+ 226:../drivers/fsl_common.h ****         NVIC_EnableIRQ(interrupt);
+ 227:../drivers/fsl_common.h **** #endif
+ 228:../drivers/fsl_common.h ****     }
+ 229:../drivers/fsl_common.h **** }
+ 230:../drivers/fsl_common.h **** 
+ 231:../drivers/fsl_common.h **** /*!
+ 232:../drivers/fsl_common.h ****  * @brief Disable specific interrupt.
+ 233:../drivers/fsl_common.h ****  *
+ 234:../drivers/fsl_common.h ****  * Disable the interrupt not routed from intmux.
+ 235:../drivers/fsl_common.h ****  *
+ 236:../drivers/fsl_common.h ****  * @param interrupt The IRQ number.
+ 237:../drivers/fsl_common.h ****  */
+ 238:../drivers/fsl_common.h **** static inline void DisableIRQ(IRQn_Type interrupt)
+ 239:../drivers/fsl_common.h **** {
+ 240:../drivers/fsl_common.h ****     if (NotAvail_IRQn == interrupt)
+ 241:../drivers/fsl_common.h ****     {
+ 242:../drivers/fsl_common.h ****         return;
+ 243:../drivers/fsl_common.h ****     }
+ 244:../drivers/fsl_common.h **** 
+ 245:../drivers/fsl_common.h **** #if defined(FSL_FEATURE_SOC_INTMUX_COUNT) && (FSL_FEATURE_SOC_INTMUX_COUNT > 0)
+ 246:../drivers/fsl_common.h ****     if (interrupt < FSL_FEATURE_INTMUX_IRQ_START_INDEX)
+ 247:../drivers/fsl_common.h **** #endif
+ 248:../drivers/fsl_common.h ****     {
+ 249:../drivers/fsl_common.h **** #if defined(__GIC_PRIO_BITS)
+ 250:../drivers/fsl_common.h ****         GIC_DisableIRQ(interrupt);
+ 251:../drivers/fsl_common.h **** #else
+ 252:../drivers/fsl_common.h ****         NVIC_DisableIRQ(interrupt);
+ 253:../drivers/fsl_common.h **** #endif
+ 254:../drivers/fsl_common.h ****     }
+ 255:../drivers/fsl_common.h **** }
+ 256:../drivers/fsl_common.h **** 
+ 257:../drivers/fsl_common.h **** /*!
+ 258:../drivers/fsl_common.h ****  * @brief Disable the global IRQ
+ 259:../drivers/fsl_common.h ****  *
+ 260:../drivers/fsl_common.h ****  * Disable the global interrupt and return the current primask register. User is required to provid
+ 261:../drivers/fsl_common.h ****  * register for the EnableGlobalIRQ().
+ 262:../drivers/fsl_common.h ****  *
+ 263:../drivers/fsl_common.h ****  * @return Current primask value.
+ 264:../drivers/fsl_common.h ****  */
+ 265:../drivers/fsl_common.h **** static inline uint32_t DisableGlobalIRQ(void)
+ 266:../drivers/fsl_common.h **** {
+  26              		.loc 1 266 1
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 8
+  29              		@ frame_needed = 1, uses_anonymous_args = 0
+  30 0000 80B5     		push	{r7, lr}
+  31              		.cfi_def_cfa_offset 8
+  32              		.cfi_offset 7, -8
+  33              		.cfi_offset 14, -4
+  34 0002 82B0     		sub	sp, sp, #8
+  35              		.cfi_def_cfa_offset 16
+  36 0004 00AF     		add	r7, sp, #0
+  37              		.cfi_def_cfa_register 7
+  38              	.LBB8:
+  39              	.LBB9:
+  40              		.file 2 "/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h"
+   1:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**************************************************************************//**
+   2:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  * @brief    CMSIS Cortex-M Core Function/Instruction Header File
+   4:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  * @version  V4.30
+   5:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  * @date     20. October 2015
+   6:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  ******************************************************************************/
+   7:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /* Copyright (c) 2009 - 2015 ARM LIMITED
+   8:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+   9:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    All rights reserved.
+  10:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    Redistribution and use in source and binary forms, with or without
+  11:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    modification, are permitted provided that the following conditions are met:
+  12:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    - Redistributions of source code must retain the above copyright
+  13:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****      notice, this list of conditions and the following disclaimer.
+  14:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    - Redistributions in binary form must reproduce the above copyright
+  15:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****      notice, this list of conditions and the following disclaimer in the
+  16:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****      documentation and/or other materials provided with the distribution.
+  17:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    - Neither the name of ARM nor the names of its contributors may be used
+  18:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****      to endorse or promote products derived from this software without
+  19:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****      specific prior written permission.
+  20:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    *
+  21:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+  25:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    POSSIBILITY OF SUCH DAMAGE.
+  32:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****    ---------------------------------------------------------------------------*/
+  33:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  34:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  35:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  36:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** #define __CMSIS_GCC_H
+  37:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  38:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /* ignore some GCC warnings */
+  39:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** #if defined ( __GNUC__ )
+  40:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** #pragma GCC diagnostic push
+  41:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+  42:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  43:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  44:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** #endif
+  45:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  46:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  47:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
+  48:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+  49:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
+  50:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   @{
+  51:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+  52:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  53:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+  54:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Enable IRQ Interrupts
+  55:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
+  56:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+  57:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+  58:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __enable_irq(void)
+  59:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+  60:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
+  61:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+  62:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  63:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  64:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+  65:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Disable IRQ Interrupts
+  66:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Disables IRQ interrupts by setting the I-bit in the CPSR.
+  67:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   Can only be executed in Privileged modes.
+  68:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+  69:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __disable_irq(void)
+  70:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+  71:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
+  72:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+  73:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  74:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  75:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+  76:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Get Control Register
+  77:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Returns the content of the Control Register.
+  78:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \return               Control Register value
+  79:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+  80:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_CONTROL(void)
+  81:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+  82:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   uint32_t result;
+  83:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  84:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MRS %0, control" : "=r" (result) );
+  85:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   return(result);
+  86:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+  87:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  88:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  89:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+  90:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Set Control Register
+  91:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Writes the given value to the Control Register.
+  92:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \param [in]    control  Control Register value to set
+  93:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+  94:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __set_CONTROL(uint32_t control)
+  95:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+  96:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MSR control, %0" : : "r" (control) : "memory");
+  97:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+  98:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  99:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 100:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+ 101:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Get IPSR Register
+ 102:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Returns the content of the IPSR Register.
+ 103:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \return               IPSR Register value
+ 104:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+ 105:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_IPSR(void)
+ 106:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+ 107:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   uint32_t result;
+ 108:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 109:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MRS %0, ipsr" : "=r" (result) );
+ 110:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   return(result);
+ 111:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+ 112:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 113:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 114:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+ 115:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Get APSR Register
+ 116:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Returns the content of the APSR Register.
+ 117:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \return               APSR Register value
+ 118:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+ 119:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_APSR(void)
+ 120:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+ 121:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   uint32_t result;
+ 122:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 123:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MRS %0, apsr" : "=r" (result) );
+ 124:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   return(result);
+ 125:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+ 126:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 127:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 128:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+ 129:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Get xPSR Register
+ 130:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Returns the content of the xPSR Register.
+ 131:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 132:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****     \return               xPSR Register value
+ 133:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+ 134:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_xPSR(void)
+ 135:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+ 136:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   uint32_t result;
+ 137:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 138:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MRS %0, xpsr" : "=r" (result) );
+ 139:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   return(result);
+ 140:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+ 141:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 142:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 143:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+ 144:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Get Process Stack Pointer
+ 145:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Returns the current value of the Process Stack Pointer (PSP).
+ 146:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \return               PSP Register value
+ 147:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+ 148:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_PSP(void)
+ 149:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+ 150:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   register uint32_t result;
+ 151:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 152:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MRS %0, psp\n"  : "=r" (result) );
+ 153:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   return(result);
+ 154:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+ 155:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 156:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 157:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+ 158:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Set Process Stack Pointer
+ 159:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Assigns the given value to the Process Stack Pointer (PSP).
+ 160:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \param [in]    topOfProcStack  Process Stack Pointer value to set
+ 161:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+ 162:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __set_PSP(uint32_t topOfProcStack)
+ 163:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+ 164:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MSR psp, %0\n" : : "r" (topOfProcStack) : "sp");
+ 165:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+ 166:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 167:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 168:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+ 169:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Get Main Stack Pointer
+ 170:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Returns the current value of the Main Stack Pointer (MSP).
+ 171:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \return               MSP Register value
+ 172:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+ 173:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_MSP(void)
+ 174:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+ 175:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   register uint32_t result;
+ 176:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 177:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MRS %0, msp\n" : "=r" (result) );
+ 178:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   return(result);
+ 179:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+ 180:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 181:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 182:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+ 183:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Set Main Stack Pointer
+ 184:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Assigns the given value to the Main Stack Pointer (MSP).
+ 185:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 186:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****     \param [in]    topOfMainStack  Main Stack Pointer value to set
+ 187:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+ 188:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __set_MSP(uint32_t topOfMainStack)
+ 189:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+ 190:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MSR msp, %0\n" : : "r" (topOfMainStack) : "sp");
+ 191:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+ 192:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 193:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 194:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+ 195:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Get Priority Mask
+ 196:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Returns the current state of the priority mask bit from the Priority Mask Register.
+ 197:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \return               Priority Mask value
+ 198:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+ 199:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_PRIMASK(void)
+ 200:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+ 201:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   uint32_t result;
+ 202:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 203:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MRS %0, primask" : "=r" (result) );
+  41              		.loc 2 203 3
+  42              		.syntax divided
+  43              	@ 203 "/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h" 1
+  44 0006 EFF31083 		MRS r3, primask
+  45              	@ 0 "" 2
+  46              		.thumb
+  47              		.syntax unified
+  48 000a 3B60     		str	r3, [r7]
+ 204:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   return(result);
+  49              		.loc 2 204 9
+  50 000c 3B68     		ldr	r3, [r7]
+  51              	.LBE9:
+  52              	.LBE8:
+ 267:../drivers/fsl_common.h **** #if defined(CPSR_I_Msk)
+ 268:../drivers/fsl_common.h ****     uint32_t cpsr = __get_CPSR() & CPSR_I_Msk;
+ 269:../drivers/fsl_common.h **** 
+ 270:../drivers/fsl_common.h ****     __disable_irq();
+ 271:../drivers/fsl_common.h **** 
+ 272:../drivers/fsl_common.h ****     return cpsr;
+ 273:../drivers/fsl_common.h **** #else
+ 274:../drivers/fsl_common.h ****     uint32_t regPrimask = __get_PRIMASK();
+  53              		.loc 1 274 27
+  54 000e 7B60     		str	r3, [r7, #4]
+  55              	.LBB10:
+  56              	.LBB11:
+  71:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+  57              		.loc 2 71 3
+  58              		.syntax divided
+  59              	@ 71 "/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h" 1
+  60 0010 72B6     		cpsid i
+  61              	@ 0 "" 2
+  72:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+  62              		.loc 2 72 1
+  63              		.thumb
+  64              		.syntax unified
+  65 0012 C046     		nop
+  66              	.LBE11:
+  67              	.LBE10:
+ 275:../drivers/fsl_common.h **** 
+ 276:../drivers/fsl_common.h ****     __disable_irq();
+ 277:../drivers/fsl_common.h **** 
+ 278:../drivers/fsl_common.h ****     return regPrimask;
+  68              		.loc 1 278 12
+  69 0014 7B68     		ldr	r3, [r7, #4]
+ 279:../drivers/fsl_common.h **** #endif
+ 280:../drivers/fsl_common.h **** }
+  70              		.loc 1 280 1
+  71 0016 1800     		movs	r0, r3
+  72 0018 BD46     		mov	sp, r7
+  73 001a 02B0     		add	sp, sp, #8
+  74              		@ sp needed
+  75 001c 80BD     		pop	{r7, pc}
+  76              		.cfi_endproc
+  77              	.LFE54:
+  79              		.section	.text.EnableGlobalIRQ,"ax",%progbits
+  80              		.align	1
+  81              		.syntax unified
+  82              		.code	16
+  83              		.thumb_func
+  84              		.fpu softvfp
+  86              	EnableGlobalIRQ:
+  87              	.LFB55:
+ 281:../drivers/fsl_common.h **** 
+ 282:../drivers/fsl_common.h **** /*!
+ 283:../drivers/fsl_common.h ****  * @brief Enaable the global IRQ
+ 284:../drivers/fsl_common.h ****  *
+ 285:../drivers/fsl_common.h ****  * Set the primask register with the provided primask value but not just enable the primask. The id
+ 286:../drivers/fsl_common.h ****  * convinience of integration of RTOS. some RTOS get its own management mechanism of primask. User 
+ 287:../drivers/fsl_common.h ****  * use the EnableGlobalIRQ() and DisableGlobalIRQ() in pair.
+ 288:../drivers/fsl_common.h ****  *
+ 289:../drivers/fsl_common.h ****  * @param primask value of primask register to be restored. The primask value is supposed to be pro
+ 290:../drivers/fsl_common.h ****  * DisableGlobalIRQ().
+ 291:../drivers/fsl_common.h ****  */
+ 292:../drivers/fsl_common.h **** static inline void EnableGlobalIRQ(uint32_t primask)
+ 293:../drivers/fsl_common.h **** {
+  88              		.loc 1 293 1
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 16
+  91              		@ frame_needed = 1, uses_anonymous_args = 0
+  92 0000 80B5     		push	{r7, lr}
+  93              		.cfi_def_cfa_offset 8
+  94              		.cfi_offset 7, -8
+  95              		.cfi_offset 14, -4
+  96 0002 84B0     		sub	sp, sp, #16
+  97              		.cfi_def_cfa_offset 24
+  98 0004 00AF     		add	r7, sp, #0
+  99              		.cfi_def_cfa_register 7
+ 100 0006 7860     		str	r0, [r7, #4]
+ 101 0008 7B68     		ldr	r3, [r7, #4]
+ 102 000a FB60     		str	r3, [r7, #12]
+ 103              	.LBB12:
+ 104              	.LBB13:
+ 205:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+ 206:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 207:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** 
+ 208:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** /**
+ 209:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \brief   Set Priority Mask
+ 210:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \details Assigns the given value to the Priority Mask Register.
+ 211:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   \param [in]    priMask  Priority Mask
+ 212:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****  */
+ 213:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __set_PRIMASK(uint32_t priMask)
+ 214:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** {
+ 215:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h ****   __ASM volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
+ 105              		.loc 2 215 3
+ 106 000c FB68     		ldr	r3, [r7, #12]
+ 107              		.syntax divided
+ 108              	@ 215 "/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h" 1
+ 109 000e 83F31088 		MSR primask, r3
+ 110              	@ 0 "" 2
+ 216:/home/arpit/studies/pes/Blinkenlights/CMSIS/cmsis_gcc.h **** }
+ 111              		.loc 2 216 1
+ 112              		.thumb
+ 113              		.syntax unified
+ 114 0012 C046     		nop
+ 115              	.LBE13:
+ 116              	.LBE12:
+ 294:../drivers/fsl_common.h **** #if defined(CPSR_I_Msk)
+ 295:../drivers/fsl_common.h ****     __set_CPSR((__get_CPSR() & ~CPSR_I_Msk) | primask);
+ 296:../drivers/fsl_common.h **** #else
+ 297:../drivers/fsl_common.h ****     __set_PRIMASK(primask);
+ 298:../drivers/fsl_common.h **** #endif
+ 299:../drivers/fsl_common.h **** }
+ 117              		.loc 1 299 1
+ 118 0014 C046     		nop
+ 119 0016 BD46     		mov	sp, r7
+ 120 0018 04B0     		add	sp, sp, #16
+ 121              		@ sp needed
+ 122 001a 80BD     		pop	{r7, pc}
+ 123              		.cfi_endproc
+ 124              	.LFE55:
+ 126              		.section	.rodata.__assertion_failed.str1.4,"aMS",%progbits,1
+ 127              		.align	2
+ 128              	.LC0:
+ 129 0000 25730A00 		.ascii	"%s\012\000"
+ 130              		.section	.text.__assertion_failed,"ax",%progbits
+ 131              		.align	1
+ 132              		.global	__assertion_failed
+ 133              		.syntax unified
+ 134              		.code	16
+ 135              		.thumb_func
+ 136              		.fpu softvfp
+ 138              	__assertion_failed:
+ 139              	.LFB56:
+ 140              		.file 3 "../drivers/fsl_common.c"
+   1:../drivers/fsl_common.c **** /*
+   2:../drivers/fsl_common.c ****  * Copyright (c) 2015-2016, Freescale Semiconductor, Inc.
+   3:../drivers/fsl_common.c ****  * Copyright 2016-2017 NXP
+   4:../drivers/fsl_common.c ****  *
+   5:../drivers/fsl_common.c ****  * Redistribution and use in source and binary forms, with or without modification,
+   6:../drivers/fsl_common.c ****  * are permitted provided that the following conditions are met:
+   7:../drivers/fsl_common.c ****  *
+   8:../drivers/fsl_common.c ****  * o Redistributions of source code must retain the above copyright notice, this list
+   9:../drivers/fsl_common.c ****  *   of conditions and the following disclaimer.
+  10:../drivers/fsl_common.c ****  *
+  11:../drivers/fsl_common.c ****  * o Redistributions in binary form must reproduce the above copyright notice, this
+  12:../drivers/fsl_common.c ****  *   list of conditions and the following disclaimer in the documentation and/or
+  13:../drivers/fsl_common.c ****  *   other materials provided with the distribution.
+  14:../drivers/fsl_common.c ****  *
+  15:../drivers/fsl_common.c ****  * o Neither the name of the copyright holder nor the names of its
+  16:../drivers/fsl_common.c ****  *   contributors may be used to endorse or promote products derived from this
+  17:../drivers/fsl_common.c ****  *   software without specific prior written permission.
+  18:../drivers/fsl_common.c ****  *
+  19:../drivers/fsl_common.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  20:../drivers/fsl_common.c ****  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  21:../drivers/fsl_common.c ****  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  22:../drivers/fsl_common.c ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+  23:../drivers/fsl_common.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  24:../drivers/fsl_common.c ****  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  25:../drivers/fsl_common.c ****  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  26:../drivers/fsl_common.c ****  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  27:../drivers/fsl_common.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  28:../drivers/fsl_common.c ****  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  29:../drivers/fsl_common.c ****  */
+  30:../drivers/fsl_common.c **** 
+  31:../drivers/fsl_common.c **** #include "fsl_common.h"
+  32:../drivers/fsl_common.c **** #include "fsl_debug_console.h"
+  33:../drivers/fsl_common.c **** 
+  34:../drivers/fsl_common.c **** #ifndef NDEBUG
+  35:../drivers/fsl_common.c **** #if (defined(__CC_ARM)) || (defined(__ICCARM__))
+  36:../drivers/fsl_common.c **** void __aeabi_assert(const char *failedExpr, const char *file, int line)
+  37:../drivers/fsl_common.c **** {
+  38:../drivers/fsl_common.c ****     PRINTF("ASSERT ERROR \" %s \": file \"%s\" Line \"%d\" \n", failedExpr, file, line);
+  39:../drivers/fsl_common.c ****     for (;;)
+  40:../drivers/fsl_common.c ****     {
+  41:../drivers/fsl_common.c ****         __BKPT(0);
+  42:../drivers/fsl_common.c ****     }
+  43:../drivers/fsl_common.c **** }
+  44:../drivers/fsl_common.c **** #elif(defined(__REDLIB__))
+  45:../drivers/fsl_common.c **** 
+  46:../drivers/fsl_common.c **** #if SDK_DEBUGCONSOLE
+  47:../drivers/fsl_common.c **** void __assertion_failed(char *_Expr)
+  48:../drivers/fsl_common.c **** {
+ 141              		.loc 3 48 1
+ 142              		.cfi_startproc
+ 143              		@ args = 0, pretend = 0, frame = 8
+ 144              		@ frame_needed = 1, uses_anonymous_args = 0
+ 145 0000 80B5     		push	{r7, lr}
+ 146              		.cfi_def_cfa_offset 8
+ 147              		.cfi_offset 7, -8
+ 148              		.cfi_offset 14, -4
+ 149 0002 82B0     		sub	sp, sp, #8
+ 150              		.cfi_def_cfa_offset 16
+ 151 0004 00AF     		add	r7, sp, #0
+ 152              		.cfi_def_cfa_register 7
+ 153 0006 7860     		str	r0, [r7, #4]
+  49:../drivers/fsl_common.c ****     PRINTF("%s\n", _Expr);
+ 154              		.loc 3 49 5
+ 155 0008 7A68     		ldr	r2, [r7, #4]
+ 156 000a 034B     		ldr	r3, .L7
+ 157 000c 1100     		movs	r1, r2
+ 158 000e 1800     		movs	r0, r3
+ 159 0010 FFF7FEFF 		bl	DbgConsole_Printf
+ 160              	.L6:
+  50:../drivers/fsl_common.c ****     for (;;)
+  51:../drivers/fsl_common.c ****     {
+  52:../drivers/fsl_common.c ****         __asm("bkpt #0");
+ 161              		.loc 3 52 9 discriminator 1
+ 162              		.syntax divided
+ 163              	@ 52 "../drivers/fsl_common.c" 1
+ 164 0014 00BE     		bkpt #0
+ 165              	@ 0 "" 2
+ 166              		.thumb
+ 167              		.syntax unified
+ 168 0016 FDE7     		b	.L6
+ 169              	.L8:
+ 170              		.align	2
+ 171              	.L7:
+ 172 0018 00000000 		.word	.LC0
+ 173              		.cfi_endproc
+ 174              	.LFE56:
+ 176              		.section	.text.InstallIRQHandler,"ax",%progbits
+ 177              		.align	1
+ 178              		.global	InstallIRQHandler
+ 179              		.syntax unified
+ 180              		.code	16
+ 181              		.thumb_func
+ 182              		.fpu softvfp
+ 184              	InstallIRQHandler:
+ 185              	.LFB57:
+  53:../drivers/fsl_common.c ****     }
+  54:../drivers/fsl_common.c **** }
+  55:../drivers/fsl_common.c **** #endif
+  56:../drivers/fsl_common.c **** 
+  57:../drivers/fsl_common.c **** #elif(defined(__GNUC__))
+  58:../drivers/fsl_common.c **** void __assert_func(const char *file, int line, const char *func, const char *failedExpr)
+  59:../drivers/fsl_common.c **** {
+  60:../drivers/fsl_common.c ****     PRINTF("ASSERT ERROR \" %s \": file \"%s\" Line \"%d\" function name \"%s\" \n", failedExpr, fi
+  61:../drivers/fsl_common.c ****     for (;;)
+  62:../drivers/fsl_common.c ****     {
+  63:../drivers/fsl_common.c ****         __BKPT(0);
+  64:../drivers/fsl_common.c ****     }
+  65:../drivers/fsl_common.c **** }
+  66:../drivers/fsl_common.c **** #endif /* (defined(__CC_ARM)) ||  (defined (__ICCARM__)) */
+  67:../drivers/fsl_common.c **** #endif /* NDEBUG */
+  68:../drivers/fsl_common.c **** 
+  69:../drivers/fsl_common.c **** #ifndef __GIC_PRIO_BITS
+  70:../drivers/fsl_common.c **** uint32_t InstallIRQHandler(IRQn_Type irq, uint32_t irqHandler)
+  71:../drivers/fsl_common.c **** {
+ 186              		.loc 3 71 1
+ 187              		.cfi_startproc
+ 188              		@ args = 0, pretend = 0, frame = 24
+ 189              		@ frame_needed = 1, uses_anonymous_args = 0
+ 190 0000 80B5     		push	{r7, lr}
+ 191              		.cfi_def_cfa_offset 8
+ 192              		.cfi_offset 7, -8
+ 193              		.cfi_offset 14, -4
+ 194 0002 86B0     		sub	sp, sp, #24
+ 195              		.cfi_def_cfa_offset 32
+ 196 0004 00AF     		add	r7, sp, #0
+ 197              		.cfi_def_cfa_register 7
+ 198 0006 0200     		movs	r2, r0
+ 199 0008 3960     		str	r1, [r7]
+ 200 000a FB1D     		adds	r3, r7, #7
+ 201 000c 1A70     		strb	r2, [r3]
+  72:../drivers/fsl_common.c **** /* Addresses for VECTOR_TABLE and VECTOR_RAM come from the linker file */
+  73:../drivers/fsl_common.c **** #if defined(__CC_ARM)
+  74:../drivers/fsl_common.c ****     extern uint32_t Image$$VECTOR_ROM$$Base[];
+  75:../drivers/fsl_common.c ****     extern uint32_t Image$$VECTOR_RAM$$Base[];
+  76:../drivers/fsl_common.c ****     extern uint32_t Image$$RW_m_data$$Base[];
+  77:../drivers/fsl_common.c **** 
+  78:../drivers/fsl_common.c **** #define __VECTOR_TABLE Image$$VECTOR_ROM$$Base
+  79:../drivers/fsl_common.c **** #define __VECTOR_RAM Image$$VECTOR_RAM$$Base
+  80:../drivers/fsl_common.c **** #define __RAM_VECTOR_TABLE_SIZE (((uint32_t)Image$$RW_m_data$$Base - (uint32_t)Image$$VECTOR_RAM$$B
+  81:../drivers/fsl_common.c **** #elif defined(__ICCARM__)
+  82:../drivers/fsl_common.c ****     extern uint32_t __RAM_VECTOR_TABLE_SIZE[];
+  83:../drivers/fsl_common.c ****     extern uint32_t __VECTOR_TABLE[];
+  84:../drivers/fsl_common.c ****     extern uint32_t __VECTOR_RAM[];
+  85:../drivers/fsl_common.c **** #elif defined(__GNUC__)
+  86:../drivers/fsl_common.c ****     extern uint32_t __VECTOR_TABLE[];
+  87:../drivers/fsl_common.c ****     extern uint32_t __VECTOR_RAM[];
+  88:../drivers/fsl_common.c ****     extern uint32_t __RAM_VECTOR_TABLE_SIZE_BYTES[];
+  89:../drivers/fsl_common.c ****     uint32_t __RAM_VECTOR_TABLE_SIZE = (uint32_t)(__RAM_VECTOR_TABLE_SIZE_BYTES);
+ 202              		.loc 3 89 14
+ 203 000e 1E4B     		ldr	r3, .L14
+ 204 0010 3B61     		str	r3, [r7, #16]
+  90:../drivers/fsl_common.c **** #endif /* defined(__CC_ARM) */
+  91:../drivers/fsl_common.c ****     uint32_t n;
+  92:../drivers/fsl_common.c ****     uint32_t ret;
+  93:../drivers/fsl_common.c ****     uint32_t irqMaskValue;
+  94:../drivers/fsl_common.c **** 
+  95:../drivers/fsl_common.c ****     irqMaskValue = DisableGlobalIRQ();
+ 205              		.loc 3 95 20
+ 206 0012 FFF7FEFF 		bl	DisableGlobalIRQ
+ 207 0016 0300     		movs	r3, r0
+ 208 0018 FB60     		str	r3, [r7, #12]
+  96:../drivers/fsl_common.c ****     if (SCB->VTOR != (uint32_t)__VECTOR_RAM)
+ 209              		.loc 3 96 12
+ 210 001a 1C4B     		ldr	r3, .L14+4
+ 211 001c 9A68     		ldr	r2, [r3, #8]
+ 212              		.loc 3 96 19
+ 213 001e 1C4B     		ldr	r3, .L14+8
+ 214              		.loc 3 96 8
+ 215 0020 9A42     		cmp	r2, r3
+ 216 0022 15D0     		beq	.L10
+  97:../drivers/fsl_common.c ****     {
+  98:../drivers/fsl_common.c ****         /* Copy the vector table from ROM to RAM */
+  99:../drivers/fsl_common.c ****         for (n = 0; n < ((uint32_t)__RAM_VECTOR_TABLE_SIZE) / sizeof(uint32_t); n++)
+ 217              		.loc 3 99 16
+ 218 0024 0023     		movs	r3, #0
+ 219 0026 7B61     		str	r3, [r7, #20]
+ 220              		.loc 3 99 9
+ 221 0028 0AE0     		b	.L11
+ 222              	.L12:
+ 100:../drivers/fsl_common.c ****         {
+ 101:../drivers/fsl_common.c ****             __VECTOR_RAM[n] = __VECTOR_TABLE[n];
+ 223              		.loc 3 101 45 discriminator 3
+ 224 002a 1A4B     		ldr	r3, .L14+12
+ 225 002c 7A69     		ldr	r2, [r7, #20]
+ 226 002e 9200     		lsls	r2, r2, #2
+ 227 0030 D158     		ldr	r1, [r2, r3]
+ 228              		.loc 3 101 29 discriminator 3
+ 229 0032 174B     		ldr	r3, .L14+8
+ 230 0034 7A69     		ldr	r2, [r7, #20]
+ 231 0036 9200     		lsls	r2, r2, #2
+ 232 0038 D150     		str	r1, [r2, r3]
+  99:../drivers/fsl_common.c ****         {
+ 233              		.loc 3 99 82 discriminator 3
+ 234 003a 7B69     		ldr	r3, [r7, #20]
+ 235 003c 0133     		adds	r3, r3, #1
+ 236 003e 7B61     		str	r3, [r7, #20]
+ 237              	.L11:
+  99:../drivers/fsl_common.c ****         {
+ 238              		.loc 3 99 61 discriminator 1
+ 239 0040 3B69     		ldr	r3, [r7, #16]
+ 240 0042 9B08     		lsrs	r3, r3, #2
+  99:../drivers/fsl_common.c ****         {
+ 241              		.loc 3 99 9 discriminator 1
+ 242 0044 7A69     		ldr	r2, [r7, #20]
+ 243 0046 9A42     		cmp	r2, r3
+ 244 0048 EFD3     		bcc	.L12
+ 102:../drivers/fsl_common.c ****         }
+ 103:../drivers/fsl_common.c ****         /* Point the VTOR to the position of vector table */
+ 104:../drivers/fsl_common.c ****         SCB->VTOR = (uint32_t)__VECTOR_RAM;
+ 245              		.loc 3 104 12
+ 246 004a 104B     		ldr	r3, .L14+4
+ 247              		.loc 3 104 21
+ 248 004c 104A     		ldr	r2, .L14+8
+ 249              		.loc 3 104 19
+ 250 004e 9A60     		str	r2, [r3, #8]
+ 251              	.L10:
+ 105:../drivers/fsl_common.c ****     }
+ 106:../drivers/fsl_common.c **** 
+ 107:../drivers/fsl_common.c ****     ret = __VECTOR_RAM[irq + 16];
+ 252              		.loc 3 107 28
+ 253 0050 FB1D     		adds	r3, r7, #7
+ 254 0052 1B78     		ldrb	r3, [r3]
+ 255 0054 5BB2     		sxtb	r3, r3
+ 256 0056 1033     		adds	r3, r3, #16
+ 257 0058 1A00     		movs	r2, r3
+ 258              		.loc 3 107 9
+ 259 005a 0D4B     		ldr	r3, .L14+8
+ 260 005c 9200     		lsls	r2, r2, #2
+ 261 005e D358     		ldr	r3, [r2, r3]
+ 262 0060 BB60     		str	r3, [r7, #8]
+ 108:../drivers/fsl_common.c ****     /* make sure the __VECTOR_RAM is noncachable */
+ 109:../drivers/fsl_common.c ****     __VECTOR_RAM[irq + 16] = irqHandler;
+ 263              		.loc 3 109 22
+ 264 0062 FB1D     		adds	r3, r7, #7
+ 265 0064 1B78     		ldrb	r3, [r3]
+ 266 0066 5BB2     		sxtb	r3, r3
+ 267 0068 1033     		adds	r3, r3, #16
+ 268 006a 1A00     		movs	r2, r3
+ 269              		.loc 3 109 28
+ 270 006c 084B     		ldr	r3, .L14+8
+ 271 006e 9200     		lsls	r2, r2, #2
+ 272 0070 3968     		ldr	r1, [r7]
+ 273 0072 D150     		str	r1, [r2, r3]
+ 110:../drivers/fsl_common.c **** 
+ 111:../drivers/fsl_common.c ****     EnableGlobalIRQ(irqMaskValue);
+ 274              		.loc 3 111 5
+ 275 0074 FB68     		ldr	r3, [r7, #12]
+ 276 0076 1800     		movs	r0, r3
+ 277 0078 FFF7FEFF 		bl	EnableGlobalIRQ
+ 112:../drivers/fsl_common.c **** 
+ 113:../drivers/fsl_common.c ****     return ret;
+ 278              		.loc 3 113 12
+ 279 007c BB68     		ldr	r3, [r7, #8]
+ 114:../drivers/fsl_common.c **** }
+ 280              		.loc 3 114 1
+ 281 007e 1800     		movs	r0, r3
+ 282 0080 BD46     		mov	sp, r7
+ 283 0082 06B0     		add	sp, sp, #24
+ 284              		@ sp needed
+ 285 0084 80BD     		pop	{r7, pc}
+ 286              	.L15:
+ 287 0086 C046     		.align	2
+ 288              	.L14:
+ 289 0088 00000000 		.word	__RAM_VECTOR_TABLE_SIZE_BYTES
+ 290 008c 00ED00E0 		.word	-536810240
+ 291 0090 00000000 		.word	__VECTOR_RAM
+ 292 0094 00000000 		.word	__VECTOR_TABLE
+ 293              		.cfi_endproc
+ 294              	.LFE57:
+ 296              		.text
+ 297              	.Letext0:
+ 298              		.file 4 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 299              		.file 5 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 300              		.file 6 "/home/arpit/studies/pes/Blinkenlights/CMSIS/MKL25Z4.h"
+ 301              		.file 7 "/home/arpit/studies/pes/Blinkenlights/CMSIS/core_cm0plus.h"
+ 302              		.file 8 "/home/arpit/studies/pes/Blinkenlights/CMSIS/system_MKL25Z4.h"
+ 303              		.file 9 "../drivers/fsl_clock.h"
+ 304              		.file 10 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.2
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 fsl_common.c
+     /tmp/ccmOb0DK.s:16     .text.DisableGlobalIRQ:0000000000000000 $t
+     /tmp/ccmOb0DK.s:23     .text.DisableGlobalIRQ:0000000000000000 DisableGlobalIRQ
+     /tmp/ccmOb0DK.s:80     .text.EnableGlobalIRQ:0000000000000000 $t
+     /tmp/ccmOb0DK.s:86     .text.EnableGlobalIRQ:0000000000000000 EnableGlobalIRQ
+     /tmp/ccmOb0DK.s:127    .rodata.__assertion_failed.str1.4:0000000000000000 $d
+     /tmp/ccmOb0DK.s:131    .text.__assertion_failed:0000000000000000 $t
+     /tmp/ccmOb0DK.s:138    .text.__assertion_failed:0000000000000000 __assertion_failed
+     /tmp/ccmOb0DK.s:172    .text.__assertion_failed:0000000000000018 $d
+     /tmp/ccmOb0DK.s:177    .text.InstallIRQHandler:0000000000000000 $t
+     /tmp/ccmOb0DK.s:184    .text.InstallIRQHandler:0000000000000000 InstallIRQHandler
+     /tmp/ccmOb0DK.s:289    .text.InstallIRQHandler:0000000000000088 $d
+                           .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
+                           .group:0000000000000000 wm4.redlib_version.h.16.f905717e4b3a91dcbdbb631865150df4
+                           .group:0000000000000000 wm4.assert.h.25.5fa7b1099c5f353f7f0154f84a745cec
+                           .group:0000000000000000 wm4.stdbool.h.15.fddf1cb2402fd739d8e2516677869231
+                           .group:0000000000000000 wm4.libconfigarm.h.19.34723c94cbd19598192aa6b1e87fca41
+                           .group:0000000000000000 wm4.stdint.h.31.58198de4ea930fb897655479091e17c7
+                           .group:0000000000000000 wm4.fsl_device_registers.h.32.0bd0fc1949c4d5ee8778d13f693b6d67
+                           .group:0000000000000000 wm4.MKL25Z4.h.103.6fa60f7365436a291410ac7ae38d8851
+                           .group:0000000000000000 wm4.core_cm0plus.h.42.7e68c73109133db28e6113a0ee252d6f
+                           .group:0000000000000000 wm4.cmsis_gcc.h.36.5bb14fd68ce7855540fcfe2d9305ae16
+                           .group:0000000000000000 wm4.core_cm0plus.h.175.8e2cbb335a2ae70828db295817e11b6e
+                           .group:0000000000000000 wm4.system_MKL25Z4.h.107.b43986f939b1bf0ee0f9aa04879788f4
+                           .group:0000000000000000 wm4.MKL25Z4.h.379.376a3f36380a1b2f1e4cdc95287bb342
+                           .group:0000000000000000 wm4.MKL25Z4_features.h.84.30fd6c6f11c9d2ffea2189829de10275
+                           .group:0000000000000000 wm4.fsl_common.h.55.f0a989f874fed9062f996a5c92215a0e
+                           .group:0000000000000000 wm4.fsl_clock.h.61.86ace3515ab77fa85db71e2d42e7d189
+                           .group:0000000000000000 wm4.fsl_common.h.162.37daaf5dee6e1f72e10ac988afa1643d
+                           .group:0000000000000000 wm4.fsl_debug_console.h.74.e867cb0a12e041687e4aa067a24db557
+
+UNDEFINED SYMBOLS
+DbgConsole_Printf
+__RAM_VECTOR_TABLE_SIZE_BYTES
+__VECTOR_RAM
+__VECTOR_TABLE

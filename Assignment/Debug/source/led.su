@@ -1,5 +1,0 @@
-led.c:13:6:LED_Init	8	static
-led.c:50:6:LED_Control	24	static
-led.c:100:6:LED_TurnOFF	8	static
-led.c:106:6:LED_Startup	16	static
-led.c:180:6:helper_COLOR	16	static

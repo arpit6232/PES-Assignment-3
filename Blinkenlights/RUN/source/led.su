@@ -1,0 +1,4 @@
+led.c:19:6:LED_Init	0	static
+led.c:68:6:LED_Control	8	static
+led.c:124:6:LED_Startup	32	static
+led.c:210:6:helper_COLOR	20	static

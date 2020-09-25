@@ -1,0 +1,35 @@
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 6
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"mtb.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.global	__mtb_buffer__
+  16              		.section	.mtb.$RAM1,"aw"
+  17              		.align	7
+  20              	__mtb_buffer__:
+  21 0000 00000000 		.space	128
+  21      00000000 
+  21      00000000 
+  21      00000000 
+  21      00000000 
+  22              		.text
+  23              	.Letext0:
+  24              		.file 1 "../source/mtb.c"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 mtb.c
+     /tmp/cc7DQ2TD.s:20     .mtb.$RAM1:0000000000000000 __mtb_buffer__
+     /tmp/cc7DQ2TD.s:17     .mtb.$RAM1:0000000000000000 $d
+                           .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
+                           .group:0000000000000000 wm4.cr_section_macros.h.22.dc71eb3dd07ce034b25e94c263f29953
+                           .group:0000000000000000 wm4.cr_mtb_buffer.h.29.f892bad85ef32e96a9c4a9de16c1a0e9
+
+NO UNDEFINED SYMBOLS

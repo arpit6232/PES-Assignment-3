@@ -1,0 +1,174 @@
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 6
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"semihost_hardfault.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.HardFault_Handler,"ax",%progbits
+  16              		.align	1
+  17              		.global	HardFault_Handler
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	HardFault_Handler:
+  25              	.LFB0:
+  26              		.file 1 "../source/semihost_hardfault.c"
+   1:../source/semihost_hardfault.c **** // ****************************************************************************
+   2:../source/semihost_hardfault.c **** // semihost_hardfault.c
+   3:../source/semihost_hardfault.c **** //                - Provides hard fault handler to allow semihosting code not
+   4:../source/semihost_hardfault.c **** //                  to hang application when debugger not connected.
+   5:../source/semihost_hardfault.c **** //
+   6:../source/semihost_hardfault.c **** // ****************************************************************************
+   7:../source/semihost_hardfault.c **** // Copyright 2017-2020 NXP
+   8:../source/semihost_hardfault.c **** // All rights reserved.
+   9:../source/semihost_hardfault.c **** //
+  10:../source/semihost_hardfault.c **** // NXP Confidential. This software is owned or controlled by NXP and may only be 
+  11:../source/semihost_hardfault.c **** // used strictly in accordance with the applicable license terms.  
+  12:../source/semihost_hardfault.c **** //
+  13:../source/semihost_hardfault.c **** // By expressly accepting such terms or by downloading, installing, activating 
+  14:../source/semihost_hardfault.c **** // and/or otherwise using the software, you are agreeing that you have read, and 
+  15:../source/semihost_hardfault.c **** // that you agree to comply with and are bound by, such license terms.  
+  16:../source/semihost_hardfault.c **** // 
+  17:../source/semihost_hardfault.c **** // If you do not agree to be bound by the applicable license terms, then you may not 
+  18:../source/semihost_hardfault.c **** // retain, install, activate or otherwise use the software.
+  19:../source/semihost_hardfault.c **** 
+  20:../source/semihost_hardfault.c **** // ****************************************************************************
+  21:../source/semihost_hardfault.c **** //
+  22:../source/semihost_hardfault.c **** //                       ===== DESCRIPTION =====
+  23:../source/semihost_hardfault.c **** //
+  24:../source/semihost_hardfault.c **** // One of the issues with applications that make use of semihosting operations
+  25:../source/semihost_hardfault.c **** // (such as printf calls) is that the code will not execute correctly when the
+  26:../source/semihost_hardfault.c **** // debugger is not connected. Generally this will show up with the application
+  27:../source/semihost_hardfault.c **** // appearing to just hang. This may include the application running from reset
+  28:../source/semihost_hardfault.c **** // or powering up the board (with the application already in FLASH), and also
+  29:../source/semihost_hardfault.c **** // as the application failing to continue to execute after a debug session is
+  30:../source/semihost_hardfault.c **** // terminated.
+  31:../source/semihost_hardfault.c **** //
+  32:../source/semihost_hardfault.c **** // The problem here is that the "bottom layer" of the semihosted variants of
+  33:../source/semihost_hardfault.c **** // the C library, semihosting is implemented by a "BKPT 0xAB" instruction.
+  34:../source/semihost_hardfault.c **** // When the debug tools are not connected, this instruction triggers a hard
+  35:../source/semihost_hardfault.c **** // fault - and the default hard fault handler within an application will
+  36:../source/semihost_hardfault.c **** // typically just contains an infinite loop - causing the application to
+  37:../source/semihost_hardfault.c **** // appear to have hang when no debugger is connected.
+  38:../source/semihost_hardfault.c **** //
+  39:../source/semihost_hardfault.c **** // The below code provides an example hard fault handler which instead looks
+  40:../source/semihost_hardfault.c **** // to see what the instruction that caused the hard fault was - and if it
+  41:../source/semihost_hardfault.c **** // was a "BKPT 0xAB", then it instead returns back to the user application.
+  42:../source/semihost_hardfault.c **** //
+  43:../source/semihost_hardfault.c **** // In most cases this will allow applications containing semihosting
+  44:../source/semihost_hardfault.c **** // operations to execute (to some degree) when the debugger is not connected.
+  45:../source/semihost_hardfault.c **** //
+  46:../source/semihost_hardfault.c **** // == NOTE ==
+  47:../source/semihost_hardfault.c **** //
+  48:../source/semihost_hardfault.c **** // Correct execution of the application containing semihosted operations
+  49:../source/semihost_hardfault.c **** // which are vectored onto this hard fault handler cannot be guaranteed. This
+  50:../source/semihost_hardfault.c **** // is because the handler may not return data or return codes that the higher
+  51:../source/semihost_hardfault.c **** // level C library code or application code expects. This hard fault handler
+  52:../source/semihost_hardfault.c **** // is meant as a development aid, and it is not recommended to leave
+  53:../source/semihost_hardfault.c **** // semihosted code in a production build of your application!
+  54:../source/semihost_hardfault.c **** //
+  55:../source/semihost_hardfault.c **** // ****************************************************************************
+  56:../source/semihost_hardfault.c **** 
+  57:../source/semihost_hardfault.c **** // Allow handler to be removed by setting a define (via command line)
+  58:../source/semihost_hardfault.c **** #if !defined (__SEMIHOST_HARDFAULT_DISABLE)
+  59:../source/semihost_hardfault.c **** 
+  60:../source/semihost_hardfault.c **** __attribute__((naked))
+  61:../source/semihost_hardfault.c **** void HardFault_Handler(void){
+  27              		.loc 1 61 29
+  28              		.cfi_startproc
+  29              		@ Naked Function: prologue and epilogue provided by programmer.
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  62:../source/semihost_hardfault.c ****     __asm(  ".syntax unified\n"
+  32              		.loc 1 62 5
+  33              		.syntax divided
+  34              	@ 62 "../source/semihost_hardfault.c" 1
+  35              		.syntax unified
+  36 0000 0420     	MOVS   R0, #4  
+  37 0002 7146     	MOV    R1, LR  
+  38 0004 0842     	TST    R0, R1  
+  39 0006 02D0     	BEQ    _MSP    
+  40 0008 EFF30980 	MRS    R0, PSP 
+  41 000c 01E0     	B  _process      
+  42              	_MSP:  
+  43 000e EFF30880 	MRS    R0, MSP 
+  44              	_process:     
+  45 0012 8169     	LDR    R1,[R0,#24] 
+  46 0014 0A88     	LDRH    R2,[r1] 
+  47 0016 054B     	LDR    R3,=0xBEAB 
+  48 0018 9A42     	CMP     R2,R3 
+  49 001a 00D0     	BEQ    _semihost_return 
+  50 001c FEE7     	B . 
+  51              	_semihost_return: 
+  52 001e 0231     	ADDS    R1,#2 
+  53 0020 8161     	STR    R1,[R0,#24] 
+  54 0022 2021     	MOVS   R1,#32 
+  55 0024 0160     	STR R1,[ R0,#0 ] 
+  56 0026 7047     	BX LR 
+  57              	.syntax divided
+  58              	
+  59              	@ 0 "" 2
+  63:../source/semihost_hardfault.c ****         // Check which stack is in use
+  64:../source/semihost_hardfault.c ****             "MOVS   R0, #4  \n"
+  65:../source/semihost_hardfault.c ****             "MOV    R1, LR  \n"
+  66:../source/semihost_hardfault.c ****             "TST    R0, R1  \n"
+  67:../source/semihost_hardfault.c ****             "BEQ    _MSP    \n"
+  68:../source/semihost_hardfault.c ****             "MRS    R0, PSP \n"
+  69:../source/semihost_hardfault.c ****             "B  _process      \n"
+  70:../source/semihost_hardfault.c ****             "_MSP:  \n"
+  71:../source/semihost_hardfault.c ****             "MRS    R0, MSP \n"
+  72:../source/semihost_hardfault.c ****         // Load the instruction that triggered hard fault
+  73:../source/semihost_hardfault.c ****         "_process:     \n"
+  74:../source/semihost_hardfault.c ****             "LDR    R1,[R0,#24] \n"
+  75:../source/semihost_hardfault.c ****             "LDRH    R2,[r1] \n"
+  76:../source/semihost_hardfault.c ****         // Semihosting instruction is "BKPT 0xAB" (0xBEAB)
+  77:../source/semihost_hardfault.c ****             "LDR    R3,=0xBEAB \n"
+  78:../source/semihost_hardfault.c ****             "CMP     R2,R3 \n"
+  79:../source/semihost_hardfault.c ****             "BEQ    _semihost_return \n"
+  80:../source/semihost_hardfault.c ****         // Wasn't semihosting instruction so enter infinite loop
+  81:../source/semihost_hardfault.c ****             "B . \n"
+  82:../source/semihost_hardfault.c ****         // Was semihosting instruction, so adjust location to
+  83:../source/semihost_hardfault.c ****         // return to by 1 instruction (2 bytes), then exit function
+  84:../source/semihost_hardfault.c ****         "_semihost_return: \n"
+  85:../source/semihost_hardfault.c ****             "ADDS    R1,#2 \n"
+  86:../source/semihost_hardfault.c ****             "STR    R1,[R0,#24] \n"
+  87:../source/semihost_hardfault.c ****     	// Set a return value from semihosting operation.
+  88:../source/semihost_hardfault.c ****     	// 32 is slightly arbitrary, but appears to allow most
+  89:../source/semihost_hardfault.c ****     	// C Library IO functions sitting on top of semihosting to
+  90:../source/semihost_hardfault.c ****     	// continue to operate to some degree
+  91:../source/semihost_hardfault.c ****     		    "MOVS   R1,#32 \n"
+  92:../source/semihost_hardfault.c ****     		    "STR R1,[ R0,#0 ] \n" // R0 is at location 0 on stack
+  93:../source/semihost_hardfault.c ****     	// Return from hard fault handler to application
+  94:../source/semihost_hardfault.c ****             "BX LR \n"
+  95:../source/semihost_hardfault.c ****         ".syntax divided\n") ;
+  96:../source/semihost_hardfault.c **** }
+  60              		.loc 1 96 1
+  61              		.thumb
+  62              		.syntax unified
+  63 0028 C046     		nop
+  64              		.cfi_endproc
+  65              	.LFE0:
+  67 002a 0000     		.text
+  68              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 semihost_hardfault.c
+     /tmp/ccS5luLG.s:16     .text.HardFault_Handler:0000000000000000 $t
+     /tmp/ccS5luLG.s:24     .text.HardFault_Handler:0000000000000000 HardFault_Handler
+     /tmp/ccS5luLG.s:42     .text.HardFault_Handler:000000000000000e _MSP
+     /tmp/ccS5luLG.s:44     .text.HardFault_Handler:0000000000000012 _process
+     /tmp/ccS5luLG.s:51     .text.HardFault_Handler:000000000000001e _semihost_return
+     /tmp/ccS5luLG.s:67     .text.HardFault_Handler:000000000000002a $d
+     /tmp/ccS5luLG.s:2485   .text.HardFault_Handler:000000000000002c $d
+                           .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,839 @@
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 6
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"board.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.CLOCK_SetLpsci0Clock,"ax",%progbits
+  16              		.align	1
+  17              		.arch armv6s-m
+  18              		.syntax unified
+  19              		.code	16
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	CLOCK_SetLpsci0Clock:
+  24              	.LFB39:
+  25              		.file 1 "/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h"
+   1:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*
+   2:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * Copyright (c) 2015, Freescale Semiconductor, Inc.
+   3:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * Copyright (c) 2016 - 2017 , NXP
+   4:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * All rights reserved.
+   5:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+   6:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * Redistribution and use in source and binary forms, with or without modification,
+   7:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * are permitted provided that the following conditions are met:
+   8:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+   9:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * o Redistributions of source code must retain the above copyright notice, this list
+  10:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *   of conditions and the following disclaimer.
+  11:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+  12:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * o Redistributions in binary form must reproduce the above copyright notice, this
+  13:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *   list of conditions and the following disclaimer in the documentation and/or
+  14:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *   other materials provided with the distribution.
+  15:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+  16:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * o Neither the name of copyright holder nor the names of its
+  17:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *   contributors may be used to endorse or promote products derived from this
+  18:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *   software without specific prior written permission.
+  19:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+  20:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  21:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  22:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  23:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+  24:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  25:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  26:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  27:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  28:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  29:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  30:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  */
+  31:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+  32:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #ifndef _FSL_CLOCK_H_
+  33:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define _FSL_CLOCK_H_
+  34:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+  35:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #include "fsl_common.h"
+  36:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+  37:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @addtogroup clock */
+  38:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @{ */
+  39:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+  40:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @file */
+  41:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+  42:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*******************************************************************************
+  43:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * Configurations
+  44:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  ******************************************************************************/
+  45:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+  46:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Configures whether to check a parameter in a function.
+  47:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+  48:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * Some MCG settings must be changed with conditions, for example:
+  49:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *  1. MCGIRCLK settings, such as the source, divider, and the trim value should not change when
+  50:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *     MCGIRCLK is used as a system clock source.
+  51:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *  2. MCG_C7[OSCSEL] should not be changed  when the external reference clock is used
+  52:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *     as a system clock source. For example, in FBE/BLPE/PBE modes.
+  53:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *  3. The users should only switch between the supported clock modes.
+  54:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+  55:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * MCG functions check the parameter and MCG status before setting, if not allowed
+  56:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * to change, the functions return error. The parameter checking increases code size,
+  57:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * if code size is a critical requirement, change #MCG_CONFIG_CHECK_PARAM to 0 to
+  58:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * disable parameter checking.
+  59:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  */
+  60:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #ifndef MCG_CONFIG_CHECK_PARAM
+  61:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define MCG_CONFIG_CHECK_PARAM 0U
+  62:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #endif
+  63:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+  64:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Configure whether driver controls clock
+  65:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+  66:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * When set to 0, peripheral drivers will enable clock in initialize function
+  67:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * and disable clock in de-initialize function. When set to 1, peripheral
+  68:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * driver will not control the clock, application could contol the clock out of
+  69:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * the driver.
+  70:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+  71:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * @note All drivers share this feature switcher. If it is set to 1, application
+  72:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * should handle clock enable and disable for all drivers.
+  73:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  */
+  74:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL))
+  75:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL 0
+  76:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #endif
+  77:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+  78:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*******************************************************************************
+  79:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * Definitions
+  80:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  ******************************************************************************/
+  81:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+  82:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @name Driver version */
+  83:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*@{*/
+  84:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief CLOCK driver version 2.2.1. */
+  85:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define FSL_CLOCK_DRIVER_VERSION (MAKE_VERSION(2, 2, 1))
+  86:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*@}*/
+  87:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+  88:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief External XTAL0 (OSC0) clock frequency.
+  89:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+  90:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * The XTAL0/EXTAL0 (OSC0) clock frequency in Hz. When the clock is set up, use the
+  91:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * function CLOCK_SetXtal0Freq to set the value in the clock driver. For example,
+  92:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * if XTAL0 is 8 MHz:
+  93:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * @code
+  94:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * CLOCK_InitOsc0(...); // Set up the OSC0
+  95:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * CLOCK_SetXtal0Freq(80000000); // Set the XTAL0 value to the clock driver.
+  96:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * @endcode
+  97:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+  98:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * This is important for the multicore platforms where only one core needs to set up the
+  99:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * OSC0 using the CLOCK_InitOsc0. All other cores need to call the CLOCK_SetXtal0Freq
+ 100:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * to get a valid clock frequency.
+ 101:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  */
+ 102:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** extern uint32_t g_xtal0Freq;
+ 103:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 104:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief External XTAL32/EXTAL32/RTC_CLKIN clock frequency.
+ 105:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+ 106:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * The XTAL32/EXTAL32/RTC_CLKIN clock frequency in Hz. When the clock is set up, use the
+ 107:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * function CLOCK_SetXtal32Freq to set the value in the clock driver.
+ 108:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+ 109:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * This is important for the multicore platforms where only one core needs to set up
+ 110:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * the clock. All other cores need to call the CLOCK_SetXtal32Freq
+ 111:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * to get a valid clock frequency.
+ 112:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  */
+ 113:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** extern uint32_t g_xtal32Freq;
+ 114:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 115:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #if (defined(OSC) && !(defined(OSC0)))
+ 116:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define OSC0 OSC
+ 117:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #endif
+ 118:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 119:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for DMAMUX. */
+ 120:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define DMAMUX_CLOCKS  \
+ 121:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {                  \
+ 122:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Dmamux0 \
+ 123:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 124:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 125:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for RTC. */
+ 126:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define RTC_CLOCKS  \
+ 127:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {               \
+ 128:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Rtc0 \
+ 129:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 130:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 131:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for SPI. */
+ 132:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define SPI_CLOCKS               \
+ 133:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {                            \
+ 134:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Spi0, kCLOCK_Spi1 \
+ 135:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 136:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 137:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for PIT. */
+ 138:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define PIT_CLOCKS  \
+ 139:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {               \
+ 140:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Pit0 \
+ 141:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 142:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 143:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for PORT. */
+ 144:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define PORT_CLOCKS                                                          \
+ 145:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {                                                                        \
+ 146:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_PortA, kCLOCK_PortB, kCLOCK_PortC, kCLOCK_PortD, kCLOCK_PortE \
+ 147:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 148:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 149:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for TSI. */
+ 150:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define TSI_CLOCKS  \
+ 151:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {               \
+ 152:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Tsi0 \
+ 153:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 154:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 155:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for DAC. */
+ 156:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define DAC_CLOCKS  \
+ 157:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {               \
+ 158:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Dac0 \
+ 159:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 160:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 161:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for LPTMR. */
+ 162:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define LPTMR_CLOCKS  \
+ 163:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {                 \
+ 164:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Lptmr0 \
+ 165:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 166:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 167:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for ADC16. */
+ 168:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define ADC16_CLOCKS \
+ 169:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {                \
+ 170:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Adc0  \
+ 171:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 172:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 173:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for DMA. */
+ 174:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define DMA_CLOCKS  \
+ 175:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {               \
+ 176:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Dma0 \
+ 177:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 178:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 179:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for LPSCI/UART0. */
+ 180:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define UART0_CLOCKS \
+ 181:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {                \
+ 182:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Uart0 \
+ 183:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 184:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 185:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for UART. */
+ 186:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define UART_CLOCKS                                  \
+ 187:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {                                                \
+ 188:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_IpInvalid, kCLOCK_Uart1, kCLOCK_Uart2 \
+ 189:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 190:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 191:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for TPM. */
+ 192:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define TPM_CLOCKS                            \
+ 193:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {                                         \
+ 194:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Tpm0, kCLOCK_Tpm1, kCLOCK_Tpm2 \
+ 195:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 196:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 197:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for I2C. */
+ 198:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define I2C_CLOCKS               \
+ 199:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {                            \
+ 200:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_I2c0, kCLOCK_I2c1 \
+ 201:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 202:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 203:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for FTF. */
+ 204:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define FTF_CLOCKS  \
+ 205:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {               \
+ 206:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Ftf0 \
+ 207:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 208:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 209:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock ip name array for CMP. */
+ 210:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define CMP_CLOCKS  \
+ 211:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     {               \
+ 212:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****         kCLOCK_Cmp0 \
+ 213:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     }
+ 214:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 215:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*!
+ 216:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * @brief LPO clock frequency.
+ 217:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  */
+ 218:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define LPO_CLK_FREQ 1000U
+ 219:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 220:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Peripherals clock source definition. */
+ 221:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define SYS_CLK kCLOCK_CoreSysClk
+ 222:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define BUS_CLK kCLOCK_BusClk
+ 223:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 224:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define I2C0_CLK_SRC BUS_CLK
+ 225:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define I2C1_CLK_SRC BUS_CLK
+ 226:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define SPI0_CLK_SRC BUS_CLK
+ 227:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define SPI1_CLK_SRC SYS_CLK
+ 228:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define UART1_CLK_SRC BUS_CLK
+ 229:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define UART2_CLK_SRC BUS_CLK
+ 230:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 231:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock name used to get clock frequency. */
+ 232:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _clock_name
+ 233:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 234:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 235:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     /* ----------------------------- System layer clock -------------------------------*/
+ 236:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_CoreSysClk,   /*!< Core/system clock                                         */
+ 237:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_PlatClk,      /*!< Platform clock                                            */
+ 238:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_BusClk,       /*!< Bus clock                                                 */
+ 239:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_FlexBusClk,   /*!< FlexBus clock                                             */
+ 240:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_FlashClk,     /*!< Flash clock                                               */
+ 241:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_PllFllSelClk, /*!< The clock after SIM[PLLFLLSEL].                           */
+ 242:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 243:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     /* ---------------------------------- OSC clock -----------------------------------*/
+ 244:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Er32kClk,  /*!< External reference 32K clock (ERCLK32K)                   */
+ 245:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Osc0ErClk, /*!< OSC0 external reference clock (OSC0ERCLK)                 */
+ 246:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 247:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     /* ----------------------------- MCG and MCG-Lite clock ---------------------------*/
+ 248:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_McgFixedFreqClk,   /*!< MCG fixed frequency clock (MCGFFCLK)                      */
+ 249:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_McgInternalRefClk, /*!< MCG internal reference clock (MCGIRCLK)                   */
+ 250:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_McgFllClk,         /*!< MCGFLLCLK                                                 */
+ 251:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_McgPll0Clk,        /*!< MCGPLL0CLK                                                */
+ 252:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_McgExtPllClk,      /*!< EXT_PLLCLK                                                */
+ 253:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 254:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     /* --------------------------------- Other clock ----------------------------------*/
+ 255:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_LpoClk, /*!< LPO clock                                                 */
+ 256:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 257:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } clock_name_t;
+ 258:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 259:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief USB clock source definition. */
+ 260:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _clock_usb_src
+ 261:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 262:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_UsbSrcPll0 = SIM_SOPT2_USBSRC(1U) | SIM_SOPT2_PLLFLLSEL(1U), /*!< Use PLL0.      */
+ 263:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_UsbSrcExt = SIM_SOPT2_USBSRC(0U)                             /*!< Use USB_CLKIN. */
+ 264:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } clock_usb_src_t;
+ 265:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 266:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*------------------------------------------------------------------------------
+ 267:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 268:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  clock_gate_t definition:
+ 269:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 270:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  31                              16                              0
+ 271:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  -----------------------------------------------------------------
+ 272:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  | SIM_SCGC register offset       |   control bit offset in SCGC |
+ 273:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  -----------------------------------------------------------------
+ 274:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 275:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  For example, the SDHC clock gate is controlled by SIM_SCGC3[17], the
+ 276:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  SIM_SCGC3 offset in SIM is 0x1030, then kCLOCK_GateSdhc0 is defined as
+ 277:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 278:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****               kCLOCK_GateSdhc0 = (0x1030 << 16) | 17;
+ 279:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 280:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** ------------------------------------------------------------------------------*/
+ 281:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 282:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define CLK_GATE_REG_OFFSET_SHIFT 16U
+ 283:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define CLK_GATE_REG_OFFSET_MASK 0xFFFF0000U
+ 284:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define CLK_GATE_BIT_SHIFT_SHIFT 0U
+ 285:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define CLK_GATE_BIT_SHIFT_MASK 0x0000FFFFU
+ 286:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 287:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define CLK_GATE_DEFINE(reg_offset, bit_shift)                                  \
+ 288:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     ((((reg_offset) << CLK_GATE_REG_OFFSET_SHIFT) & CLK_GATE_REG_OFFSET_MASK) | \
+ 289:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****      (((bit_shift) << CLK_GATE_BIT_SHIFT_SHIFT) & CLK_GATE_BIT_SHIFT_MASK))
+ 290:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 291:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define CLK_GATE_ABSTRACT_REG_OFFSET(x) (((x)&CLK_GATE_REG_OFFSET_MASK) >> CLK_GATE_REG_OFFSET_SHIF
+ 292:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #define CLK_GATE_ABSTRACT_BITS_SHIFT(x) (((x)&CLK_GATE_BIT_SHIFT_MASK) >> CLK_GATE_BIT_SHIFT_SHIFT)
+ 293:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 294:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Clock gate name used for CLOCK_EnableClock/CLOCK_DisableClock. */
+ 295:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _clock_ip_name
+ 296:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 297:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_IpInvalid = 0U,
+ 298:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_I2c0 = CLK_GATE_DEFINE(0x1034U, 6U),
+ 299:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_I2c1 = CLK_GATE_DEFINE(0x1034U, 7U),
+ 300:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Uart0 = CLK_GATE_DEFINE(0x1034U, 10U),
+ 301:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Uart1 = CLK_GATE_DEFINE(0x1034U, 11U),
+ 302:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Uart2 = CLK_GATE_DEFINE(0x1034U, 12U),
+ 303:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Usbfs0 = CLK_GATE_DEFINE(0x1034U, 18U),
+ 304:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Cmp0 = CLK_GATE_DEFINE(0x1034U, 19U),
+ 305:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Spi0 = CLK_GATE_DEFINE(0x1034U, 22U),
+ 306:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Spi1 = CLK_GATE_DEFINE(0x1034U, 23U),
+ 307:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 308:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Lptmr0 = CLK_GATE_DEFINE(0x1038U, 0U),
+ 309:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Tsi0 = CLK_GATE_DEFINE(0x1038U, 5U),
+ 310:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_PortA = CLK_GATE_DEFINE(0x1038U, 9U),
+ 311:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_PortB = CLK_GATE_DEFINE(0x1038U, 10U),
+ 312:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_PortC = CLK_GATE_DEFINE(0x1038U, 11U),
+ 313:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_PortD = CLK_GATE_DEFINE(0x1038U, 12U),
+ 314:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_PortE = CLK_GATE_DEFINE(0x1038U, 13U),
+ 315:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 316:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Ftf0 = CLK_GATE_DEFINE(0x103CU, 0U),
+ 317:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Dmamux0 = CLK_GATE_DEFINE(0x103CU, 1U),
+ 318:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Pit0 = CLK_GATE_DEFINE(0x103CU, 23U),
+ 319:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Tpm0 = CLK_GATE_DEFINE(0x103CU, 24U),
+ 320:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Tpm1 = CLK_GATE_DEFINE(0x103CU, 25U),
+ 321:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Tpm2 = CLK_GATE_DEFINE(0x103CU, 26U),
+ 322:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Adc0 = CLK_GATE_DEFINE(0x103CU, 27U),
+ 323:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Rtc0 = CLK_GATE_DEFINE(0x103CU, 29U),
+ 324:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Dac0 = CLK_GATE_DEFINE(0x103CU, 31U),
+ 325:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 326:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kCLOCK_Dma0 = CLK_GATE_DEFINE(0x1040U, 8U),
+ 327:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } clock_ip_name_t;
+ 328:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 329:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*!@brief SIM configuration structure for clock setting. */
+ 330:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef struct _sim_clock_config
+ 331:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 332:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint8_t pllFllSel;
+ 333:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint8_t er32kSrc; /*!< ERCLK32K source selection.   */
+ 334:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint32_t clkdiv1; /*!< SIM_CLKDIV1.                 */
+ 335:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } sim_clock_config_t;
+ 336:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 337:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief OSC work mode. */
+ 338:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _osc_mode
+ 339:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 340:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kOSC_ModeExt = 0U, /*!< Use an external clock.   */
+ 341:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #if (defined(MCG_C2_EREFS_MASK) && !(defined(MCG_C2_EREFS0_MASK)))
+ 342:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kOSC_ModeOscLowPower = MCG_C2_EREFS_MASK, /*!< Oscillator low power. */
+ 343:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #else
+ 344:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kOSC_ModeOscLowPower = MCG_C2_EREFS0_MASK, /*!< Oscillator low power. */
+ 345:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #endif
+ 346:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kOSC_ModeOscHighGain = 0U
+ 347:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #if (defined(MCG_C2_EREFS_MASK) && !(defined(MCG_C2_EREFS0_MASK)))
+ 348:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                            |
+ 349:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                            MCG_C2_EREFS_MASK
+ 350:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #else
+ 351:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                            |
+ 352:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                            MCG_C2_EREFS0_MASK
+ 353:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #endif
+ 354:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #if (defined(MCG_C2_HGO_MASK) && !(defined(MCG_C2_HGO0_MASK)))
+ 355:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                            |
+ 356:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                            MCG_C2_HGO_MASK, /*!< Oscillator high gain. */
+ 357:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #else
+ 358:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                            |
+ 359:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                            MCG_C2_HGO0_MASK, /*!< Oscillator high gain. */
+ 360:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #endif
+ 361:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } osc_mode_t;
+ 362:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 363:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Oscillator capacitor load setting.*/
+ 364:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** enum _osc_cap_load
+ 365:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 366:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kOSC_Cap2P = OSC_CR_SC2P_MASK,  /*!< 2  pF capacitor load */
+ 367:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kOSC_Cap4P = OSC_CR_SC4P_MASK,  /*!< 4  pF capacitor load */
+ 368:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kOSC_Cap8P = OSC_CR_SC8P_MASK,  /*!< 8  pF capacitor load */
+ 369:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kOSC_Cap16P = OSC_CR_SC16P_MASK /*!< 16 pF capacitor load */
+ 370:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** };
+ 371:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 372:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief OSCERCLK enable mode. */
+ 373:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** enum _oscer_enable_mode
+ 374:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 375:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kOSC_ErClkEnable = OSC_CR_ERCLKEN_MASK,       /*!< Enable.              */
+ 376:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kOSC_ErClkEnableInStop = OSC_CR_EREFSTEN_MASK /*!< Enable in stop mode. */
+ 377:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** };
+ 378:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 379:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief OSC configuration for OSCERCLK. */
+ 380:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef struct _oscer_config
+ 381:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 382:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint8_t enableMode; /*!< OSCERCLK enable mode. OR'ed value of @ref _oscer_enable_mode. */
+ 383:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 384:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } oscer_config_t;
+ 385:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 386:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*!
+ 387:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * @brief OSC Initialization Configuration Structure
+ 388:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+ 389:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * Defines the configuration data structure to initialize the OSC.
+ 390:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * When porting to a new board, set the following members
+ 391:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * according to the board setting:
+ 392:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * 1. freq: The external frequency.
+ 393:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * 2. workMode: The OSC module mode.
+ 394:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  */
+ 395:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef struct _osc_config
+ 396:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 397:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint32_t freq;              /*!< External clock frequency.    */
+ 398:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint8_t capLoad;            /*!< Capacitor load setting.      */
+ 399:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     osc_mode_t workMode;        /*!< OSC work mode setting.       */
+ 400:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     oscer_config_t oscerConfig; /*!< Configuration for OSCERCLK.  */
+ 401:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } osc_config_t;
+ 402:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 403:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG FLL reference clock source select. */
+ 404:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_fll_src
+ 405:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 406:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_FllSrcExternal, /*!< External reference clock is selected          */
+ 407:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_FllSrcInternal  /*!< The slow internal reference clock is selected */
+ 408:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_fll_src_t;
+ 409:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 410:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG internal reference clock select */
+ 411:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_irc_mode
+ 412:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 413:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_IrcSlow, /*!< Slow internal reference clock selected */
+ 414:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_IrcFast  /*!< Fast internal reference clock selected */
+ 415:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_irc_mode_t;
+ 416:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 417:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG DCO Maximum Frequency with 32.768 kHz Reference */
+ 418:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_dmx32
+ 419:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 420:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_Dmx32Default, /*!< DCO has a default range of 25% */
+ 421:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_Dmx32Fine     /*!< DCO is fine-tuned for maximum frequency with 32.768 kHz reference */
+ 422:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_dmx32_t;
+ 423:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 424:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG DCO range select */
+ 425:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_drs
+ 426:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 427:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_DrsLow,     /*!< Low frequency range       */
+ 428:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_DrsMid,     /*!< Mid frequency range       */
+ 429:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_DrsMidHigh, /*!< Mid-High frequency range  */
+ 430:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_DrsHigh     /*!< High frequency range      */
+ 431:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_drs_t;
+ 432:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 433:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG PLL reference clock select */
+ 434:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_pll_ref_src
+ 435:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 436:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_PllRefOsc0, /*!< Selects OSC0 as PLL reference clock                 */
+ 437:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_PllRefOsc1  /*!< Selects OSC1 as PLL reference clock                 */
+ 438:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_pll_ref_src_t;
+ 439:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 440:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCGOUT clock source. */
+ 441:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_clkout_src
+ 442:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 443:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ClkOutSrcOut,      /*!< Output of the FLL is selected (reset default)  */
+ 444:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ClkOutSrcInternal, /*!< Internal reference clock is selected           */
+ 445:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ClkOutSrcExternal, /*!< External reference clock is selected           */
+ 446:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_clkout_src_t;
+ 447:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 448:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG Automatic Trim Machine Select */
+ 449:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_atm_select
+ 450:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 451:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_AtmSel32k, /*!< 32 kHz Internal Reference Clock selected  */
+ 452:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_AtmSel4m   /*!< 4 MHz Internal Reference Clock selected   */
+ 453:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_atm_select_t;
+ 454:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 455:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG OSC Clock Select */
+ 456:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_oscsel
+ 457:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 458:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_OscselOsc, /*!< Selects System Oscillator (OSCCLK) */
+ 459:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_OscselRtc, /*!< Selects 32 kHz RTC Oscillator      */
+ 460:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_oscsel_t;
+ 461:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 462:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG PLLCS select */
+ 463:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_pll_clk_select
+ 464:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 465:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_PllClkSelPll0, /*!< PLL0 output clock is selected  */
+ 466:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_PllClkSelPll1  /* PLL1 output clock is selected    */
+ 467:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_pll_clk_select_t;
+ 468:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 469:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG clock monitor mode. */
+ 470:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_monitor_mode
+ 471:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 472:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_MonitorNone, /*!< Clock monitor is disabled.         */
+ 473:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_MonitorInt,  /*!< Trigger interrupt when clock lost. */
+ 474:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_MonitorReset /*!< System reset when clock lost.      */
+ 475:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_monitor_mode_t;
+ 476:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 477:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG status. */
+ 478:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** enum _mcg_status
+ 479:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 480:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kStatus_MCG_ModeUnreachable = MAKE_STATUS(kStatusGroup_MCG, 0),       /*!< Can't switch to targ
+ 481:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kStatus_MCG_ModeInvalid = MAKE_STATUS(kStatusGroup_MCG, 1),           /*!< Current mode invalid
+ 482:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                                                                                function. */
+ 483:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kStatus_MCG_AtmBusClockInvalid = MAKE_STATUS(kStatusGroup_MCG, 2),    /*!< Invalid bus clock fo
+ 484:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kStatus_MCG_AtmDesiredFreqInvalid = MAKE_STATUS(kStatusGroup_MCG, 3), /*!< Invalid desired freq
+ 485:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kStatus_MCG_AtmIrcUsed = MAKE_STATUS(kStatusGroup_MCG, 4),            /*!< IRC is used when usi
+ 486:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kStatus_MCG_AtmHardwareFail = MAKE_STATUS(kStatusGroup_MCG, 5),       /*!< Hardware fail occurs
+ 487:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kStatus_MCG_SourceUsed = MAKE_STATUS(kStatusGroup_MCG, 6)             /*!< Can't change the clo
+ 488:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                                                                                it is in use. */
+ 489:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** };
+ 490:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 491:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG status flags. */
+ 492:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** enum _mcg_status_flags_t
+ 493:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 494:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_Osc0LostFlag = (1U << 0U), /*!< OSC0 lost.         */
+ 495:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_Osc0InitFlag = (1U << 1U), /*!< OSC0 crystal initialized. */
+ 496:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_Pll0LostFlag = (1U << 5U), /*!< PLL0 lost.         */
+ 497:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_Pll0LockFlag = (1U << 6U), /*!< PLL0 locked.       */
+ 498:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** };
+ 499:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 500:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG internal reference clock (MCGIRCLK) enable mode definition. */
+ 501:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** enum _mcg_irclk_enable_mode
+ 502:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 503:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_IrclkEnable = MCG_C1_IRCLKEN_MASK,       /*!< MCGIRCLK enable.              */
+ 504:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_IrclkEnableInStop = MCG_C1_IREFSTEN_MASK /*!< MCGIRCLK enable in stop mode. */
+ 505:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** };
+ 506:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 507:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG PLL clock enable mode definition. */
+ 508:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** enum _mcg_pll_enable_mode
+ 509:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 510:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_PllEnableIndependent = MCG_C5_PLLCLKEN0_MASK, /*!< MCGPLLCLK enable independent of the
+ 511:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                                                            MCG clock mode. Generally, the PLL
+ 512:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                                                            is disabled in FLL modes
+ 513:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                                                            (FEI/FBI/FEE/FBE). Setting the PLL clock
+ 514:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                                                            enable independent, enables the
+ 515:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****                                                            PLL in the FLL modes.          */
+ 516:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_PllEnableInStop = MCG_C5_PLLSTEN0_MASK        /*!< MCGPLLCLK enable in STOP mode. */
+ 517:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** };
+ 518:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 519:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG mode definitions */
+ 520:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef enum _mcg_mode
+ 521:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 522:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ModeFEI = 0U, /*!< FEI   - FLL Engaged Internal         */
+ 523:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ModeFBI,      /*!< FBI   - FLL Bypassed Internal        */
+ 524:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ModeBLPI,     /*!< BLPI  - Bypassed Low Power Internal  */
+ 525:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ModeFEE,      /*!< FEE   - FLL Engaged External         */
+ 526:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ModeFBE,      /*!< FBE   - FLL Bypassed External        */
+ 527:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ModeBLPE,     /*!< BLPE  - Bypassed Low Power External  */
+ 528:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ModePBE,      /*!< PBE   - PLL Bypassed External        */
+ 529:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ModePEE,      /*!< PEE   - PLL Engaged External         */
+ 530:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     kMCG_ModeError     /*!< Unknown mode                         */
+ 531:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_mode_t;
+ 532:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 533:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG PLL configuration. */
+ 534:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef struct _mcg_pll_config
+ 535:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 536:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint8_t enableMode; /*!< Enable mode. OR'ed value of @ref _mcg_pll_enable_mode. */
+ 537:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint8_t prdiv;      /*!< Reference divider PRDIV.    */
+ 538:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint8_t vdiv;       /*!< VCO divider VDIV.           */
+ 539:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_pll_config_t;
+ 540:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 541:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief MCG mode change configuration structure
+ 542:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+ 543:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * When porting to a new board, set the following members
+ 544:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * according to the board setting:
+ 545:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * 1. frdiv: If the FLL uses the external reference clock, set this
+ 546:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *    value to ensure that the external reference clock divided by frdiv is
+ 547:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *    in the 31.25 kHz to 39.0625 kHz range.
+ 548:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * 2. The PLL reference clock divider PRDIV: PLL reference clock frequency after
+ 549:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *    PRDIV should be in the FSL_FEATURE_MCG_PLL_REF_MIN to
+ 550:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *    FSL_FEATURE_MCG_PLL_REF_MAX range.
+ 551:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  */
+ 552:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** typedef struct _mcg_config
+ 553:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 554:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     mcg_mode_t mcgMode; /*!< MCG mode.                   */
+ 555:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 556:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     /* ----------------------- MCGIRCCLK settings ------------------------ */
+ 557:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint8_t irclkEnableMode; /*!< MCGIRCLK enable mode.       */
+ 558:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     mcg_irc_mode_t ircs;     /*!< Source, MCG_C2[IRCS].       */
+ 559:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint8_t fcrdiv;          /*!< Divider, MCG_SC[FCRDIV].    */
+ 560:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 561:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     /* ------------------------ MCG FLL settings ------------------------- */
+ 562:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint8_t frdiv;     /*!< Divider MCG_C1[FRDIV].      */
+ 563:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     mcg_drs_t drs;     /*!< DCO range MCG_C4[DRST_DRS]. */
+ 564:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     mcg_dmx32_t dmx32; /*!< MCG_C4[DMX32].              */
+ 565:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 566:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     /* ------------------------ MCG PLL settings ------------------------- */
+ 567:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     mcg_pll_config_t pll0Config; /*!< MCGPLL0CLK configuration.   */
+ 568:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 569:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** } mcg_config_t;
+ 570:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 571:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*******************************************************************************
+ 572:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * API
+ 573:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  ******************************************************************************/
+ 574:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 575:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #if defined(__cplusplus)
+ 576:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** extern "C" {
+ 577:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** #endif /* __cplusplus */
+ 578:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 579:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*!
+ 580:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * @brief Enable the clock for specific IP.
+ 581:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+ 582:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * @param name  Which clock to enable, see \ref clock_ip_name_t.
+ 583:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  */
+ 584:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** static inline void CLOCK_EnableClock(clock_ip_name_t name)
+ 585:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 586:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint32_t regAddr = SIM_BASE + CLK_GATE_ABSTRACT_REG_OFFSET((uint32_t)name);
+ 587:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     (*(volatile uint32_t *)regAddr) |= (1U << CLK_GATE_ABSTRACT_BITS_SHIFT((uint32_t)name));
+ 588:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** }
+ 589:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 590:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*!
+ 591:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * @brief Disable the clock for specific IP.
+ 592:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  *
+ 593:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  * @param name  Which clock to disable, see \ref clock_ip_name_t.
+ 594:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****  */
+ 595:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** static inline void CLOCK_DisableClock(clock_ip_name_t name)
+ 596:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 597:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     uint32_t regAddr = SIM_BASE + CLK_GATE_ABSTRACT_REG_OFFSET((uint32_t)name);
+ 598:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     (*(volatile uint32_t *)regAddr) &= ~(1U << CLK_GATE_ABSTRACT_BITS_SHIFT((uint32_t)name));
+ 599:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** }
+ 600:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 601:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Set ERCLK32K source. */
+ 602:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** static inline void CLOCK_SetEr32kClock(uint32_t src)
+ 603:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 604:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     SIM->SOPT1 = ((SIM->SOPT1 & ~SIM_SOPT1_OSC32KSEL_MASK) | SIM_SOPT1_OSC32KSEL(src));
+ 605:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** }
+ 606:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 607:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Set PLLFLLSEL clock source. */
+ 608:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** static inline void CLOCK_SetPllFllSelClock(uint32_t src)
+ 609:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 610:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     SIM->SOPT2 = ((SIM->SOPT2 & ~SIM_SOPT2_PLLFLLSEL_MASK) | SIM_SOPT2_PLLFLLSEL(src));
+ 611:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** }
+ 612:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 613:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Set TPM clock source. */
+ 614:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** static inline void CLOCK_SetTpmClock(uint32_t src)
+ 615:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+ 616:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     SIM->SOPT2 = ((SIM->SOPT2 & ~SIM_SOPT2_TPMSRC_MASK) | SIM_SOPT2_TPMSRC(src));
+ 617:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** }
+ 618:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** 
+ 619:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** /*! @brief Set LPSCI0 (UART0) clock source. */
+ 620:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** static inline void CLOCK_SetLpsci0Clock(uint32_t src)
+ 621:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** {
+  26              		.loc 1 621 1
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 8
+  29              		@ frame_needed = 1, uses_anonymous_args = 0
+  30 0000 80B5     		push	{r7, lr}
+  31              		.cfi_def_cfa_offset 8
+  32              		.cfi_offset 7, -8
+  33              		.cfi_offset 14, -4
+  34 0002 82B0     		sub	sp, sp, #8
+  35              		.cfi_def_cfa_offset 16
+  36 0004 00AF     		add	r7, sp, #0
+  37              		.cfi_def_cfa_register 7
+  38 0006 7860     		str	r0, [r7, #4]
+ 622:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h ****     SIM->SOPT2 = ((SIM->SOPT2 & ~SIM_SOPT2_UART0SRC_MASK) | SIM_SOPT2_UART0SRC(src));
+  39              		.loc 1 622 23
+  40 0008 084A     		ldr	r2, .L2
+  41 000a 094B     		ldr	r3, .L2+4
+  42 000c D358     		ldr	r3, [r2, r3]
+  43              		.loc 1 622 31
+  44 000e 094A     		ldr	r2, .L2+8
+  45 0010 1A40     		ands	r2, r3
+  46              		.loc 1 622 61
+  47 0012 7B68     		ldr	r3, [r7, #4]
+  48 0014 9906     		lsls	r1, r3, #26
+  49 0016 C023     		movs	r3, #192
+  50 0018 1B05     		lsls	r3, r3, #20
+  51 001a 0B40     		ands	r3, r1
+  52              		.loc 1 622 8
+  53 001c 0349     		ldr	r1, .L2
+  54              		.loc 1 622 59
+  55 001e 1343     		orrs	r3, r2
+  56              		.loc 1 622 16
+  57 0020 034A     		ldr	r2, .L2+4
+  58 0022 8B50     		str	r3, [r1, r2]
+ 623:/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h **** }
+  59              		.loc 1 623 1
+  60 0024 C046     		nop
+  61 0026 BD46     		mov	sp, r7
+  62 0028 02B0     		add	sp, sp, #8
+  63              		@ sp needed
+  64 002a 80BD     		pop	{r7, pc}
+  65              	.L3:
+  66              		.align	2
+  67              	.L2:
+  68 002c 00700440 		.word	1074032640
+  69 0030 04100000 		.word	4100
+  70 0034 FFFFFFF3 		.word	-201326593
+  71              		.cfi_endproc
+  72              	.LFE39:
+  74              		.section	.text.BOARD_InitDebugConsole,"ax",%progbits
+  75              		.align	1
+  76              		.global	BOARD_InitDebugConsole
+  77              		.syntax unified
+  78              		.code	16
+  79              		.thumb_func
+  80              		.fpu softvfp
+  82              	BOARD_InitDebugConsole:
+  83              	.LFB61:
+  84              		.file 2 "../board/board.c"
+   1:../board/board.c **** /*
+   2:../board/board.c ****  * Copyright (c) 2015, Freescale Semiconductor, Inc.
+   3:../board/board.c ****  * Copyright 2016-2017 NXP
+   4:../board/board.c ****  *
+   5:../board/board.c ****  * Redistribution and use in source and binary forms, with or without modification,
+   6:../board/board.c ****  * are permitted provided that the following conditions are met:
+   7:../board/board.c ****  *
+   8:../board/board.c ****  * o Redistributions of source code must retain the above copyright notice, this list
+   9:../board/board.c ****  *   of conditions and the following disclaimer.
+  10:../board/board.c ****  *
+  11:../board/board.c ****  * o Redistributions in binary form must reproduce the above copyright notice, this
+  12:../board/board.c ****  *   list of conditions and the following disclaimer in the documentation and/or
+  13:../board/board.c ****  *   other materials provided with the distribution.
+  14:../board/board.c ****  *
+  15:../board/board.c ****  * o Neither the name of the copyright holder nor the names of its
+  16:../board/board.c ****  *   contributors may be used to endorse or promote products derived from this
+  17:../board/board.c ****  *   software without specific prior written permission.
+  18:../board/board.c ****  *
+  19:../board/board.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  20:../board/board.c ****  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  21:../board/board.c ****  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  22:../board/board.c ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+  23:../board/board.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  24:../board/board.c ****  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  25:../board/board.c ****  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  26:../board/board.c ****  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  27:../board/board.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  28:../board/board.c ****  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  29:../board/board.c ****  */
+  30:../board/board.c **** 
+  31:../board/board.c **** #include <stdint.h>
+  32:../board/board.c **** #include "board.h"
+  33:../board/board.c **** #include "fsl_debug_console.h"
+  34:../board/board.c **** #include "fsl_common.h"
+  35:../board/board.c **** 
+  36:../board/board.c **** /*******************************************************************************
+  37:../board/board.c ****  * Variables
+  38:../board/board.c ****  ******************************************************************************/
+  39:../board/board.c **** 
+  40:../board/board.c **** /*******************************************************************************
+  41:../board/board.c ****  * Code
+  42:../board/board.c ****  ******************************************************************************/
+  43:../board/board.c **** /* Initialize debug console. */
+  44:../board/board.c **** void BOARD_InitDebugConsole(void)
+  45:../board/board.c **** {
+  85              		.loc 2 45 1
+  86              		.cfi_startproc
+  87              		@ args = 0, pretend = 0, frame = 8
+  88              		@ frame_needed = 1, uses_anonymous_args = 0
+  89 0000 80B5     		push	{r7, lr}
+  90              		.cfi_def_cfa_offset 8
+  91              		.cfi_offset 7, -8
+  92              		.cfi_offset 14, -4
+  93 0002 82B0     		sub	sp, sp, #8
+  94              		.cfi_def_cfa_offset 16
+  95 0004 00AF     		add	r7, sp, #0
+  96              		.cfi_def_cfa_register 7
+  46:../board/board.c ****     uint32_t uartClkSrcFreq;
+  47:../board/board.c ****     /* SIM_SOPT2[27:26]:
+  48:../board/board.c ****      *  00: Clock Disabled
+  49:../board/board.c ****      *  01: IRC48M
+  50:../board/board.c ****      *  10: OSCERCLK
+  51:../board/board.c ****      *  11: MCGIRCCLK
+  52:../board/board.c ****      */
+  53:../board/board.c ****     CLOCK_SetLpsci0Clock(1);
+  97              		.loc 2 53 5
+  98 0006 0120     		movs	r0, #1
+  99 0008 FFF7FEFF 		bl	CLOCK_SetLpsci0Clock
+  54:../board/board.c **** 
+  55:../board/board.c ****     uartClkSrcFreq = BOARD_DEBUG_UART_CLK_FREQ;
+ 100              		.loc 2 55 22
+ 101 000c FFF7FEFF 		bl	CLOCK_GetPllFllSelClkFreq
+ 102 0010 0300     		movs	r3, r0
+ 103 0012 7B60     		str	r3, [r7, #4]
+  56:../board/board.c ****     DbgConsole_Init(BOARD_DEBUG_UART_BASEADDR, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE, ua
+ 104              		.loc 2 56 5
+ 105 0014 7B68     		ldr	r3, [r7, #4]
+ 106 0016 E122     		movs	r2, #225
+ 107 0018 5102     		lsls	r1, r2, #9
+ 108 001a 0448     		ldr	r0, .L5
+ 109 001c 0322     		movs	r2, #3
+ 110 001e FFF7FEFF 		bl	DbgConsole_Init
+  57:../board/board.c **** }
+ 111              		.loc 2 57 1
+ 112 0022 C046     		nop
+ 113 0024 BD46     		mov	sp, r7
+ 114 0026 02B0     		add	sp, sp, #8
+ 115              		@ sp needed
+ 116 0028 80BD     		pop	{r7, pc}
+ 117              	.L6:
+ 118 002a C046     		.align	2
+ 119              	.L5:
+ 120 002c 00A00640 		.word	1074176000
+ 121              		.cfi_endproc
+ 122              	.LFE61:
+ 124              		.text
+ 125              	.Letext0:
+ 126              		.file 3 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 127              		.file 4 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 128              		.file 5 "/home/arpit/studies/pes/Blinkenlights/CMSIS/system_MKL25Z4.h"
+ 129              		.file 6 "/home/arpit/studies/pes/Blinkenlights/CMSIS/MKL25Z4.h"
+ 130              		.file 7 "../board/clock_config.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 board.c
+     /tmp/cc8e1jZQ.s:16     .text.CLOCK_SetLpsci0Clock:0000000000000000 $t
+     /tmp/cc8e1jZQ.s:23     .text.CLOCK_SetLpsci0Clock:0000000000000000 CLOCK_SetLpsci0Clock
+     /tmp/cc8e1jZQ.s:68     .text.CLOCK_SetLpsci0Clock:000000000000002c $d
+     /tmp/cc8e1jZQ.s:75     .text.BOARD_InitDebugConsole:0000000000000000 $t
+     /tmp/cc8e1jZQ.s:82     .text.BOARD_InitDebugConsole:0000000000000000 BOARD_InitDebugConsole
+     /tmp/cc8e1jZQ.s:120    .text.BOARD_InitDebugConsole:000000000000002c $d
+                           .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
+                           .group:0000000000000000 wm4.redlib_version.h.16.f905717e4b3a91dcbdbb631865150df4
+                           .group:0000000000000000 wm4.libconfigarm.h.19.34723c94cbd19598192aa6b1e87fca41
+                           .group:0000000000000000 wm4.stdint.h.31.58198de4ea930fb897655479091e17c7
+                           .group:0000000000000000 wm4.assert.h.39.e41bcb6e11bd7f1aaa7bbb5b609fe4b1
+                           .group:0000000000000000 wm4.stdbool.h.15.fddf1cb2402fd739d8e2516677869231
+                           .group:0000000000000000 wm4.fsl_device_registers.h.32.0bd0fc1949c4d5ee8778d13f693b6d67
+                           .group:0000000000000000 wm4.MKL25Z4.h.103.6fa60f7365436a291410ac7ae38d8851
+                           .group:0000000000000000 wm4.core_cm0plus.h.42.7e68c73109133db28e6113a0ee252d6f
+                           .group:0000000000000000 wm4.cmsis_gcc.h.36.5bb14fd68ce7855540fcfe2d9305ae16
+                           .group:0000000000000000 wm4.core_cm0plus.h.175.8e2cbb335a2ae70828db295817e11b6e
+                           .group:0000000000000000 wm4.system_MKL25Z4.h.107.b43986f939b1bf0ee0f9aa04879788f4
+                           .group:0000000000000000 wm4.MKL25Z4.h.379.376a3f36380a1b2f1e4cdc95287bb342
+                           .group:0000000000000000 wm4.MKL25Z4_features.h.84.30fd6c6f11c9d2ffea2189829de10275
+                           .group:0000000000000000 wm4.fsl_common.h.55.f0a989f874fed9062f996a5c92215a0e
+                           .group:0000000000000000 wm4.fsl_clock.h.61.86ace3515ab77fa85db71e2d42e7d189
+                           .group:0000000000000000 wm4.fsl_common.h.162.37daaf5dee6e1f72e10ac988afa1643d
+                           .group:0000000000000000 wm4.clock_config.h.14.f503207375904de35c270c0667216699
+                           .group:0000000000000000 wm4.fsl_gpio.h.32.9a0d943298c94a992969acbc78e9d286
+                           .group:0000000000000000 wm4.board.h.42.5ce18074d55e35e9ee7136f727b53be4
+                           .group:0000000000000000 wm4.fsl_debug_console.h.45.91cf4e441afe869add665a9dcd5a3b6d
+
+UNDEFINED SYMBOLS
+CLOCK_GetPllFllSelClkFreq
+DbgConsole_Init

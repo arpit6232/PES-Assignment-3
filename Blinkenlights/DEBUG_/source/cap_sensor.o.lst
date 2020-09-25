@@ -1,0 +1,248 @@
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 6
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"cap_sensor.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.rodata.CAP_Init.str1.4,"aMS",%progbits,1
+  16              		.align	2
+  17              	.LC0:
+  18 0000 0A0D2043 		.ascii	"\012\015 Clock Gating and Initialization of Capacit"
+  18      6C6F636B 
+  18      20476174 
+  18      696E6720 
+  18      616E6420 
+  19 002d 69766520 		.ascii	"ive Sensor Complete \000"
+  19      53656E73 
+  19      6F722043 
+  19      6F6D706C 
+  19      65746520 
+  20              		.section	.text.CAP_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	CAP_Init
+  23              		.arch armv6s-m
+  24              		.syntax unified
+  25              		.code	16
+  26              		.thumb_func
+  27              		.fpu softvfp
+  29              	CAP_Init:
+  30              	.LFB56:
+  31              		.file 1 "../source/cap_sensor.c"
+   1:../source/cap_sensor.c **** /*
+   2:../source/cap_sensor.c ****  * cap_sensor.c
+   3:../source/cap_sensor.c ****  *
+   4:../source/cap_sensor.c ****  *  Created on: Sep 19, 2020
+   5:../source/cap_sensor.c ****  *      Author: Arpit Savarkar / arpit.savarkar@colorado.edu
+   6:../source/cap_sensor.c ****  *
+   7:../source/cap_sensor.c ****  *  References:
+   8:../source/cap_sensor.c ****  *  https://www.digikey.com/eewiki/display/microcontroller/Using+the+Capacitive+Touch+Sensor+on+the
+   9:../source/cap_sensor.c ****  */
+  10:../source/cap_sensor.c **** 
+  11:../source/cap_sensor.c **** #include "MKL25Z4.h"
+  12:../source/cap_sensor.c **** #include "cap_sensor.h"
+  13:../source/cap_sensor.c **** 
+  14:../source/cap_sensor.c **** 
+  15:../source/cap_sensor.c **** /* ************************************************************************
+  16:../source/cap_sensor.c ****  * Code
+  17:../source/cap_sensor.c ****  **************************************************************************/
+  18:../source/cap_sensor.c **** 
+  19:../source/cap_sensor.c **** /* ​ ​ @brief​ ​ Initialization of Capacitive Sensor (Clocks Gating etc) */
+  20:../source/cap_sensor.c **** void CAP_Init(void) {
+  32              		.loc 1 20 21
+  33              		.cfi_startproc
+  34              		@ args = 0, pretend = 0, frame = 0
+  35              		@ frame_needed = 1, uses_anonymous_args = 0
+  36 0000 80B5     		push	{r7, lr}
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 7, -8
+  39              		.cfi_offset 14, -4
+  40 0002 00AF     		add	r7, sp, #0
+  41              		.cfi_def_cfa_register 7
+  21:../source/cap_sensor.c **** 
+  22:../source/cap_sensor.c **** 	// Enable clock for TSI PortB 16 and 17
+  23:../source/cap_sensor.c **** 		SIM->SCGC5 |= SIM_SCGC5_TSI_MASK;
+  42              		.loc 1 23 14
+  43 0004 084A     		ldr	r2, .L2
+  44 0006 094B     		ldr	r3, .L2+4
+  45 0008 D358     		ldr	r3, [r2, r3]
+  46 000a 0749     		ldr	r1, .L2
+  47 000c 2022     		movs	r2, #32
+  48 000e 1343     		orrs	r3, r2
+  49 0010 064A     		ldr	r2, .L2+4
+  50 0012 8B50     		str	r3, [r1, r2]
+  24:../source/cap_sensor.c **** 
+  25:../source/cap_sensor.c **** 		TSI0->GENCS = TSI_GENCS_OUTRGF_MASK |  // Out of range flag, set to 1 to clear
+  51              		.loc 1 25 7
+  52 0014 064B     		ldr	r3, .L2+8
+  53              		.loc 1 25 15
+  54 0016 074A     		ldr	r2, .L2+12
+  55 0018 1A60     		str	r2, [r3]
+  26:../source/cap_sensor.c **** 			TSI_GENCS_MODE(0U) |  // Set at 0 for capacitive sensing.  Other settings are 4 and 8 for thresh
+  27:../source/cap_sensor.c **** 			TSI_GENCS_REFCHRG(0U) | // 0-7 for Reference charge
+  28:../source/cap_sensor.c **** 			TSI_GENCS_DVOLT(0U) | // 0-3 sets the Voltage range
+  29:../source/cap_sensor.c **** 			TSI_GENCS_EXTCHRG(0U) | //0-7 for External charge
+  30:../source/cap_sensor.c **** 			TSI_GENCS_PS(0U) | // 0-7 for electrode prescaler
+  31:../source/cap_sensor.c **** 			TSI_GENCS_NSCN(31U) | // 0-31 + 1 for number of scans per electrode
+  32:../source/cap_sensor.c **** 			TSI_GENCS_TSIEN_MASK | // TSI enable bit
+  33:../source/cap_sensor.c **** 			TSI_GENCS_STPE_MASK | // Enables TSI in low power mode
+  34:../source/cap_sensor.c **** 			TSI_GENCS_EOSF_MASK ; // End of scan flag, set to 1 to clear
+  35:../source/cap_sensor.c **** #ifdef DEBUG
+  36:../source/cap_sensor.c **** 	PRINTF("\n\r Clock Gating and Initialization of Capacitive Sensor Complete ");
+  56              		.loc 1 36 2
+  57 001a 074B     		ldr	r3, .L2+16
+  58 001c 1800     		movs	r0, r3
+  59 001e FFF7FEFF 		bl	DbgConsole_Printf
+  37:../source/cap_sensor.c **** #endif
+  38:../source/cap_sensor.c **** }
+  60              		.loc 1 38 1
+  61 0022 C046     		nop
+  62 0024 BD46     		mov	sp, r7
+  63              		@ sp needed
+  64 0026 80BD     		pop	{r7, pc}
+  65              	.L3:
+  66              		.align	2
+  67              	.L2:
+  68 0028 00700440 		.word	1074032640
+  69 002c 38100000 		.word	4152
+  70 0030 00500440 		.word	1074024448
+  71 0034 A41F0080 		.word	-2147475548
+  72 0038 00000000 		.word	.LC0
+  73              		.cfi_endproc
+  74              	.LFE56:
+  76              		.section	.text.CAP_Scan,"ax",%progbits
+  77              		.align	1
+  78              		.global	CAP_Scan
+  79              		.syntax unified
+  80              		.code	16
+  81              		.thumb_func
+  82              		.fpu softvfp
+  84              	CAP_Scan:
+  85              	.LFB57:
+  39:../source/cap_sensor.c **** 
+  40:../source/cap_sensor.c **** 
+  41:../source/cap_sensor.c **** /**
+  42:../source/cap_sensor.c **** ​ * ​ ​ @brief​ ​ Helper Function to return back the Value sensed by the capacitive senso
+  43:../source/cap_sensor.c **** ​ *
+  44:../source/cap_sensor.c ****  *
+  45:../source/cap_sensor.c **** ​ * ​ ​ @param​ ​ void
+  46:../source/cap_sensor.c **** ​ *
+  47:../source/cap_sensor.c **** ​ * ​ ​ @return​ ​ Scanned Value with OFFSET Subtracted
+  48:../source/cap_sensor.c **** ​ */
+  49:../source/cap_sensor.c **** uint16_t CAP_Scan(void) {
+  86              		.loc 1 49 25
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 8
+  89              		@ frame_needed = 1, uses_anonymous_args = 0
+  90 0000 80B5     		push	{r7, lr}
+  91              		.cfi_def_cfa_offset 8
+  92              		.cfi_offset 7, -8
+  93              		.cfi_offset 14, -4
+  94 0002 82B0     		sub	sp, sp, #8
+  95              		.cfi_def_cfa_offset 16
+  96 0004 00AF     		add	r7, sp, #0
+  97              		.cfi_def_cfa_register 7
+  50:../source/cap_sensor.c **** 	uint16_t scan;
+  51:../source/cap_sensor.c **** //#ifdef DEBUG
+  52:../source/cap_sensor.c **** //	PRINTF("\n\r Capacitive Touch Scanning with OFFSET %d: ", SCAN_OFFSET);
+  53:../source/cap_sensor.c **** //#endif
+  54:../source/cap_sensor.c **** 		TSI0->DATA = TSI_DATA_TSICH(9U); // Using channel 9 of the TSI
+  98              		.loc 1 54 7
+  99 0006 0F4B     		ldr	r3, .L6
+ 100              		.loc 1 54 14
+ 101 0008 9022     		movs	r2, #144
+ 102 000a 1206     		lsls	r2, r2, #24
+ 103 000c 5A60     		str	r2, [r3, #4]
+  55:../source/cap_sensor.c **** 		TSI0->DATA |= TSI_DATA_SWTS_MASK; // Software trigger for scan
+ 104              		.loc 1 55 14
+ 105 000e 0D4B     		ldr	r3, .L6
+ 106 0010 5A68     		ldr	r2, [r3, #4]
+ 107 0012 0C4B     		ldr	r3, .L6
+ 108 0014 8021     		movs	r1, #128
+ 109 0016 C903     		lsls	r1, r1, #15
+ 110 0018 0A43     		orrs	r2, r1
+ 111 001a 5A60     		str	r2, [r3, #4]
+  56:../source/cap_sensor.c **** 		scan = SCAN_DATA;
+ 112              		.loc 1 56 10
+ 113 001c 094B     		ldr	r3, .L6
+ 114 001e 5A68     		ldr	r2, [r3, #4]
+ 115              		.loc 1 56 8
+ 116 0020 BB1D     		adds	r3, r7, #6
+ 117 0022 1A80     		strh	r2, [r3]
+  57:../source/cap_sensor.c **** 		TSI0->GENCS |= TSI_GENCS_EOSF_MASK ; // Reset end of scan flag
+ 118              		.loc 1 57 15
+ 119 0024 074B     		ldr	r3, .L6
+ 120 0026 1A68     		ldr	r2, [r3]
+ 121 0028 064B     		ldr	r3, .L6
+ 122 002a 0421     		movs	r1, #4
+ 123 002c 0A43     		orrs	r2, r1
+ 124 002e 1A60     		str	r2, [r3]
+  58:../source/cap_sensor.c **** 		return scan - SCAN_OFFSET;
+ 125              		.loc 1 58 15
+ 126 0030 BB1D     		adds	r3, r7, #6
+ 127 0032 1B88     		ldrh	r3, [r3]
+ 128 0034 044A     		ldr	r2, .L6+4
+ 129 0036 9446     		mov	ip, r2
+ 130 0038 6344     		add	r3, r3, ip
+ 131 003a 9BB2     		uxth	r3, r3
+  59:../source/cap_sensor.c **** }
+ 132              		.loc 1 59 1
+ 133 003c 1800     		movs	r0, r3
+ 134 003e BD46     		mov	sp, r7
+ 135 0040 02B0     		add	sp, sp, #8
+ 136              		@ sp needed
+ 137 0042 80BD     		pop	{r7, pc}
+ 138              	.L7:
+ 139              		.align	2
+ 140              	.L6:
+ 141 0044 00500440 		.word	1074024448
+ 142 0048 B4FDFFFF 		.word	-588
+ 143              		.cfi_endproc
+ 144              	.LFE57:
+ 146              		.text
+ 147              	.Letext0:
+ 148              		.file 2 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 149              		.file 3 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 150              		.file 4 "/home/arpit/studies/pes/Blinkenlights/CMSIS/system_MKL25Z4.h"
+ 151              		.file 5 "/home/arpit/studies/pes/Blinkenlights/CMSIS/MKL25Z4.h"
+ 152              		.file 6 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 153              		.file 7 "/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 cap_sensor.c
+     /tmp/cckk6951.s:16     .rodata.CAP_Init.str1.4:0000000000000000 $d
+     /tmp/cckk6951.s:21     .text.CAP_Init:0000000000000000 $t
+     /tmp/cckk6951.s:29     .text.CAP_Init:0000000000000000 CAP_Init
+     /tmp/cckk6951.s:68     .text.CAP_Init:0000000000000028 $d
+     /tmp/cckk6951.s:77     .text.CAP_Scan:0000000000000000 $t
+     /tmp/cckk6951.s:84     .text.CAP_Scan:0000000000000000 CAP_Scan
+     /tmp/cckk6951.s:141    .text.CAP_Scan:0000000000000044 $d
+                           .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
+                           .group:0000000000000000 wm4.MKL25Z4.h.103.6fa60f7365436a291410ac7ae38d8851
+                           .group:0000000000000000 wm4.redlib_version.h.16.f905717e4b3a91dcbdbb631865150df4
+                           .group:0000000000000000 wm4.libconfigarm.h.19.34723c94cbd19598192aa6b1e87fca41
+                           .group:0000000000000000 wm4.stdint.h.31.58198de4ea930fb897655479091e17c7
+                           .group:0000000000000000 wm4.core_cm0plus.h.74.a2347588a53ea11370930b0b328a87f3
+                           .group:0000000000000000 wm4.cmsis_gcc.h.36.5bb14fd68ce7855540fcfe2d9305ae16
+                           .group:0000000000000000 wm4.core_cm0plus.h.175.8e2cbb335a2ae70828db295817e11b6e
+                           .group:0000000000000000 wm4.system_MKL25Z4.h.107.b43986f939b1bf0ee0f9aa04879788f4
+                           .group:0000000000000000 wm4.MKL25Z4.h.379.376a3f36380a1b2f1e4cdc95287bb342
+                           .group:0000000000000000 wm4.stdio.h.45.f451916e772fb1711dab452062404594
+                           .group:0000000000000000 wm4.assert.h.39.e41bcb6e11bd7f1aaa7bbb5b609fe4b1
+                           .group:0000000000000000 wm4.stdbool.h.15.fddf1cb2402fd739d8e2516677869231
+                           .group:0000000000000000 wm4.fsl_device_registers.h.32.0bd0fc1949c4d5ee8778d13f693b6d67
+                           .group:0000000000000000 wm4.MKL25Z4_features.h.84.30fd6c6f11c9d2ffea2189829de10275
+                           .group:0000000000000000 wm4.fsl_common.h.55.f0a989f874fed9062f996a5c92215a0e
+                           .group:0000000000000000 wm4.fsl_clock.h.61.86ace3515ab77fa85db71e2d42e7d189
+                           .group:0000000000000000 wm4.fsl_common.h.162.37daaf5dee6e1f72e10ac988afa1643d
+                           .group:0000000000000000 wm4.fsl_debug_console.h.74.e867cb0a12e041687e4aa067a24db557
+                           .group:0000000000000000 wm4.cap_sensor.h.19.2c9b72c77237b1dd62cf7eb52257bf7b
+
+UNDEFINED SYMBOLS
+DbgConsole_Printf

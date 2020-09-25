@@ -1,0 +1,476 @@
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 6
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"Blinkenlights.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.rodata.delayTimes,"a"
+  16              		.align	2
+  19              	delayTimes:
+  20 0000 F4010000 		.word	500
+  21 0004 E8030000 		.word	1000
+  22 0008 D0070000 		.word	2000
+  23 000c B80B0000 		.word	3000
+  24              		.section	.rodata.delayLoopUp,"a"
+  25              		.align	2
+  28              	delayLoopUp:
+  29 0000 B4C40400 		.word	312500
+  30 0004 68890900 		.word	625000
+  31 0008 A0BB0D00 		.word	900000
+  32 000c 804F1200 		.word	1200000
+  33              		.section	.rodata.delay100MSECLoopUp,"a"
+  34              		.align	2
+  37              	delay100MSECLoopUp:
+  38 0000 24F40000 		.word	62500
+  39 0004 24F40000 		.word	62500
+  40 0008 409C0000 		.word	40000
+  41 000c 16160500 		.word	333334
+  42              		.section	.bss.next_state,"aw",%nobits
+  45              	next_state:
+  46 0000 00       		.space	1
+  47              		.section	.rodata.main.str1.4,"aMS",%progbits,1
+  48              		.align	2
+  49              	.LC1:
+  50 0000 0A546865 		.ascii	"\012The custom build via IDE\012\000"
+  50      20637573 
+  50      746F6D20 
+  50      6275696C 
+  50      64207669 
+  51 001b 00       		.align	2
+  52              	.LC3:
+  53 001c 0A0D2044 		.ascii	"\012\015 Debug Mode\000"
+  53      65627567 
+  53      204D6F64 
+  53      6500
+  54 002a 0000     		.align	2
+  55              	.LC5:
+  56 002c 0A0D2049 		.ascii	"\012\015 Initialization Routine Complete\000"
+  56      6E697469 
+  56      616C697A 
+  56      6174696F 
+  56      6E20526F 
+  57 004f 00       		.align	2
+  58              	.LC7:
+  59 0050 0A0D2041 		.ascii	"\012\015 All LED's OFF \000"
+  59      6C6C204C 
+  59      45442773 
+  59      204F4646 
+  59      2000
+  60 0062 0000     		.align	2
+  61              	.LC10:
+  62 0064 0A0D2053 		.ascii	"\012\015 StartUp Routine Complete\000"
+  62      74617274 
+  62      55702052 
+  62      6F757469 
+  62      6E652043 
+  63              		.align	2
+  64              	.LC12:
+  65 0080 0A0D2042 		.ascii	"\012\015 Begin Infinite Loop\000"
+  65      6567696E 
+  65      20496E66 
+  65      696E6974 
+  65      65204C6F 
+  66 0097 00       		.align	2
+  67              	.LC15:
+  68 0098 0A0D2053 		.ascii	"\012\015 START TIMER : %u\000"
+  68      54415254 
+  68      2054494D 
+  68      4552203A 
+  68      20257500 
+  69              		.section	.rodata
+  70              		.align	2
+  71              	.LC0:
+  72 0000 01       		.byte	1
+  73 0001 01       		.byte	1
+  74 0002 01       		.byte	1
+  75              		.section	.text.main,"ax",%progbits
+  76              		.align	1
+  77              		.global	main
+  78              		.arch armv6s-m
+  79              		.syntax unified
+  80              		.code	16
+  81              		.thumb_func
+  82              		.fpu softvfp
+  84              	main:
+  85              	.LFB61:
+  86              		.file 1 "../source/Blinkenlights.c"
+   1:../source/Blinkenlights.c **** /*
+   2:../source/Blinkenlights.c ****  * Copyright 2016-2020 NXP
+   3:../source/Blinkenlights.c ****  * All rights reserved.
+   4:../source/Blinkenlights.c ****  *
+   5:../source/Blinkenlights.c ****  * Redistribution and use in source and binary forms, with or without modification,
+   6:../source/Blinkenlights.c ****  * are permitted provided that the following conditions are met:
+   7:../source/Blinkenlights.c ****  *
+   8:../source/Blinkenlights.c ****  * o Redistributions of source code must retain the above copyright notice, this list
+   9:../source/Blinkenlights.c ****  *   of conditions and the following disclaimer.
+  10:../source/Blinkenlights.c ****  *
+  11:../source/Blinkenlights.c ****  * o Redistributions in binary form must reproduce the above copyright notice, this
+  12:../source/Blinkenlights.c ****  *   list of conditions and the following disclaimer in the documentation and/or
+  13:../source/Blinkenlights.c ****  *   other materials provided with the distribution.
+  14:../source/Blinkenlights.c ****  *
+  15:../source/Blinkenlights.c ****  * o Neither the name of NXP Semiconductor, Inc. nor the names of its
+  16:../source/Blinkenlights.c ****  *   contributors may be used to endorse or promote products derived from this
+  17:../source/Blinkenlights.c ****  *   software without specific prior written permission.
+  18:../source/Blinkenlights.c ****  *
+  19:../source/Blinkenlights.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  20:../source/Blinkenlights.c ****  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  21:../source/Blinkenlights.c ****  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  22:../source/Blinkenlights.c ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+  23:../source/Blinkenlights.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  24:../source/Blinkenlights.c ****  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  25:../source/Blinkenlights.c ****  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  26:../source/Blinkenlights.c ****  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  27:../source/Blinkenlights.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  28:../source/Blinkenlights.c ****  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  29:../source/Blinkenlights.c ****  */
+  30:../source/Blinkenlights.c ****  
+  31:../source/Blinkenlights.c **** /**
+  32:../source/Blinkenlights.c ****  * @file    Blinkenlights.c
+  33:../source/Blinkenlights.c ****  * @brief   Application entry point.
+  34:../source/Blinkenlights.c ****  */
+  35:../source/Blinkenlights.c **** #include <stdio.h>
+  36:../source/Blinkenlights.c **** #include "board.h"
+  37:../source/Blinkenlights.c **** #include "peripherals.h"
+  38:../source/Blinkenlights.c **** #include "pin_mux.h"
+  39:../source/Blinkenlights.c **** #include "clock_config.h"
+  40:../source/Blinkenlights.c **** #include "MKL25Z4.h"
+  41:../source/Blinkenlights.c **** #include "fsl_debug_console.h"
+  42:../source/Blinkenlights.c **** #include "led.h"
+  43:../source/Blinkenlights.c **** #include "delay.h"
+  44:../source/Blinkenlights.c **** #include "cap_sensor.h"
+  45:../source/Blinkenlights.c **** #include <stdint.h>
+  46:../source/Blinkenlights.c **** #include <stdbool.h>
+  47:../source/Blinkenlights.c **** #include <time.h>
+  48:../source/Blinkenlights.c **** 
+  49:../source/Blinkenlights.c **** /* ************************************************************************
+  50:../source/Blinkenlights.c ****  * Definitions
+  51:../source/Blinkenlights.c ****  **************************************************************************/
+  52:../source/Blinkenlights.c **** 
+  53:../source/Blinkenlights.c **** //#define sec  6000000
+  54:../source/Blinkenlights.c **** #define SEC  5000
+  55:../source/Blinkenlights.c **** 
+  56:../source/Blinkenlights.c **** static enum {ST_ON, ST_OFF, ST_TSI, ST_DEAD} next_state = ST_ON;
+  57:../source/Blinkenlights.c **** // ---------------------------------------------------------------------
+  58:../source/Blinkenlights.c **** 
+  59:../source/Blinkenlights.c **** /* ************************************************************************
+  60:../source/Blinkenlights.c ****  * Prototypes
+  61:../source/Blinkenlights.c ****  **************************************************************************/
+  62:../source/Blinkenlights.c **** 
+  63:../source/Blinkenlights.c **** /*
+  64:../source/Blinkenlights.c ****  * @brief   Application entry point.
+  65:../source/Blinkenlights.c ****  */
+  66:../source/Blinkenlights.c **** int main(void) {
+  87              		.loc 1 66 16
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 16
+  90              		@ frame_needed = 1, uses_anonymous_args = 0
+  91 0000 80B5     		push	{r7, lr}
+  92              		.cfi_def_cfa_offset 8
+  93              		.cfi_offset 7, -8
+  94              		.cfi_offset 14, -4
+  95 0002 84B0     		sub	sp, sp, #16
+  96              		.cfi_def_cfa_offset 24
+  97 0004 00AF     		add	r7, sp, #0
+  98              		.cfi_def_cfa_register 7
+  67:../source/Blinkenlights.c **** 
+  68:../source/Blinkenlights.c ****   	/* Init board hardware. */
+  69:../source/Blinkenlights.c ****     BOARD_InitBootPins();
+  99              		.loc 1 69 5
+ 100 0006 FFF7FEFF 		bl	BOARD_InitBootPins
+  70:../source/Blinkenlights.c ****     BOARD_InitBootClocks();
+ 101              		.loc 1 70 5
+ 102 000a FFF7FEFF 		bl	BOARD_InitBootClocks
+  71:../source/Blinkenlights.c ****     BOARD_InitBootPeripherals();
+ 103              		.loc 1 71 5
+ 104 000e FFF7FEFF 		bl	BOARD_InitBootPeripherals
+  72:../source/Blinkenlights.c **** #ifndef BOARD_INIT_DEBUG_CONSOLE_PERIPHERAL
+  73:../source/Blinkenlights.c ****     /* Init FSL debug console. */
+  74:../source/Blinkenlights.c ****     BOARD_InitDebugConsole();
+ 105              		.loc 1 74 5
+ 106 0012 FFF7FEFF 		bl	BOARD_InitDebugConsole
+  75:../source/Blinkenlights.c **** #endif
+  76:../source/Blinkenlights.c **** 
+  77:../source/Blinkenlights.c **** #ifdef FLAG
+  78:../source/Blinkenlights.c ****     PRINTF("\nThe custom build via IDE\n");
+ 107              		.loc 1 78 5
+ 108 0016 384B     		ldr	r3, .L6
+ 109 0018 1800     		movs	r0, r3
+ 110 001a FFF7FEFF 		bl	DbgConsole_Printf
+  79:../source/Blinkenlights.c **** #endif
+  80:../source/Blinkenlights.c **** 
+  81:../source/Blinkenlights.c **** #ifdef DEBUG
+  82:../source/Blinkenlights.c ****     PRINTF("\n\r Debug Mode");
+ 111              		.loc 1 82 5
+ 112 001e 374B     		ldr	r3, .L6+4
+ 113 0020 1800     		movs	r0, r3
+ 114 0022 FFF7FEFF 		bl	DbgConsole_Printf
+  83:../source/Blinkenlights.c **** #endif
+  84:../source/Blinkenlights.c **** 
+  85:../source/Blinkenlights.c ****     /* Initialize the LED Pins as OUTPUT Pins */
+  86:../source/Blinkenlights.c ****     LED_Init();
+ 115              		.loc 1 86 5
+ 116 0026 FFF7FEFF 		bl	LED_Init
+  87:../source/Blinkenlights.c ****     CAP_Init();
+ 117              		.loc 1 87 5
+ 118 002a FFF7FEFF 		bl	CAP_Init
+  88:../source/Blinkenlights.c **** #ifdef DEBUG
+  89:../source/Blinkenlights.c ****     PRINTF("\n\r Initialization Routine Complete");
+ 119              		.loc 1 89 5
+ 120 002e 344B     		ldr	r3, .L6+8
+ 121 0030 1800     		movs	r0, r3
+ 122 0032 FFF7FEFF 		bl	DbgConsole_Printf
+  90:../source/Blinkenlights.c **** #endif
+  91:../source/Blinkenlights.c **** 
+  92:../source/Blinkenlights.c **** 
+  93:../source/Blinkenlights.c ****     // Initially Clear all the LED Bits on Ports
+  94:../source/Blinkenlights.c ****     LED_Control(0, 0, 0);
+ 123              		.loc 1 94 5
+ 124 0036 0022     		movs	r2, #0
+ 125 0038 0021     		movs	r1, #0
+ 126 003a 0020     		movs	r0, #0
+ 127 003c FFF7FEFF 		bl	LED_Control
+  95:../source/Blinkenlights.c **** #ifdef DEBUG
+  96:../source/Blinkenlights.c ****     PRINTF("\n\r All LED's OFF ");
+ 128              		.loc 1 96 5
+ 129 0040 304B     		ldr	r3, .L6+12
+ 130 0042 1800     		movs	r0, r3
+ 131 0044 FFF7FEFF 		bl	DbgConsole_Printf
+  97:../source/Blinkenlights.c **** #endif
+  98:../source/Blinkenlights.c **** 
+  99:../source/Blinkenlights.c ****     int val = 0;
+ 132              		.loc 1 99 9
+ 133 0048 0023     		movs	r3, #0
+ 134 004a BB60     		str	r3, [r7, #8]
+ 100:../source/Blinkenlights.c ****     bool LED_Status[3] = {RED_ON, GREEN_ON, BLUE_ON};
+ 135              		.loc 1 100 10
+ 136 004c 3B1D     		adds	r3, r7, #4
+ 137 004e 2E4A     		ldr	r2, .L6+16
+ 138 0050 1188     		ldrh	r1, [r2]
+ 139 0052 1980     		strh	r1, [r3]
+ 140 0054 9278     		ldrb	r2, [r2, #2]
+ 141 0056 9A70     		strb	r2, [r3, #2]
+ 101:../source/Blinkenlights.c **** 
+ 102:../source/Blinkenlights.c **** 
+ 103:../source/Blinkenlights.c ****     // Startup Pattern
+ 104:../source/Blinkenlights.c ****     LED_Startup(SEC);
+ 142              		.loc 1 104 5
+ 143 0058 2C4B     		ldr	r3, .L6+20
+ 144 005a 1800     		movs	r0, r3
+ 145 005c FFF7FEFF 		bl	LED_Startup
+ 105:../source/Blinkenlights.c **** #ifdef DEBUG
+ 106:../source/Blinkenlights.c ****     PRINTF("\n\r StartUp Routine Complete");
+ 146              		.loc 1 106 5
+ 147 0060 2B4B     		ldr	r3, .L6+24
+ 148 0062 1800     		movs	r0, r3
+ 149 0064 FFF7FEFF 		bl	DbgConsole_Printf
+ 107:../source/Blinkenlights.c **** #endif
+ 108:../source/Blinkenlights.c **** 
+ 109:../source/Blinkenlights.c **** #ifdef DEBUG
+ 110:../source/Blinkenlights.c ****     PRINTF("\n\r Begin Infinite Loop");
+ 150              		.loc 1 110 5
+ 151 0068 2A4B     		ldr	r3, .L6+28
+ 152 006a 1800     		movs	r0, r3
+ 153 006c FFF7FEFF 		bl	DbgConsole_Printf
+ 154              	.LBB2:
+ 111:../source/Blinkenlights.c **** #endif
+ 112:../source/Blinkenlights.c **** 
+ 113:../source/Blinkenlights.c ****     for(int i=0 ; ; i++) {
+ 155              		.loc 1 113 13
+ 156 0070 0023     		movs	r3, #0
+ 157 0072 FB60     		str	r3, [r7, #12]
+ 158              	.L5:
+ 114:../source/Blinkenlights.c ****     	if(i == 4) {
+ 159              		.loc 1 114 8
+ 160 0074 FB68     		ldr	r3, [r7, #12]
+ 161 0076 042B     		cmp	r3, #4
+ 162 0078 01D1     		bne	.L2
+ 115:../source/Blinkenlights.c ****     		i = 0;
+ 163              		.loc 1 115 9
+ 164 007a 0023     		movs	r3, #0
+ 165 007c FB60     		str	r3, [r7, #12]
+ 166              	.L2:
+ 116:../source/Blinkenlights.c ****     	}
+ 117:../source/Blinkenlights.c **** #ifdef DEBUG
+ 118:../source/Blinkenlights.c ****     PRINTF("\n\r START TIMER : %u", delayTimes[i]);
+ 167              		.loc 1 118 5
+ 168 007e 264B     		ldr	r3, .L6+32
+ 169 0080 FA68     		ldr	r2, [r7, #12]
+ 170 0082 9200     		lsls	r2, r2, #2
+ 171 0084 D258     		ldr	r2, [r2, r3]
+ 172 0086 254B     		ldr	r3, .L6+36
+ 173 0088 1100     		movs	r1, r2
+ 174 008a 1800     		movs	r0, r3
+ 175 008c FFF7FEFF 		bl	DbgConsole_Printf
+ 119:../source/Blinkenlights.c **** #endif
+ 120:../source/Blinkenlights.c **** 		if( next_state == ST_ON) {
+ 176              		.loc 1 120 18
+ 177 0090 234B     		ldr	r3, .L6+40
+ 178 0092 1B78     		ldrb	r3, [r3]
+ 179              		.loc 1 120 5
+ 180 0094 002B     		cmp	r3, #0
+ 181 0096 1BD1     		bne	.L3
+ 121:../source/Blinkenlights.c **** 			LED_Control(LED_Status[0], LED_Status[1] , LED_Status[2]);
+ 182              		.loc 1 121 26
+ 183 0098 3B1D     		adds	r3, r7, #4
+ 184 009a 1B78     		ldrb	r3, [r3]
+ 185              		.loc 1 121 4
+ 186 009c 1800     		movs	r0, r3
+ 187              		.loc 1 121 41
+ 188 009e 3B1D     		adds	r3, r7, #4
+ 189 00a0 5B78     		ldrb	r3, [r3, #1]
+ 190              		.loc 1 121 4
+ 191 00a2 1900     		movs	r1, r3
+ 192              		.loc 1 121 57
+ 193 00a4 3B1D     		adds	r3, r7, #4
+ 194 00a6 9B78     		ldrb	r3, [r3, #2]
+ 195              		.loc 1 121 4
+ 196 00a8 1A00     		movs	r2, r3
+ 197 00aa FFF7FEFF 		bl	LED_Control
+ 122:../source/Blinkenlights.c **** 
+ 123:../source/Blinkenlights.c **** 			conditional_Delay(delayLoopUp[i], delay100MSECLoopUp[i], &val, LED_Status);
+ 198              		.loc 1 123 33
+ 199 00ae 1D4B     		ldr	r3, .L6+44
+ 200 00b0 FA68     		ldr	r2, [r7, #12]
+ 201 00b2 9200     		lsls	r2, r2, #2
+ 202 00b4 D358     		ldr	r3, [r2, r3]
+ 203              		.loc 1 123 4
+ 204 00b6 1800     		movs	r0, r3
+ 205 00b8 1B4B     		ldr	r3, .L6+48
+ 206 00ba FA68     		ldr	r2, [r7, #12]
+ 207 00bc 9200     		lsls	r2, r2, #2
+ 208 00be D158     		ldr	r1, [r2, r3]
+ 209 00c0 3B1D     		adds	r3, r7, #4
+ 210 00c2 0822     		movs	r2, #8
+ 211 00c4 BA18     		adds	r2, r7, r2
+ 212 00c6 FFF7FEFF 		bl	conditional_Delay
+ 124:../source/Blinkenlights.c **** 			next_state = ST_OFF;
+ 213              		.loc 1 124 15
+ 214 00ca 154B     		ldr	r3, .L6+40
+ 215 00cc 0122     		movs	r2, #1
+ 216 00ce 1A70     		strb	r2, [r3]
+ 217              	.L3:
+ 125:../source/Blinkenlights.c **** 		}
+ 126:../source/Blinkenlights.c **** 		if (next_state == ST_OFF) {
+ 218              		.loc 1 126 18
+ 219 00d0 134B     		ldr	r3, .L6+40
+ 220 00d2 1B78     		ldrb	r3, [r3]
+ 221              		.loc 1 126 6
+ 222 00d4 012B     		cmp	r3, #1
+ 223 00d6 0BD1     		bne	.L4
+ 127:../source/Blinkenlights.c **** 			LED_Control(0,0,0);
+ 224              		.loc 1 127 4
+ 225 00d8 0022     		movs	r2, #0
+ 226 00da 0021     		movs	r1, #0
+ 227 00dc 0020     		movs	r0, #0
+ 228 00de FFF7FEFF 		bl	LED_Control
+ 128:../source/Blinkenlights.c **** 			Delay(SEC/2);
+ 229              		.loc 1 128 4
+ 230 00e2 124B     		ldr	r3, .L6+52
+ 231 00e4 1800     		movs	r0, r3
+ 232 00e6 FFF7FEFF 		bl	Delay
+ 129:../source/Blinkenlights.c **** 			next_state = ST_ON;
+ 233              		.loc 1 129 15
+ 234 00ea 0D4B     		ldr	r3, .L6+40
+ 235 00ec 0022     		movs	r2, #0
+ 236 00ee 1A70     		strb	r2, [r3]
+ 237              	.L4:
+ 113:../source/Blinkenlights.c ****     	if(i == 4) {
+ 238              		.loc 1 113 22
+ 239 00f0 FB68     		ldr	r3, [r7, #12]
+ 240 00f2 0133     		adds	r3, r3, #1
+ 241 00f4 FB60     		str	r3, [r7, #12]
+ 114:../source/Blinkenlights.c ****     		i = 0;
+ 242              		.loc 1 114 8
+ 243 00f6 BDE7     		b	.L5
+ 244              	.L7:
+ 245              		.align	2
+ 246              	.L6:
+ 247 00f8 00000000 		.word	.LC1
+ 248 00fc 1C000000 		.word	.LC3
+ 249 0100 2C000000 		.word	.LC5
+ 250 0104 50000000 		.word	.LC7
+ 251 0108 00000000 		.word	.LC0
+ 252 010c 88130000 		.word	5000
+ 253 0110 64000000 		.word	.LC10
+ 254 0114 80000000 		.word	.LC12
+ 255 0118 00000000 		.word	delayTimes
+ 256 011c 98000000 		.word	.LC15
+ 257 0120 00000000 		.word	next_state
+ 258 0124 00000000 		.word	delayLoopUp
+ 259 0128 00000000 		.word	delay100MSECLoopUp
+ 260 012c C4090000 		.word	2500
+ 261              	.LBE2:
+ 262              		.cfi_endproc
+ 263              	.LFE61:
+ 265              		.text
+ 266              	.Letext0:
+ 267              		.file 2 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 268              		.file 3 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 269              		.file 4 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 270              		.file 5 "/home/arpit/studies/pes/Blinkenlights/CMSIS/system_MKL25Z4.h"
+ 271              		.file 6 "/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h"
+ 272              		.file 7 "/home/arpit/studies/pes/Blinkenlights/drivers/fsl_common.h"
+ 273              		.file 8 "/home/arpit/studies/pes/Blinkenlights/board/clock_config.h"
+ 274              		.file 9 "../source/delay.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 Blinkenlights.c
+     /tmp/cc7WAA41.s:16     .rodata.delayTimes:0000000000000000 $d
+     /tmp/cc7WAA41.s:19     .rodata.delayTimes:0000000000000000 delayTimes
+     /tmp/cc7WAA41.s:25     .rodata.delayLoopUp:0000000000000000 $d
+     /tmp/cc7WAA41.s:28     .rodata.delayLoopUp:0000000000000000 delayLoopUp
+     /tmp/cc7WAA41.s:34     .rodata.delay100MSECLoopUp:0000000000000000 $d
+     /tmp/cc7WAA41.s:37     .rodata.delay100MSECLoopUp:0000000000000000 delay100MSECLoopUp
+     /tmp/cc7WAA41.s:45     .bss.next_state:0000000000000000 next_state
+     /tmp/cc7WAA41.s:46     .bss.next_state:0000000000000000 $d
+     /tmp/cc7WAA41.s:48     .rodata.main.str1.4:0000000000000000 $d
+     /tmp/cc7WAA41.s:70     .rodata:0000000000000000 $d
+     /tmp/cc7WAA41.s:76     .text.main:0000000000000000 $t
+     /tmp/cc7WAA41.s:84     .text.main:0000000000000000 main
+     /tmp/cc7WAA41.s:247    .text.main:00000000000000f8 $d
+                           .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
+                           .group:0000000000000000 wm4.redlib_version.h.16.f905717e4b3a91dcbdbb631865150df4
+                           .group:0000000000000000 wm4.libconfigarm.h.19.34723c94cbd19598192aa6b1e87fca41
+                           .group:0000000000000000 wm4.stdio.h.45.f451916e772fb1711dab452062404594
+                           .group:0000000000000000 wm4.assert.h.39.e41bcb6e11bd7f1aaa7bbb5b609fe4b1
+                           .group:0000000000000000 wm4.stdbool.h.15.fddf1cb2402fd739d8e2516677869231
+                           .group:0000000000000000 wm4.stdint.h.31.58198de4ea930fb897655479091e17c7
+                           .group:0000000000000000 wm4.fsl_device_registers.h.32.0bd0fc1949c4d5ee8778d13f693b6d67
+                           .group:0000000000000000 wm4.MKL25Z4.h.103.6fa60f7365436a291410ac7ae38d8851
+                           .group:0000000000000000 wm4.core_cm0plus.h.42.7e68c73109133db28e6113a0ee252d6f
+                           .group:0000000000000000 wm4.cmsis_gcc.h.36.5bb14fd68ce7855540fcfe2d9305ae16
+                           .group:0000000000000000 wm4.core_cm0plus.h.175.8e2cbb335a2ae70828db295817e11b6e
+                           .group:0000000000000000 wm4.system_MKL25Z4.h.107.b43986f939b1bf0ee0f9aa04879788f4
+                           .group:0000000000000000 wm4.MKL25Z4.h.379.376a3f36380a1b2f1e4cdc95287bb342
+                           .group:0000000000000000 wm4.MKL25Z4_features.h.84.30fd6c6f11c9d2ffea2189829de10275
+                           .group:0000000000000000 wm4.fsl_common.h.55.f0a989f874fed9062f996a5c92215a0e
+                           .group:0000000000000000 wm4.fsl_clock.h.61.86ace3515ab77fa85db71e2d42e7d189
+                           .group:0000000000000000 wm4.fsl_common.h.162.37daaf5dee6e1f72e10ac988afa1643d
+                           .group:0000000000000000 wm4.clock_config.h.14.f503207375904de35c270c0667216699
+                           .group:0000000000000000 wm4.fsl_gpio.h.32.9a0d943298c94a992969acbc78e9d286
+                           .group:0000000000000000 wm4.board.h.42.5ce18074d55e35e9ee7136f727b53be4
+                           .group:0000000000000000 wm4.pin_mux.h.7.c00b5943e04da57ac7d7108f33c7352d
+                           .group:0000000000000000 wm4.fsl_debug_console.h.45.91cf4e441afe869add665a9dcd5a3b6d
+                           .group:0000000000000000 wm4.cap_sensor.h.9.4eb917303d85796fdce2937901841ade
+                           .group:0000000000000000 wm4.led.h.22.edf48fafab9ff810bfb7872fefcf092e
+                           .group:0000000000000000 wm4.time.h.24.b4ffc42616c61fa7e6ac58ff6bc0645b
+
+UNDEFINED SYMBOLS
+BOARD_InitBootPins
+BOARD_InitBootClocks
+BOARD_InitBootPeripherals
+BOARD_InitDebugConsole
+DbgConsole_Printf
+LED_Init
+CAP_Init
+LED_Control
+LED_Startup
+conditional_Delay
+Delay

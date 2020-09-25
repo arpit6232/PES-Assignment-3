@@ -1,0 +1,748 @@
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 6
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"system_MKL25Z4.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.global	SystemCoreClock
+  16              		.section	.data.SystemCoreClock,"aw"
+  17              		.align	2
+  20              	SystemCoreClock:
+  21 0000 00004001 		.word	20971520
+  22              		.section	.text.SystemInit,"ax",%progbits
+  23              		.align	1
+  24              		.global	SystemInit
+  25              		.arch armv6s-m
+  26              		.syntax unified
+  27              		.code	16
+  28              		.thumb_func
+  29              		.fpu softvfp
+  31              	SystemInit:
+  32              	.LFB34:
+  33              		.file 1 "../CMSIS/system_MKL25Z4.c"
+   1:../CMSIS/system_MKL25Z4.c **** /*
+   2:../CMSIS/system_MKL25Z4.c **** ** ###################################################################
+   3:../CMSIS/system_MKL25Z4.c **** **     Processors:          MKL25Z128VFM4
+   4:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z128VFT4
+   5:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z128VLH4
+   6:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z128VLK4
+   7:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z32VFM4
+   8:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z32VFT4
+   9:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z32VLH4
+  10:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z32VLK4
+  11:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z64VFM4
+  12:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z64VFT4
+  13:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z64VLH4
+  14:../CMSIS/system_MKL25Z4.c **** **                          MKL25Z64VLK4
+  15:../CMSIS/system_MKL25Z4.c **** **
+  16:../CMSIS/system_MKL25Z4.c **** **     Compilers:           Keil ARM C/C++ Compiler
+  17:../CMSIS/system_MKL25Z4.c **** **                          Freescale C/C++ for Embedded ARM
+  18:../CMSIS/system_MKL25Z4.c **** **                          GNU C Compiler
+  19:../CMSIS/system_MKL25Z4.c **** **                          IAR ANSI C/C++ Compiler for ARM
+  20:../CMSIS/system_MKL25Z4.c **** **                          MCUXpresso Compiler
+  21:../CMSIS/system_MKL25Z4.c **** **
+  22:../CMSIS/system_MKL25Z4.c **** **     Reference manual:    KL25P80M48SF0RM, Rev.3, Sep 2012
+  23:../CMSIS/system_MKL25Z4.c **** **     Version:             rev. 2.5, 2015-02-19
+  24:../CMSIS/system_MKL25Z4.c **** **     Build:               b170112
+  25:../CMSIS/system_MKL25Z4.c **** **
+  26:../CMSIS/system_MKL25Z4.c **** **     Abstract:
+  27:../CMSIS/system_MKL25Z4.c **** **         Provides a system configuration function and a global variable that
+  28:../CMSIS/system_MKL25Z4.c **** **         contains the system frequency. It configures the device and initializes
+  29:../CMSIS/system_MKL25Z4.c **** **         the oscillator (PLL) that is part of the microcontroller device.
+  30:../CMSIS/system_MKL25Z4.c **** **
+  31:../CMSIS/system_MKL25Z4.c **** **     Copyright (c) 2016 Freescale Semiconductor, Inc.
+  32:../CMSIS/system_MKL25Z4.c **** **     Copyright 2016 - 2017 NXP
+  33:../CMSIS/system_MKL25Z4.c **** **     Redistribution and use in source and binary forms, with or without modification,
+  34:../CMSIS/system_MKL25Z4.c **** **     are permitted provided that the following conditions are met:
+  35:../CMSIS/system_MKL25Z4.c **** **
+  36:../CMSIS/system_MKL25Z4.c **** **     o Redistributions of source code must retain the above copyright notice, this list
+  37:../CMSIS/system_MKL25Z4.c **** **       of conditions and the following disclaimer.
+  38:../CMSIS/system_MKL25Z4.c **** **
+  39:../CMSIS/system_MKL25Z4.c **** **     o Redistributions in binary form must reproduce the above copyright notice, this
+  40:../CMSIS/system_MKL25Z4.c **** **       list of conditions and the following disclaimer in the documentation and/or
+  41:../CMSIS/system_MKL25Z4.c **** **       other materials provided with the distribution.
+  42:../CMSIS/system_MKL25Z4.c **** **
+  43:../CMSIS/system_MKL25Z4.c **** **     o Neither the name of the copyright holder nor the names of its
+  44:../CMSIS/system_MKL25Z4.c **** **       contributors may be used to endorse or promote products derived from this
+  45:../CMSIS/system_MKL25Z4.c **** **       software without specific prior written permission.
+  46:../CMSIS/system_MKL25Z4.c **** **
+  47:../CMSIS/system_MKL25Z4.c **** **     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  48:../CMSIS/system_MKL25Z4.c **** **     ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  49:../CMSIS/system_MKL25Z4.c **** **     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  50:../CMSIS/system_MKL25Z4.c **** **     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+  51:../CMSIS/system_MKL25Z4.c **** **     ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  52:../CMSIS/system_MKL25Z4.c **** **     (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  53:../CMSIS/system_MKL25Z4.c **** **     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  54:../CMSIS/system_MKL25Z4.c **** **     ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  55:../CMSIS/system_MKL25Z4.c **** **     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  56:../CMSIS/system_MKL25Z4.c **** **     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  57:../CMSIS/system_MKL25Z4.c **** **
+  58:../CMSIS/system_MKL25Z4.c **** **     http:                 www.nxp.com
+  59:../CMSIS/system_MKL25Z4.c **** **     mail:                 support@nxp.com
+  60:../CMSIS/system_MKL25Z4.c **** **
+  61:../CMSIS/system_MKL25Z4.c **** **     Revisions:
+  62:../CMSIS/system_MKL25Z4.c **** **     - rev. 1.0 (2012-06-13)
+  63:../CMSIS/system_MKL25Z4.c **** **         Initial version.
+  64:../CMSIS/system_MKL25Z4.c **** **     - rev. 1.1 (2012-06-21)
+  65:../CMSIS/system_MKL25Z4.c **** **         Update according to reference manual rev. 1.
+  66:../CMSIS/system_MKL25Z4.c **** **     - rev. 1.2 (2012-08-01)
+  67:../CMSIS/system_MKL25Z4.c **** **         Device type UARTLP changed to UART0.
+  68:../CMSIS/system_MKL25Z4.c **** **     - rev. 1.3 (2012-10-04)
+  69:../CMSIS/system_MKL25Z4.c **** **         Update according to reference manual rev. 3.
+  70:../CMSIS/system_MKL25Z4.c **** **     - rev. 1.4 (2012-11-22)
+  71:../CMSIS/system_MKL25Z4.c **** **         MCG module - bit LOLS in MCG_S register renamed to LOLS0.
+  72:../CMSIS/system_MKL25Z4.c **** **         NV registers - bit EZPORT_DIS in NV_FOPT register removed.
+  73:../CMSIS/system_MKL25Z4.c **** **     - rev. 1.5 (2013-04-05)
+  74:../CMSIS/system_MKL25Z4.c **** **         Changed start of doxygen comment.
+  75:../CMSIS/system_MKL25Z4.c **** **     - rev. 2.0 (2013-10-29)
+  76:../CMSIS/system_MKL25Z4.c **** **         Register accessor macros added to the memory map.
+  77:../CMSIS/system_MKL25Z4.c **** **         Symbols for Processor Expert memory map compatibility added to the memory map.
+  78:../CMSIS/system_MKL25Z4.c **** **         Startup file for gcc has been updated according to CMSIS 3.2.
+  79:../CMSIS/system_MKL25Z4.c **** **         System initialization updated.
+  80:../CMSIS/system_MKL25Z4.c **** **     - rev. 2.1 (2014-07-16)
+  81:../CMSIS/system_MKL25Z4.c **** **         Module access macro module_BASES replaced by module_BASE_PTRS.
+  82:../CMSIS/system_MKL25Z4.c **** **         System initialization and startup updated.
+  83:../CMSIS/system_MKL25Z4.c **** **     - rev. 2.2 (2014-08-22)
+  84:../CMSIS/system_MKL25Z4.c **** **         System initialization updated - default clock config changed.
+  85:../CMSIS/system_MKL25Z4.c **** **     - rev. 2.3 (2014-08-28)
+  86:../CMSIS/system_MKL25Z4.c **** **         Update of startup files - possibility to override DefaultISR added.
+  87:../CMSIS/system_MKL25Z4.c **** **     - rev. 2.4 (2014-10-14)
+  88:../CMSIS/system_MKL25Z4.c **** **         Interrupt INT_LPTimer renamed to INT_LPTMR0.
+  89:../CMSIS/system_MKL25Z4.c **** **     - rev. 2.5 (2015-02-19)
+  90:../CMSIS/system_MKL25Z4.c **** **         Renamed interrupt vector LLW to LLWU.
+  91:../CMSIS/system_MKL25Z4.c **** **
+  92:../CMSIS/system_MKL25Z4.c **** ** ###################################################################
+  93:../CMSIS/system_MKL25Z4.c **** */
+  94:../CMSIS/system_MKL25Z4.c **** 
+  95:../CMSIS/system_MKL25Z4.c **** /*!
+  96:../CMSIS/system_MKL25Z4.c ****  * @file MKL25Z4
+  97:../CMSIS/system_MKL25Z4.c ****  * @version 2.5
+  98:../CMSIS/system_MKL25Z4.c ****  * @date 2015-02-19
+  99:../CMSIS/system_MKL25Z4.c ****  * @brief Device specific configuration file for MKL25Z4 (implementation file)
+ 100:../CMSIS/system_MKL25Z4.c ****  *
+ 101:../CMSIS/system_MKL25Z4.c ****  * Provides a system configuration function and a global variable that contains
+ 102:../CMSIS/system_MKL25Z4.c ****  * the system frequency. It configures the device and initializes the oscillator
+ 103:../CMSIS/system_MKL25Z4.c ****  * (PLL) that is part of the microcontroller device.
+ 104:../CMSIS/system_MKL25Z4.c ****  */
+ 105:../CMSIS/system_MKL25Z4.c **** 
+ 106:../CMSIS/system_MKL25Z4.c **** #include <stdint.h>
+ 107:../CMSIS/system_MKL25Z4.c **** #include "fsl_device_registers.h"
+ 108:../CMSIS/system_MKL25Z4.c **** 
+ 109:../CMSIS/system_MKL25Z4.c **** 
+ 110:../CMSIS/system_MKL25Z4.c **** 
+ 111:../CMSIS/system_MKL25Z4.c **** /* ----------------------------------------------------------------------------
+ 112:../CMSIS/system_MKL25Z4.c ****    -- Core clock
+ 113:../CMSIS/system_MKL25Z4.c ****    ---------------------------------------------------------------------------- */
+ 114:../CMSIS/system_MKL25Z4.c **** 
+ 115:../CMSIS/system_MKL25Z4.c **** uint32_t SystemCoreClock = DEFAULT_SYSTEM_CLOCK;
+ 116:../CMSIS/system_MKL25Z4.c **** 
+ 117:../CMSIS/system_MKL25Z4.c **** /* ----------------------------------------------------------------------------
+ 118:../CMSIS/system_MKL25Z4.c ****    -- SystemInit()
+ 119:../CMSIS/system_MKL25Z4.c ****    ---------------------------------------------------------------------------- */
+ 120:../CMSIS/system_MKL25Z4.c **** 
+ 121:../CMSIS/system_MKL25Z4.c **** void SystemInit (void) {
+  34              		.loc 1 121 24
+  35              		.cfi_startproc
+  36              		@ args = 0, pretend = 0, frame = 0
+  37              		@ frame_needed = 1, uses_anonymous_args = 0
+  38 0000 80B5     		push	{r7, lr}
+  39              		.cfi_def_cfa_offset 8
+  40              		.cfi_offset 7, -8
+  41              		.cfi_offset 14, -4
+  42 0002 00AF     		add	r7, sp, #0
+  43              		.cfi_def_cfa_register 7
+ 122:../CMSIS/system_MKL25Z4.c **** #if (DISABLE_WDOG)
+ 123:../CMSIS/system_MKL25Z4.c ****   /* SIM_COPC: COPT=0,COPCLKS=0,COPW=0 */
+ 124:../CMSIS/system_MKL25Z4.c ****   SIM->COPC = (uint32_t)0x00u;
+  44              		.loc 1 124 6
+  45 0004 034A     		ldr	r2, .L2
+  46              		.loc 1 124 13
+  47 0006 8823     		movs	r3, #136
+  48 0008 5B01     		lsls	r3, r3, #5
+  49 000a 0021     		movs	r1, #0
+  50 000c D150     		str	r1, [r2, r3]
+ 125:../CMSIS/system_MKL25Z4.c **** #endif /* (DISABLE_WDOG) */
+ 126:../CMSIS/system_MKL25Z4.c **** 
+ 127:../CMSIS/system_MKL25Z4.c **** }
+  51              		.loc 1 127 1
+  52 000e C046     		nop
+  53 0010 BD46     		mov	sp, r7
+  54              		@ sp needed
+  55 0012 80BD     		pop	{r7, pc}
+  56              	.L3:
+  57              		.align	2
+  58              	.L2:
+  59 0014 00700440 		.word	1074032640
+  60              		.cfi_endproc
+  61              	.LFE34:
+  63              		.global	__aeabi_uidiv
+  64              		.section	.text.SystemCoreClockUpdate,"ax",%progbits
+  65              		.align	1
+  66              		.global	SystemCoreClockUpdate
+  67              		.syntax unified
+  68              		.code	16
+  69              		.thumb_func
+  70              		.fpu softvfp
+  72              	SystemCoreClockUpdate:
+  73              	.LFB35:
+ 128:../CMSIS/system_MKL25Z4.c **** 
+ 129:../CMSIS/system_MKL25Z4.c **** /* ----------------------------------------------------------------------------
+ 130:../CMSIS/system_MKL25Z4.c ****    -- SystemCoreClockUpdate()
+ 131:../CMSIS/system_MKL25Z4.c ****    ---------------------------------------------------------------------------- */
+ 132:../CMSIS/system_MKL25Z4.c **** 
+ 133:../CMSIS/system_MKL25Z4.c **** void SystemCoreClockUpdate (void) {
+  74              		.loc 1 133 35
+  75              		.cfi_startproc
+  76              		@ args = 0, pretend = 0, frame = 8
+  77              		@ frame_needed = 1, uses_anonymous_args = 0
+  78 0000 80B5     		push	{r7, lr}
+  79              		.cfi_def_cfa_offset 8
+  80              		.cfi_offset 7, -8
+  81              		.cfi_offset 14, -4
+  82 0002 82B0     		sub	sp, sp, #8
+  83              		.cfi_def_cfa_offset 16
+  84 0004 00AF     		add	r7, sp, #0
+  85              		.cfi_def_cfa_register 7
+ 134:../CMSIS/system_MKL25Z4.c ****   uint32_t MCGOUTClock;                /* Variable to store output clock frequency of the MCG modul
+ 135:../CMSIS/system_MKL25Z4.c ****   uint16_t Divider;
+ 136:../CMSIS/system_MKL25Z4.c **** 
+ 137:../CMSIS/system_MKL25Z4.c ****   if ((MCG->C1 & MCG_C1_CLKS_MASK) == 0x00U) {
+  86              		.loc 1 137 11
+  87 0006 894B     		ldr	r3, .L31
+  88 0008 1B78     		ldrb	r3, [r3]
+  89 000a DBB2     		uxtb	r3, r3
+  90              		.loc 1 137 16
+  91 000c 1A00     		movs	r2, r3
+  92 000e C023     		movs	r3, #192
+  93 0010 1340     		ands	r3, r2
+  94              		.loc 1 137 6
+  95 0012 00D0     		beq	.LCB49
+  96 0014 C3E0     		b	.L5	@long jump
+  97              	.LCB49:
+ 138:../CMSIS/system_MKL25Z4.c ****     /* Output of FLL or PLL is selected */
+ 139:../CMSIS/system_MKL25Z4.c ****     if ((MCG->C6 & MCG_C6_PLLS_MASK) == 0x00U) {
+  98              		.loc 1 139 13
+  99 0016 854B     		ldr	r3, .L31
+ 100 0018 5B79     		ldrb	r3, [r3, #5]
+ 101 001a DBB2     		uxtb	r3, r3
+ 102              		.loc 1 139 18
+ 103 001c 1A00     		movs	r2, r3
+ 104 001e 4023     		movs	r3, #64
+ 105 0020 1340     		ands	r3, r2
+ 106              		.loc 1 139 8
+ 107 0022 00D0     		beq	.LCB57
+ 108 0024 99E0     		b	.L6	@long jump
+ 109              	.LCB57:
+ 140:../CMSIS/system_MKL25Z4.c ****       /* FLL is selected */
+ 141:../CMSIS/system_MKL25Z4.c ****       if ((MCG->C1 & MCG_C1_IREFS_MASK) == 0x00U) {
+ 110              		.loc 1 141 15
+ 111 0026 814B     		ldr	r3, .L31
+ 112 0028 1B78     		ldrb	r3, [r3]
+ 113 002a DBB2     		uxtb	r3, r3
+ 114              		.loc 1 141 20
+ 115 002c 1A00     		movs	r2, r3
+ 116 002e 0423     		movs	r3, #4
+ 117 0030 1340     		ands	r3, r2
+ 118              		.loc 1 141 10
+ 119 0032 3AD1     		bne	.L7
+ 142:../CMSIS/system_MKL25Z4.c ****         /* External reference clock is selected */
+ 143:../CMSIS/system_MKL25Z4.c ****         MCGOUTClock = CPU_XTAL_CLK_HZ; /* System oscillator drives MCG clock */
+ 120              		.loc 1 143 21
+ 121 0034 7E4B     		ldr	r3, .L31+4
+ 122 0036 7B60     		str	r3, [r7, #4]
+ 144:../CMSIS/system_MKL25Z4.c ****         if ((MCG->C2 & MCG_C2_RANGE0_MASK) != 0x00U) {
+ 123              		.loc 1 144 17
+ 124 0038 7C4B     		ldr	r3, .L31
+ 125 003a 5B78     		ldrb	r3, [r3, #1]
+ 126 003c DBB2     		uxtb	r3, r3
+ 127              		.loc 1 144 22
+ 128 003e 1A00     		movs	r2, r3
+ 129 0040 3023     		movs	r3, #48
+ 130 0042 1340     		ands	r3, r2
+ 131              		.loc 1 144 12
+ 132 0044 1ED0     		beq	.L8
+ 145:../CMSIS/system_MKL25Z4.c ****           switch (MCG->C1 & MCG_C1_FRDIV_MASK) {
+ 133              		.loc 1 145 22
+ 134 0046 794B     		ldr	r3, .L31
+ 135 0048 1B78     		ldrb	r3, [r3]
+ 136 004a DBB2     		uxtb	r3, r3
+ 137              		.loc 1 145 27
+ 138 004c 1A00     		movs	r2, r3
+ 139 004e 3823     		movs	r3, #56
+ 140 0050 1340     		ands	r3, r2
+ 141              		.loc 1 145 11
+ 142 0052 302B     		cmp	r3, #48
+ 143 0054 06D0     		beq	.L9
+ 144 0056 382B     		cmp	r3, #56
+ 145 0058 09D1     		bne	.L10
+ 146:../CMSIS/system_MKL25Z4.c ****           case 0x38U:
+ 147:../CMSIS/system_MKL25Z4.c ****             Divider = 1536U;
+ 146              		.loc 1 147 21
+ 147 005a BB1C     		adds	r3, r7, #2
+ 148 005c C022     		movs	r2, #192
+ 149 005e D200     		lsls	r2, r2, #3
+ 150 0060 1A80     		strh	r2, [r3]
+ 148:../CMSIS/system_MKL25Z4.c ****             break;
+ 151              		.loc 1 148 13
+ 152 0062 19E0     		b	.L12
+ 153              	.L9:
+ 149:../CMSIS/system_MKL25Z4.c ****           case 0x30U:
+ 150:../CMSIS/system_MKL25Z4.c ****             Divider = 1280U;
+ 154              		.loc 1 150 21
+ 155 0064 BB1C     		adds	r3, r7, #2
+ 156 0066 A022     		movs	r2, #160
+ 157 0068 D200     		lsls	r2, r2, #3
+ 158 006a 1A80     		strh	r2, [r3]
+ 151:../CMSIS/system_MKL25Z4.c ****             break;
+ 159              		.loc 1 151 13
+ 160 006c 14E0     		b	.L12
+ 161              	.L10:
+ 152:../CMSIS/system_MKL25Z4.c ****           default:
+ 153:../CMSIS/system_MKL25Z4.c ****             Divider = (uint16_t)(32LU << ((MCG->C1 & MCG_C1_FRDIV_MASK) >> MCG_C1_FRDIV_SHIFT));
+ 162              		.loc 1 153 47
+ 163 006e 6F4B     		ldr	r3, .L31
+ 164 0070 1B78     		ldrb	r3, [r3]
+ 165 0072 DBB2     		uxtb	r3, r3
+ 166              		.loc 1 153 73
+ 167 0074 DB08     		lsrs	r3, r3, #3
+ 168 0076 0722     		movs	r2, #7
+ 169 0078 1340     		ands	r3, r2
+ 170              		.loc 1 153 39
+ 171 007a 2022     		movs	r2, #32
+ 172 007c 9A40     		lsls	r2, r2, r3
+ 173              		.loc 1 153 21
+ 174 007e BB1C     		adds	r3, r7, #2
+ 175 0080 1A80     		strh	r2, [r3]
+ 154:../CMSIS/system_MKL25Z4.c ****             break;
+ 176              		.loc 1 154 13
+ 177 0082 09E0     		b	.L12
+ 178              	.L8:
+ 155:../CMSIS/system_MKL25Z4.c ****           }
+ 156:../CMSIS/system_MKL25Z4.c ****         } else {/* ((MCG->C2 & MCG_C2_RANGE_MASK) != 0x00U) */
+ 157:../CMSIS/system_MKL25Z4.c ****           Divider = (uint16_t)(1LU << ((MCG->C1 & MCG_C1_FRDIV_MASK) >> MCG_C1_FRDIV_SHIFT));
+ 179              		.loc 1 157 44
+ 180 0084 694B     		ldr	r3, .L31
+ 181 0086 1B78     		ldrb	r3, [r3]
+ 182 0088 DBB2     		uxtb	r3, r3
+ 183              		.loc 1 157 70
+ 184 008a DB08     		lsrs	r3, r3, #3
+ 185 008c 0722     		movs	r2, #7
+ 186 008e 1340     		ands	r3, r2
+ 187              		.loc 1 157 36
+ 188 0090 0122     		movs	r2, #1
+ 189 0092 9A40     		lsls	r2, r2, r3
+ 190              		.loc 1 157 19
+ 191 0094 BB1C     		adds	r3, r7, #2
+ 192 0096 1A80     		strh	r2, [r3]
+ 193              	.L12:
+ 158:../CMSIS/system_MKL25Z4.c ****         }
+ 159:../CMSIS/system_MKL25Z4.c ****         MCGOUTClock = (MCGOUTClock / Divider); /* Calculate the divided FLL reference clock */
+ 194              		.loc 1 159 36
+ 195 0098 BB1C     		adds	r3, r7, #2
+ 196 009a 1B88     		ldrh	r3, [r3]
+ 197              		.loc 1 159 21
+ 198 009c 1900     		movs	r1, r3
+ 199 009e 7868     		ldr	r0, [r7, #4]
+ 200 00a0 FFF7FEFF 		bl	__aeabi_uidiv
+ 201              	.LVL0:
+ 202 00a4 0300     		movs	r3, r0
+ 203 00a6 7B60     		str	r3, [r7, #4]
+ 204 00a8 02E0     		b	.L13
+ 205              	.L7:
+ 160:../CMSIS/system_MKL25Z4.c ****       } else { /* (!((MCG->C1 & MCG_C1_IREFS_MASK) == 0x00U)) */
+ 161:../CMSIS/system_MKL25Z4.c ****         MCGOUTClock = CPU_INT_SLOW_CLK_HZ; /* The slow internal reference clock is selected */
+ 206              		.loc 1 161 21
+ 207 00aa 8023     		movs	r3, #128
+ 208 00ac 1B02     		lsls	r3, r3, #8
+ 209 00ae 7B60     		str	r3, [r7, #4]
+ 210              	.L13:
+ 162:../CMSIS/system_MKL25Z4.c ****       } /* (!((MCG->C1 & MCG_C1_IREFS_MASK) == 0x00U)) */
+ 163:../CMSIS/system_MKL25Z4.c ****       /* Select correct multiplier to calculate the MCG output clock  */
+ 164:../CMSIS/system_MKL25Z4.c ****       switch (MCG->C4 & (MCG_C4_DMX32_MASK | MCG_C4_DRST_DRS_MASK)) {
+ 211              		.loc 1 164 18
+ 212 00b0 5E4B     		ldr	r3, .L31
+ 213 00b2 DB78     		ldrb	r3, [r3, #3]
+ 214 00b4 DBB2     		uxtb	r3, r3
+ 215              		.loc 1 164 23
+ 216 00b6 1A00     		movs	r2, r3
+ 217 00b8 E023     		movs	r3, #224
+ 218 00ba 1340     		ands	r3, r2
+ 219              		.loc 1 164 7
+ 220 00bc E02B     		cmp	r3, #224
+ 221 00be 47D0     		beq	.L14
+ 222 00c0 00D9     		bls	.LCB153
+ 223 00c2 9DE0     		b	.L29	@long jump
+ 224              	.LCB153:
+ 225 00c4 C02B     		cmp	r3, #192
+ 226 00c6 3ED0     		beq	.L16
+ 227 00c8 00D9     		bls	.LCB157
+ 228 00ca 99E0     		b	.L29	@long jump
+ 229              	.LCB157:
+ 230 00cc A02B     		cmp	r3, #160
+ 231 00ce 34D0     		beq	.L17
+ 232 00d0 00D9     		bls	.LCB161
+ 233 00d2 95E0     		b	.L29	@long jump
+ 234              	.LCB161:
+ 235 00d4 802B     		cmp	r3, #128
+ 236 00d6 2AD0     		beq	.L18
+ 237 00d8 00D9     		bls	.LCB165
+ 238 00da 91E0     		b	.L29	@long jump
+ 239              	.LCB165:
+ 240 00dc 602B     		cmp	r3, #96
+ 241 00de 1FD0     		beq	.L19
+ 242 00e0 00D9     		bls	.LCB169
+ 243 00e2 8DE0     		b	.L29	@long jump
+ 244              	.LCB169:
+ 245 00e4 402B     		cmp	r3, #64
+ 246 00e6 14D0     		beq	.L20
+ 247 00e8 00D9     		bls	.LCB173
+ 248 00ea 89E0     		b	.L29	@long jump
+ 249              	.LCB173:
+ 250 00ec 002B     		cmp	r3, #0
+ 251 00ee 02D0     		beq	.L21
+ 252 00f0 202B     		cmp	r3, #32
+ 253 00f2 07D0     		beq	.L22
+ 165:../CMSIS/system_MKL25Z4.c ****         case 0x00U:
+ 166:../CMSIS/system_MKL25Z4.c ****           MCGOUTClock *= 640U;
+ 167:../CMSIS/system_MKL25Z4.c ****           break;
+ 168:../CMSIS/system_MKL25Z4.c ****         case 0x20U:
+ 169:../CMSIS/system_MKL25Z4.c ****           MCGOUTClock *= 1280U;
+ 170:../CMSIS/system_MKL25Z4.c ****           break;
+ 171:../CMSIS/system_MKL25Z4.c ****         case 0x40U:
+ 172:../CMSIS/system_MKL25Z4.c ****           MCGOUTClock *= 1920U;
+ 173:../CMSIS/system_MKL25Z4.c ****           break;
+ 174:../CMSIS/system_MKL25Z4.c ****         case 0x60U:
+ 175:../CMSIS/system_MKL25Z4.c ****           MCGOUTClock *= 2560U;
+ 176:../CMSIS/system_MKL25Z4.c ****           break;
+ 177:../CMSIS/system_MKL25Z4.c ****         case 0x80U:
+ 178:../CMSIS/system_MKL25Z4.c ****           MCGOUTClock *= 732U;
+ 179:../CMSIS/system_MKL25Z4.c ****           break;
+ 180:../CMSIS/system_MKL25Z4.c ****         case 0xA0U:
+ 181:../CMSIS/system_MKL25Z4.c ****           MCGOUTClock *= 1464U;
+ 182:../CMSIS/system_MKL25Z4.c ****           break;
+ 183:../CMSIS/system_MKL25Z4.c ****         case 0xC0U:
+ 184:../CMSIS/system_MKL25Z4.c ****           MCGOUTClock *= 2197U;
+ 185:../CMSIS/system_MKL25Z4.c ****           break;
+ 186:../CMSIS/system_MKL25Z4.c ****         case 0xE0U:
+ 187:../CMSIS/system_MKL25Z4.c ****           MCGOUTClock *= 2929U;
+ 188:../CMSIS/system_MKL25Z4.c ****           break;
+ 189:../CMSIS/system_MKL25Z4.c ****         default:
+ 190:../CMSIS/system_MKL25Z4.c ****           break;
+ 254              		.loc 1 190 11
+ 255 00f4 84E0     		b	.L29
+ 256              	.L21:
+ 166:../CMSIS/system_MKL25Z4.c ****           break;
+ 257              		.loc 1 166 23
+ 258 00f6 7A68     		ldr	r2, [r7, #4]
+ 259 00f8 1300     		movs	r3, r2
+ 260 00fa 9B00     		lsls	r3, r3, #2
+ 261 00fc 9B18     		adds	r3, r3, r2
+ 262 00fe DB01     		lsls	r3, r3, #7
+ 263 0100 7B60     		str	r3, [r7, #4]
+ 167:../CMSIS/system_MKL25Z4.c ****         case 0x20U:
+ 264              		.loc 1 167 11
+ 265 0102 7EE0     		b	.L24
+ 266              	.L22:
+ 169:../CMSIS/system_MKL25Z4.c ****           break;
+ 267              		.loc 1 169 23
+ 268 0104 7A68     		ldr	r2, [r7, #4]
+ 269 0106 1300     		movs	r3, r2
+ 270 0108 9B00     		lsls	r3, r3, #2
+ 271 010a 9B18     		adds	r3, r3, r2
+ 272 010c 1B02     		lsls	r3, r3, #8
+ 273 010e 7B60     		str	r3, [r7, #4]
+ 170:../CMSIS/system_MKL25Z4.c ****         case 0x40U:
+ 274              		.loc 1 170 11
+ 275 0110 77E0     		b	.L24
+ 276              	.L20:
+ 172:../CMSIS/system_MKL25Z4.c ****           break;
+ 277              		.loc 1 172 23
+ 278 0112 7A68     		ldr	r2, [r7, #4]
+ 279 0114 1300     		movs	r3, r2
+ 280 0116 1B01     		lsls	r3, r3, #4
+ 281 0118 9B1A     		subs	r3, r3, r2
+ 282 011a DB01     		lsls	r3, r3, #7
+ 283 011c 7B60     		str	r3, [r7, #4]
+ 173:../CMSIS/system_MKL25Z4.c ****         case 0x60U:
+ 284              		.loc 1 173 11
+ 285 011e 70E0     		b	.L24
+ 286              	.L19:
+ 175:../CMSIS/system_MKL25Z4.c ****           break;
+ 287              		.loc 1 175 23
+ 288 0120 7A68     		ldr	r2, [r7, #4]
+ 289 0122 1300     		movs	r3, r2
+ 290 0124 9B00     		lsls	r3, r3, #2
+ 291 0126 9B18     		adds	r3, r3, r2
+ 292 0128 5B02     		lsls	r3, r3, #9
+ 293 012a 7B60     		str	r3, [r7, #4]
+ 176:../CMSIS/system_MKL25Z4.c ****         case 0x80U:
+ 294              		.loc 1 176 11
+ 295 012c 69E0     		b	.L24
+ 296              	.L18:
+ 178:../CMSIS/system_MKL25Z4.c ****           break;
+ 297              		.loc 1 178 23
+ 298 012e 7B68     		ldr	r3, [r7, #4]
+ 299 0130 B722     		movs	r2, #183
+ 300 0132 9200     		lsls	r2, r2, #2
+ 301 0134 5343     		muls	r3, r2
+ 302 0136 7B60     		str	r3, [r7, #4]
+ 179:../CMSIS/system_MKL25Z4.c ****         case 0xA0U:
+ 303              		.loc 1 179 11
+ 304 0138 63E0     		b	.L24
+ 305              	.L17:
+ 181:../CMSIS/system_MKL25Z4.c ****           break;
+ 306              		.loc 1 181 23
+ 307 013a 7B68     		ldr	r3, [r7, #4]
+ 308 013c B722     		movs	r2, #183
+ 309 013e D200     		lsls	r2, r2, #3
+ 310 0140 5343     		muls	r3, r2
+ 311 0142 7B60     		str	r3, [r7, #4]
+ 182:../CMSIS/system_MKL25Z4.c ****         case 0xC0U:
+ 312              		.loc 1 182 11
+ 313 0144 5DE0     		b	.L24
+ 314              	.L16:
+ 184:../CMSIS/system_MKL25Z4.c ****           break;
+ 315              		.loc 1 184 23
+ 316 0146 7B68     		ldr	r3, [r7, #4]
+ 317 0148 3A4A     		ldr	r2, .L31+8
+ 318 014a 5343     		muls	r3, r2
+ 319 014c 7B60     		str	r3, [r7, #4]
+ 185:../CMSIS/system_MKL25Z4.c ****         case 0xE0U:
+ 320              		.loc 1 185 11
+ 321 014e 58E0     		b	.L24
+ 322              	.L14:
+ 187:../CMSIS/system_MKL25Z4.c ****           break;
+ 323              		.loc 1 187 23
+ 324 0150 7B68     		ldr	r3, [r7, #4]
+ 325 0152 394A     		ldr	r2, .L31+12
+ 326 0154 5343     		muls	r3, r2
+ 327 0156 7B60     		str	r3, [r7, #4]
+ 188:../CMSIS/system_MKL25Z4.c ****         default:
+ 328              		.loc 1 188 11
+ 329 0158 53E0     		b	.L24
+ 330              	.L6:
+ 191:../CMSIS/system_MKL25Z4.c ****       }
+ 192:../CMSIS/system_MKL25Z4.c ****     } else { /* (!((MCG->C6 & MCG_C6_PLLS_MASK) == 0x00U)) */
+ 193:../CMSIS/system_MKL25Z4.c ****       /* PLL is selected */
+ 194:../CMSIS/system_MKL25Z4.c ****       Divider = (((uint16_t)MCG->C5 & MCG_C5_PRDIV0_MASK) + 0x01U);
+ 331              		.loc 1 194 32
+ 332 015a 344B     		ldr	r3, .L31
+ 333 015c 1B79     		ldrb	r3, [r3, #4]
+ 334 015e DBB2     		uxtb	r3, r3
+ 335 0160 9BB2     		uxth	r3, r3
+ 336              		.loc 1 194 37
+ 337 0162 1F22     		movs	r2, #31
+ 338 0164 1340     		ands	r3, r2
+ 339 0166 9AB2     		uxth	r2, r3
+ 340              		.loc 1 194 15
+ 341 0168 BB1C     		adds	r3, r7, #2
+ 342 016a 0132     		adds	r2, r2, #1
+ 343 016c 1A80     		strh	r2, [r3]
+ 195:../CMSIS/system_MKL25Z4.c ****       MCGOUTClock = (uint32_t)(CPU_XTAL_CLK_HZ / Divider); /* Calculate the PLL reference clock */
+ 344              		.loc 1 195 21
+ 345 016e BB1C     		adds	r3, r7, #2
+ 346 0170 1B88     		ldrh	r3, [r3]
+ 347              		.loc 1 195 19
+ 348 0172 1900     		movs	r1, r3
+ 349 0174 2E48     		ldr	r0, .L31+4
+ 350 0176 FFF7FEFF 		bl	__aeabi_uidiv
+ 351              	.LVL1:
+ 352 017a 0300     		movs	r3, r0
+ 353 017c 7B60     		str	r3, [r7, #4]
+ 196:../CMSIS/system_MKL25Z4.c ****       Divider = (((uint16_t)MCG->C6 & MCG_C6_VDIV0_MASK) + 24U);
+ 354              		.loc 1 196 32
+ 355 017e 2B4B     		ldr	r3, .L31
+ 356 0180 5B79     		ldrb	r3, [r3, #5]
+ 357 0182 DBB2     		uxtb	r3, r3
+ 358 0184 9BB2     		uxth	r3, r3
+ 359              		.loc 1 196 37
+ 360 0186 1F22     		movs	r2, #31
+ 361 0188 1340     		ands	r3, r2
+ 362 018a 9AB2     		uxth	r2, r3
+ 363              		.loc 1 196 15
+ 364 018c BB1C     		adds	r3, r7, #2
+ 365 018e 1832     		adds	r2, r2, #24
+ 366 0190 1A80     		strh	r2, [r3]
+ 197:../CMSIS/system_MKL25Z4.c ****       MCGOUTClock *= Divider;          /* Calculate the MCG output clock */
+ 367              		.loc 1 197 19
+ 368 0192 BB1C     		adds	r3, r7, #2
+ 369 0194 1A88     		ldrh	r2, [r3]
+ 370 0196 7B68     		ldr	r3, [r7, #4]
+ 371 0198 5343     		muls	r3, r2
+ 372 019a 7B60     		str	r3, [r7, #4]
+ 373 019c 31E0     		b	.L24
+ 374              	.L5:
+ 198:../CMSIS/system_MKL25Z4.c ****     } /* (!((MCG->C6 & MCG_C6_PLLS_MASK) == 0x00U)) */
+ 199:../CMSIS/system_MKL25Z4.c ****   } else if ((MCG->C1 & MCG_C1_CLKS_MASK) == 0x40U) {
+ 375              		.loc 1 199 18
+ 376 019e 234B     		ldr	r3, .L31
+ 377 01a0 1B78     		ldrb	r3, [r3]
+ 378 01a2 DBB2     		uxtb	r3, r3
+ 379              		.loc 1 199 23
+ 380 01a4 1A00     		movs	r2, r3
+ 381 01a6 C023     		movs	r3, #192
+ 382 01a8 1340     		ands	r3, r2
+ 383              		.loc 1 199 13
+ 384 01aa 402B     		cmp	r3, #64
+ 385 01ac 1DD1     		bne	.L25
+ 200:../CMSIS/system_MKL25Z4.c ****     /* Internal reference clock is selected */
+ 201:../CMSIS/system_MKL25Z4.c ****     if ((MCG->C2 & MCG_C2_IRCS_MASK) == 0x00U) {
+ 386              		.loc 1 201 13
+ 387 01ae 1F4B     		ldr	r3, .L31
+ 388 01b0 5B78     		ldrb	r3, [r3, #1]
+ 389 01b2 DBB2     		uxtb	r3, r3
+ 390              		.loc 1 201 18
+ 391 01b4 1A00     		movs	r2, r3
+ 392 01b6 0123     		movs	r3, #1
+ 393 01b8 1340     		ands	r3, r2
+ 394              		.loc 1 201 8
+ 395 01ba 03D1     		bne	.L26
+ 202:../CMSIS/system_MKL25Z4.c ****       MCGOUTClock = CPU_INT_SLOW_CLK_HZ; /* Slow internal reference clock selected */
+ 396              		.loc 1 202 19
+ 397 01bc 8023     		movs	r3, #128
+ 398 01be 1B02     		lsls	r3, r3, #8
+ 399 01c0 7B60     		str	r3, [r7, #4]
+ 400 01c2 1EE0     		b	.L24
+ 401              	.L26:
+ 203:../CMSIS/system_MKL25Z4.c ****     } else { /* (!((MCG->C2 & MCG_C2_IRCS_MASK) == 0x00U)) */
+ 204:../CMSIS/system_MKL25Z4.c ****       Divider = (uint16_t)(0x01LU << ((MCG->SC & MCG_SC_FCRDIV_MASK) >> MCG_SC_FCRDIV_SHIFT));
+ 402              		.loc 1 204 43
+ 403 01c4 194B     		ldr	r3, .L31
+ 404 01c6 1B7A     		ldrb	r3, [r3, #8]
+ 405 01c8 DBB2     		uxtb	r3, r3
+ 406              		.loc 1 204 70
+ 407 01ca 5B08     		lsrs	r3, r3, #1
+ 408 01cc 0722     		movs	r2, #7
+ 409 01ce 1340     		ands	r3, r2
+ 410              		.loc 1 204 35
+ 411 01d0 0122     		movs	r2, #1
+ 412 01d2 9A40     		lsls	r2, r2, r3
+ 413              		.loc 1 204 15
+ 414 01d4 BB1C     		adds	r3, r7, #2
+ 415 01d6 1A80     		strh	r2, [r3]
+ 205:../CMSIS/system_MKL25Z4.c ****       MCGOUTClock = (uint32_t) (CPU_INT_FAST_CLK_HZ / Divider); /* Fast internal reference clock se
+ 416              		.loc 1 205 21
+ 417 01d8 BB1C     		adds	r3, r7, #2
+ 418 01da 1B88     		ldrh	r3, [r3]
+ 419              		.loc 1 205 19
+ 420 01dc 1900     		movs	r1, r3
+ 421 01de 1748     		ldr	r0, .L31+16
+ 422 01e0 FFF7FEFF 		bl	__aeabi_uidiv
+ 423              	.LVL2:
+ 424 01e4 0300     		movs	r3, r0
+ 425 01e6 7B60     		str	r3, [r7, #4]
+ 426 01e8 0BE0     		b	.L24
+ 427              	.L25:
+ 206:../CMSIS/system_MKL25Z4.c ****     } /* (!((MCG->C2 & MCG_C2_IRCS_MASK) == 0x00U)) */
+ 207:../CMSIS/system_MKL25Z4.c ****   } else if ((MCG->C1 & MCG_C1_CLKS_MASK) == 0x80U) {
+ 428              		.loc 1 207 18
+ 429 01ea 104B     		ldr	r3, .L31
+ 430 01ec 1B78     		ldrb	r3, [r3]
+ 431 01ee DBB2     		uxtb	r3, r3
+ 432              		.loc 1 207 23
+ 433 01f0 1A00     		movs	r2, r3
+ 434 01f2 C023     		movs	r3, #192
+ 435 01f4 1340     		ands	r3, r2
+ 436              		.loc 1 207 13
+ 437 01f6 802B     		cmp	r3, #128
+ 438 01f8 13D1     		bne	.L30
+ 208:../CMSIS/system_MKL25Z4.c ****     /* External reference clock is selected */
+ 209:../CMSIS/system_MKL25Z4.c ****     MCGOUTClock = CPU_XTAL_CLK_HZ;     /* System oscillator drives MCG clock */
+ 439              		.loc 1 209 17
+ 440 01fa 0D4B     		ldr	r3, .L31+4
+ 441 01fc 7B60     		str	r3, [r7, #4]
+ 442 01fe 00E0     		b	.L24
+ 443              	.L29:
+ 190:../CMSIS/system_MKL25Z4.c ****       }
+ 444              		.loc 1 190 11
+ 445 0200 C046     		nop
+ 446              	.L24:
+ 210:../CMSIS/system_MKL25Z4.c ****   } else { /* (!((MCG->C1 & MCG_C1_CLKS_MASK) == 0x80U)) */
+ 211:../CMSIS/system_MKL25Z4.c ****     /* Reserved value */
+ 212:../CMSIS/system_MKL25Z4.c ****     return;
+ 213:../CMSIS/system_MKL25Z4.c ****   } /* (!((MCG->C1 & MCG_C1_CLKS_MASK) == 0x80U)) */
+ 214:../CMSIS/system_MKL25Z4.c ****   SystemCoreClock = (MCGOUTClock / (0x01U + ((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV1_MASK) >> SIM_CLKDI
+ 447              		.loc 1 214 50
+ 448 0202 0F4A     		ldr	r2, .L31+20
+ 449 0204 0F4B     		ldr	r3, .L31+24
+ 450 0206 D358     		ldr	r3, [r2, r3]
+ 451              		.loc 1 214 88
+ 452 0208 1B0F     		lsrs	r3, r3, #28
+ 453 020a 0F22     		movs	r2, #15
+ 454 020c 1340     		ands	r3, r2
+ 455              		.loc 1 214 43
+ 456 020e 0133     		adds	r3, r3, #1
+ 457              		.loc 1 214 34
+ 458 0210 1900     		movs	r1, r3
+ 459 0212 7868     		ldr	r0, [r7, #4]
+ 460 0214 FFF7FEFF 		bl	__aeabi_uidiv
+ 461              	.LVL3:
+ 462 0218 0300     		movs	r3, r0
+ 463 021a 1A00     		movs	r2, r3
+ 464              		.loc 1 214 19
+ 465 021c 0A4B     		ldr	r3, .L31+28
+ 466 021e 1A60     		str	r2, [r3]
+ 467 0220 00E0     		b	.L4
+ 468              	.L30:
+ 212:../CMSIS/system_MKL25Z4.c ****   } /* (!((MCG->C1 & MCG_C1_CLKS_MASK) == 0x80U)) */
+ 469              		.loc 1 212 5
+ 470 0222 C046     		nop
+ 471              	.L4:
+ 215:../CMSIS/system_MKL25Z4.c **** }
+ 472              		.loc 1 215 1
+ 473 0224 BD46     		mov	sp, r7
+ 474 0226 02B0     		add	sp, sp, #8
+ 475              		@ sp needed
+ 476 0228 80BD     		pop	{r7, pc}
+ 477              	.L32:
+ 478 022a C046     		.align	2
+ 479              	.L31:
+ 480 022c 00400640 		.word	1074151424
+ 481 0230 00127A00 		.word	8000000
+ 482 0234 95080000 		.word	2197
+ 483 0238 710B0000 		.word	2929
+ 484 023c 00093D00 		.word	4000000
+ 485 0240 00700440 		.word	1074032640
+ 486 0244 44100000 		.word	4164
+ 487 0248 00000000 		.word	SystemCoreClock
+ 488              		.cfi_endproc
+ 489              	.LFE35:
+ 491              		.text
+ 492              	.Letext0:
+ 493              		.file 2 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 494              		.file 3 "/usr/local/mcuxpressoide-11.2.0_4120/ide/plugins/com.nxp.mcuxpresso.tools.linux_11.2.0.20
+ 495              		.file 4 "../CMSIS/system_MKL25Z4.h"
+ 496              		.file 5 "../CMSIS/MKL25Z4.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 system_MKL25Z4.c
+     /tmp/ccrWUB81.s:20     .data.SystemCoreClock:0000000000000000 SystemCoreClock
+     /tmp/ccrWUB81.s:17     .data.SystemCoreClock:0000000000000000 $d
+     /tmp/ccrWUB81.s:23     .text.SystemInit:0000000000000000 $t
+     /tmp/ccrWUB81.s:31     .text.SystemInit:0000000000000000 SystemInit
+     /tmp/ccrWUB81.s:59     .text.SystemInit:0000000000000014 $d
+     /tmp/ccrWUB81.s:65     .text.SystemCoreClockUpdate:0000000000000000 $t
+     /tmp/ccrWUB81.s:72     .text.SystemCoreClockUpdate:0000000000000000 SystemCoreClockUpdate
+     /tmp/ccrWUB81.s:480    .text.SystemCoreClockUpdate:000000000000022c $d
+                           .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
+                           .group:0000000000000000 wm4.redlib_version.h.16.f905717e4b3a91dcbdbb631865150df4
+                           .group:0000000000000000 wm4.libconfigarm.h.19.34723c94cbd19598192aa6b1e87fca41
+                           .group:0000000000000000 wm4.stdint.h.31.58198de4ea930fb897655479091e17c7
+                           .group:0000000000000000 wm4.fsl_device_registers.h.32.0bd0fc1949c4d5ee8778d13f693b6d67
+                           .group:0000000000000000 wm4.MKL25Z4.h.103.6fa60f7365436a291410ac7ae38d8851
+                           .group:0000000000000000 wm4.core_cm0plus.h.42.7e68c73109133db28e6113a0ee252d6f
+                           .group:0000000000000000 wm4.cmsis_gcc.h.36.5bb14fd68ce7855540fcfe2d9305ae16
+                           .group:0000000000000000 wm4.core_cm0plus.h.175.8e2cbb335a2ae70828db295817e11b6e
+                           .group:0000000000000000 wm4.system_MKL25Z4.h.107.b43986f939b1bf0ee0f9aa04879788f4
+                           .group:0000000000000000 wm4.MKL25Z4.h.379.376a3f36380a1b2f1e4cdc95287bb342
+                           .group:0000000000000000 wm4.MKL25Z4_features.h.84.30fd6c6f11c9d2ffea2189829de10275
+
+UNDEFINED SYMBOLS
+__aeabi_uidiv
