@@ -134,7 +134,7 @@
   30:../source/Blinkenlights.c ****  
   31:../source/Blinkenlights.c **** /**
   32:../source/Blinkenlights.c ****  * @file    Blinkenlights.c
-  33:../source/Blinkenlights.c ****  * @brief   Application entry point.
+  33:../source/Blinkenlights.c ****  * @brief   Blinks Light in a with a start run sequence and then continues in an infinitee sequence
   34:../source/Blinkenlights.c ****  */
   35:../source/Blinkenlights.c **** #include <stdio.h>
   36:../source/Blinkenlights.c **** #include "board.h"
@@ -422,19 +422,19 @@
  274              		.file 9 "../source/delay.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 Blinkenlights.c
-     /tmp/cc7WAA41.s:16     .rodata.delayTimes:0000000000000000 $d
-     /tmp/cc7WAA41.s:19     .rodata.delayTimes:0000000000000000 delayTimes
-     /tmp/cc7WAA41.s:25     .rodata.delayLoopUp:0000000000000000 $d
-     /tmp/cc7WAA41.s:28     .rodata.delayLoopUp:0000000000000000 delayLoopUp
-     /tmp/cc7WAA41.s:34     .rodata.delay100MSECLoopUp:0000000000000000 $d
-     /tmp/cc7WAA41.s:37     .rodata.delay100MSECLoopUp:0000000000000000 delay100MSECLoopUp
-     /tmp/cc7WAA41.s:45     .bss.next_state:0000000000000000 next_state
-     /tmp/cc7WAA41.s:46     .bss.next_state:0000000000000000 $d
-     /tmp/cc7WAA41.s:48     .rodata.main.str1.4:0000000000000000 $d
-     /tmp/cc7WAA41.s:70     .rodata:0000000000000000 $d
-     /tmp/cc7WAA41.s:76     .text.main:0000000000000000 $t
-     /tmp/cc7WAA41.s:84     .text.main:0000000000000000 main
-     /tmp/cc7WAA41.s:247    .text.main:00000000000000f8 $d
+     /tmp/ccccEWjf.s:16     .rodata.delayTimes:0000000000000000 $d
+     /tmp/ccccEWjf.s:19     .rodata.delayTimes:0000000000000000 delayTimes
+     /tmp/ccccEWjf.s:25     .rodata.delayLoopUp:0000000000000000 $d
+     /tmp/ccccEWjf.s:28     .rodata.delayLoopUp:0000000000000000 delayLoopUp
+     /tmp/ccccEWjf.s:34     .rodata.delay100MSECLoopUp:0000000000000000 $d
+     /tmp/ccccEWjf.s:37     .rodata.delay100MSECLoopUp:0000000000000000 delay100MSECLoopUp
+     /tmp/ccccEWjf.s:45     .bss.next_state:0000000000000000 next_state
+     /tmp/ccccEWjf.s:46     .bss.next_state:0000000000000000 $d
+     /tmp/ccccEWjf.s:48     .rodata.main.str1.4:0000000000000000 $d
+     /tmp/ccccEWjf.s:70     .rodata:0000000000000000 $d
+     /tmp/ccccEWjf.s:76     .text.main:0000000000000000 $t
+     /tmp/ccccEWjf.s:84     .text.main:0000000000000000 main
+     /tmp/ccccEWjf.s:247    .text.main:00000000000000f8 $d
                            .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
                            .group:0000000000000000 wm4.redlib_version.h.16.f905717e4b3a91dcbdbb631865150df4
                            .group:0000000000000000 wm4.libconfigarm.h.19.34723c94cbd19598192aa6b1e87fca41

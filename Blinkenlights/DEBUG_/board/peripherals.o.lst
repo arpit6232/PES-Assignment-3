@@ -94,8 +94,8 @@
   46              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 peripherals.c
-     /tmp/cccQMI5V.s:16     .text.BOARD_InitBootPeripherals:0000000000000000 $t
-     /tmp/cccQMI5V.s:24     .text.BOARD_InitBootPeripherals:0000000000000000 BOARD_InitBootPeripherals
+     /tmp/ccOxxyDb.s:16     .text.BOARD_InitBootPeripherals:0000000000000000 $t
+     /tmp/ccOxxyDb.s:24     .text.BOARD_InitBootPeripherals:0000000000000000 BOARD_InitBootPeripherals
                            .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
 
 NO UNDEFINED SYMBOLS

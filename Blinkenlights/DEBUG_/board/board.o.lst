@@ -806,12 +806,12 @@
  130              		.file 7 "../board/clock_config.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 board.c
-     /tmp/cc8e1jZQ.s:16     .text.CLOCK_SetLpsci0Clock:0000000000000000 $t
-     /tmp/cc8e1jZQ.s:23     .text.CLOCK_SetLpsci0Clock:0000000000000000 CLOCK_SetLpsci0Clock
-     /tmp/cc8e1jZQ.s:68     .text.CLOCK_SetLpsci0Clock:000000000000002c $d
-     /tmp/cc8e1jZQ.s:75     .text.BOARD_InitDebugConsole:0000000000000000 $t
-     /tmp/cc8e1jZQ.s:82     .text.BOARD_InitDebugConsole:0000000000000000 BOARD_InitDebugConsole
-     /tmp/cc8e1jZQ.s:120    .text.BOARD_InitDebugConsole:000000000000002c $d
+     /tmp/ccdqVIHX.s:16     .text.CLOCK_SetLpsci0Clock:0000000000000000 $t
+     /tmp/ccdqVIHX.s:23     .text.CLOCK_SetLpsci0Clock:0000000000000000 CLOCK_SetLpsci0Clock
+     /tmp/ccdqVIHX.s:68     .text.CLOCK_SetLpsci0Clock:000000000000002c $d
+     /tmp/ccdqVIHX.s:75     .text.BOARD_InitDebugConsole:0000000000000000 $t
+     /tmp/ccdqVIHX.s:82     .text.BOARD_InitDebugConsole:0000000000000000 BOARD_InitDebugConsole
+     /tmp/ccdqVIHX.s:120    .text.BOARD_InitDebugConsole:000000000000002c $d
                            .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
                            .group:0000000000000000 wm4.redlib_version.h.16.f905717e4b3a91dcbdbb631865150df4
                            .group:0000000000000000 wm4.libconfigarm.h.19.34723c94cbd19598192aa6b1e87fca41

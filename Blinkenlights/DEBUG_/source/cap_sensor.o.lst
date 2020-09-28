@@ -216,13 +216,13 @@
  153              		.file 7 "/home/arpit/studies/pes/Blinkenlights/drivers/fsl_clock.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 cap_sensor.c
-     /tmp/cckk6951.s:16     .rodata.CAP_Init.str1.4:0000000000000000 $d
-     /tmp/cckk6951.s:21     .text.CAP_Init:0000000000000000 $t
-     /tmp/cckk6951.s:29     .text.CAP_Init:0000000000000000 CAP_Init
-     /tmp/cckk6951.s:68     .text.CAP_Init:0000000000000028 $d
-     /tmp/cckk6951.s:77     .text.CAP_Scan:0000000000000000 $t
-     /tmp/cckk6951.s:84     .text.CAP_Scan:0000000000000000 CAP_Scan
-     /tmp/cckk6951.s:141    .text.CAP_Scan:0000000000000044 $d
+     /tmp/cc577koh.s:16     .rodata.CAP_Init.str1.4:0000000000000000 $d
+     /tmp/cc577koh.s:21     .text.CAP_Init:0000000000000000 $t
+     /tmp/cc577koh.s:29     .text.CAP_Init:0000000000000000 CAP_Init
+     /tmp/cc577koh.s:68     .text.CAP_Init:0000000000000028 $d
+     /tmp/cc577koh.s:77     .text.CAP_Scan:0000000000000000 $t
+     /tmp/cc577koh.s:84     .text.CAP_Scan:0000000000000000 CAP_Scan
+     /tmp/cc577koh.s:141    .text.CAP_Scan:0000000000000044 $d
                            .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
                            .group:0000000000000000 wm4.MKL25Z4.h.103.6fa60f7365436a291410ac7ae38d8851
                            .group:0000000000000000 wm4.redlib_version.h.16.f905717e4b3a91dcbdbb631865150df4

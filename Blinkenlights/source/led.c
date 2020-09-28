@@ -222,12 +222,12 @@ void helper_COLOR(int* val, bool* LED_array) {
 		LED_array[0] = RED_ON;
 		LED_array[1] = LED_array[2] = 0;
 	}
-	else if(*val < 850) {
+	else if(*val < 750) {
 		LED_Control(0, GREEN_ON , 0);
 		LED_array[1] = GREEN_ON;
 		LED_array[0] = LED_array[2] = 0;
 	}
-	else if(*val >= 850) {
+	else if(*val >= 750) {
 		LED_Control(0, 0, BLUE_ON);
 		LED_array[2] = BLUE_ON;
 		LED_array[0] = LED_array[1] = 0;

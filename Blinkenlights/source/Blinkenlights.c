@@ -30,7 +30,19 @@
  
 /**
  * @file    Blinkenlights.c
- * @brief   Application entry point.
+ * @brief   Blinks Light in a with a start run sequence and then continues in an infinitee sequence with set delays
+ *
+ * @author Arpit Savarkar
+ * @date September 10 2020
+ * @version 1.0
+ *
+ *
+ * Sources of Reference :
+ * Online Links : https://github.com/alexander-g-dean/ESF/tree/master/NXP/Misc/Touch%20Sense
+ * Online Links : https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_2/Source/main.c
+ * Textbooks : Embedded Systems Fundamentals with Arm Cortex-M based MicroControllers
+ * I would like to thank the SA's of the course Rakesh Kumar, Saket Penurkar and Howdy Pierece for their
+ * support for helping to understand the IDE functioning
  */
 #include <stdio.h>
 #include "board.h"

@@ -26,8 +26,8 @@
   24              		.file 1 "../source/mtb.c"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mtb.c
-     /tmp/cc7DQ2TD.s:20     .mtb.$RAM1:0000000000000000 __mtb_buffer__
-     /tmp/cc7DQ2TD.s:17     .mtb.$RAM1:0000000000000000 $d
+     /tmp/ccuvptmQ.s:20     .mtb.$RAM1:0000000000000000 __mtb_buffer__
+     /tmp/ccuvptmQ.s:17     .mtb.$RAM1:0000000000000000 $d
                            .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
                            .group:0000000000000000 wm4.cr_section_macros.h.22.dc71eb3dd07ce034b25e94c263f29953
                            .group:0000000000000000 wm4.cr_mtb_buffer.h.29.f892bad85ef32e96a9c4a9de16c1a0e9

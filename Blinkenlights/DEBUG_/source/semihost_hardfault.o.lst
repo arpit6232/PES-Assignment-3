@@ -162,13 +162,13 @@
   68              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 semihost_hardfault.c
-     /tmp/ccS5luLG.s:16     .text.HardFault_Handler:0000000000000000 $t
-     /tmp/ccS5luLG.s:24     .text.HardFault_Handler:0000000000000000 HardFault_Handler
-     /tmp/ccS5luLG.s:42     .text.HardFault_Handler:000000000000000e _MSP
-     /tmp/ccS5luLG.s:44     .text.HardFault_Handler:0000000000000012 _process
-     /tmp/ccS5luLG.s:51     .text.HardFault_Handler:000000000000001e _semihost_return
-     /tmp/ccS5luLG.s:67     .text.HardFault_Handler:000000000000002a $d
-     /tmp/ccS5luLG.s:2485   .text.HardFault_Handler:000000000000002c $d
+     /tmp/cc87cvfN.s:16     .text.HardFault_Handler:0000000000000000 $t
+     /tmp/cc87cvfN.s:24     .text.HardFault_Handler:0000000000000000 HardFault_Handler
+     /tmp/cc87cvfN.s:42     .text.HardFault_Handler:000000000000000e _MSP
+     /tmp/cc87cvfN.s:44     .text.HardFault_Handler:0000000000000012 _process
+     /tmp/cc87cvfN.s:51     .text.HardFault_Handler:000000000000001e _semihost_return
+     /tmp/cc87cvfN.s:67     .text.HardFault_Handler:000000000000002a $d
+     /tmp/cc87cvfN.s:2485   .text.HardFault_Handler:000000000000002c $d
                            .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
 
 NO UNDEFINED SYMBOLS

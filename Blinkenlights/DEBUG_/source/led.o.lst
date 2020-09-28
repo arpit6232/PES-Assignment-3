@@ -884,12 +884,12 @@
  222:../source/led.c **** 		LED_array[0] = RED_ON;
  223:../source/led.c **** 		LED_array[1] = LED_array[2] = 0;
  224:../source/led.c **** 	}
- 225:../source/led.c **** 	else if(*val < 850) {
+ 225:../source/led.c **** 	else if(*val < 750) {
  226:../source/led.c **** 		LED_Control(0, GREEN_ON , 0);
  227:../source/led.c **** 		LED_array[1] = GREEN_ON;
  228:../source/led.c **** 		LED_array[0] = LED_array[2] = 0;
  229:../source/led.c **** 	}
- 230:../source/led.c **** 	else if(*val >= 850) {
+ 230:../source/led.c **** 	else if(*val >= 750) {
  231:../source/led.c **** 		LED_Control(0, 0, BLUE_ON);
  232:../source/led.c **** 		LED_array[2] = BLUE_ON;
  233:../source/led.c **** 		LED_array[0] = LED_array[1] = 0;
@@ -1030,7 +1030,7 @@
  723 00da C046     		.align	2
  724              	.L24:
  725 00dc 00000000 		.word	.LC26
- 726 00e0 51030000 		.word	849
+ 726 00e0 ED020000 		.word	749
  727              		.cfi_endproc
  728              	.LFE59:
  730              		.text
@@ -1045,28 +1045,28 @@
  739              		.file 9 "/home/arpit/studies/pes/Blinkenlights/drivers/fsl_common.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 led.c
-     /tmp/ccwMns0m.s:16     .rodata.delayTimes:0000000000000000 $d
-     /tmp/ccwMns0m.s:19     .rodata.delayTimes:0000000000000000 delayTimes
-     /tmp/ccwMns0m.s:25     .rodata.delayLoopUp:0000000000000000 $d
-     /tmp/ccwMns0m.s:28     .rodata.delayLoopUp:0000000000000000 delayLoopUp
-     /tmp/ccwMns0m.s:34     .rodata.delay100MSECLoopUp:0000000000000000 $d
-     /tmp/ccwMns0m.s:37     .rodata.delay100MSECLoopUp:0000000000000000 delay100MSECLoopUp
-     /tmp/ccwMns0m.s:43     .rodata.LED_Init.str1.4:0000000000000000 $d
-     /tmp/ccwMns0m.s:56     .text.LED_Init:0000000000000000 $t
-     /tmp/ccwMns0m.s:64     .text.LED_Init:0000000000000000 LED_Init
-     /tmp/ccwMns0m.s:171    .text.LED_Init:00000000000000a4 $d
-     /tmp/ccwMns0m.s:186    .rodata.LED_Control.str1.4:0000000000000000 $d
-     /tmp/ccwMns0m.s:200    .text.LED_Control:0000000000000000 $t
-     /tmp/ccwMns0m.s:207    .text.LED_Control:0000000000000000 LED_Control
-     /tmp/ccwMns0m.s:311    .text.LED_Control:0000000000000084 $d
-     /tmp/ccwMns0m.s:321    .rodata.LED_Startup.str1.4:0000000000000000 $d
-     /tmp/ccwMns0m.s:338    .text.LED_Startup:0000000000000000 $t
-     /tmp/ccwMns0m.s:345    .text.LED_Startup:0000000000000000 LED_Startup
-     /tmp/ccwMns0m.s:537    .text.LED_Startup:0000000000000160 $d
-     /tmp/ccwMns0m.s:546    .rodata.helper_COLOR.str1.4:0000000000000000 $d
-     /tmp/ccwMns0m.s:550    .text.helper_COLOR:0000000000000000 $t
-     /tmp/ccwMns0m.s:557    .text.helper_COLOR:0000000000000000 helper_COLOR
-     /tmp/ccwMns0m.s:725    .text.helper_COLOR:00000000000000dc $d
+     /tmp/ccobNM7S.s:16     .rodata.delayTimes:0000000000000000 $d
+     /tmp/ccobNM7S.s:19     .rodata.delayTimes:0000000000000000 delayTimes
+     /tmp/ccobNM7S.s:25     .rodata.delayLoopUp:0000000000000000 $d
+     /tmp/ccobNM7S.s:28     .rodata.delayLoopUp:0000000000000000 delayLoopUp
+     /tmp/ccobNM7S.s:34     .rodata.delay100MSECLoopUp:0000000000000000 $d
+     /tmp/ccobNM7S.s:37     .rodata.delay100MSECLoopUp:0000000000000000 delay100MSECLoopUp
+     /tmp/ccobNM7S.s:43     .rodata.LED_Init.str1.4:0000000000000000 $d
+     /tmp/ccobNM7S.s:56     .text.LED_Init:0000000000000000 $t
+     /tmp/ccobNM7S.s:64     .text.LED_Init:0000000000000000 LED_Init
+     /tmp/ccobNM7S.s:171    .text.LED_Init:00000000000000a4 $d
+     /tmp/ccobNM7S.s:186    .rodata.LED_Control.str1.4:0000000000000000 $d
+     /tmp/ccobNM7S.s:200    .text.LED_Control:0000000000000000 $t
+     /tmp/ccobNM7S.s:207    .text.LED_Control:0000000000000000 LED_Control
+     /tmp/ccobNM7S.s:311    .text.LED_Control:0000000000000084 $d
+     /tmp/ccobNM7S.s:321    .rodata.LED_Startup.str1.4:0000000000000000 $d
+     /tmp/ccobNM7S.s:338    .text.LED_Startup:0000000000000000 $t
+     /tmp/ccobNM7S.s:345    .text.LED_Startup:0000000000000000 LED_Startup
+     /tmp/ccobNM7S.s:537    .text.LED_Startup:0000000000000160 $d
+     /tmp/ccobNM7S.s:546    .rodata.helper_COLOR.str1.4:0000000000000000 $d
+     /tmp/ccobNM7S.s:550    .text.helper_COLOR:0000000000000000 $t
+     /tmp/ccobNM7S.s:557    .text.helper_COLOR:0000000000000000 helper_COLOR
+     /tmp/ccobNM7S.s:725    .text.helper_COLOR:00000000000000dc $d
                            .group:0000000000000000 wm4.0.b17fa403cb9718989e7a4b461e73e1c9
                            .group:0000000000000000 wm4.redlib_version.h.16.f905717e4b3a91dcbdbb631865150df4
                            .group:0000000000000000 wm4.libconfigarm.h.19.34723c94cbd19598192aa6b1e87fca41
